@@ -1,9 +1,17 @@
 package com.collekarry.intern;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +32,38 @@ public class listOfPeople extends AppCompatActivity
     List<listOfPeopleClass> uploadList;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menubar, menu);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if(id == R.id.action_newname)
+        {
+
+        }
+        else if (id == R.id.action_update)
+        {
+
+        }
+
+        return false;
+    }
+
+
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -33,8 +73,6 @@ public class listOfPeople extends AppCompatActivity
         nameList = FirebaseDatabase.getInstance().getReference(uId);
         uploadList = new ArrayList<>();
         list = (ListView) findViewById(R.id.nameList);
-
-
 
 
         nameList.addValueEventListener(new ValueEventListener() {
