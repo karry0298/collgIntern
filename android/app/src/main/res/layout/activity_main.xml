@@ -7,9 +7,12 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
-        android:id="@+id/login"
+        android:id="@+id/bgLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#5f84ce"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -17,13 +20,52 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="69dp"
+            android:cropToPadding="false"
+            android:scaleType="matrix"
+            app:srcCompat="@drawable/log1" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="286dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="286dp"
+            android:background="#588eff"
+            android:onClick="loginClick"
+            android:text="Click to Login"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/login"
+        android:layout_width="0dp"
+        android:layout_height="380dp"
+        android:background="@android:color/background_light"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
         <EditText
             android:id="@+id/Einput"
             android:layout_width="345dp"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="114dp"
+            android:layout_marginTop="49dp"
             android:background="?android:attr/autofilledHighlight"
             android:ems="10"
             android:hint="Enter The Email Herer....."
@@ -38,7 +80,7 @@
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="198dp"
+            android:layout_marginTop="128dp"
             android:background="?android:attr/autofilledHighlight"
             android:ems="10"
             android:hint="Enter The Password....."
@@ -53,7 +95,7 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="174dp"
+            android:layout_marginBottom="137dp"
             android:background="@android:drawable/button_onoff_indicator_on"
             android:text="SIGN IN" />
 
