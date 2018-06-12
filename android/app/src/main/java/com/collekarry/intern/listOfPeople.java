@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.collekarry.intern.MainActivity.uId;
@@ -30,6 +32,7 @@ public class listOfPeople extends AppCompatActivity
     DatabaseReference nameList;
     ListView list;
     List<listOfPeopleClass> uploadList;
+    List<HashMap<String,String>> aList;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,45 +75,68 @@ public class listOfPeople extends AppCompatActivity
         Log.i("name:",uId);
         nameList = FirebaseDatabase.getInstance().getReference(uId);
         uploadList = new ArrayList<>();
-        list = (ListView) findViewById(R.id.nameList);
+        list = (ListView) findViewById(R.id.peopleListView);
+        aList = new ArrayList<>();
 
+//        nameList.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+//                {
+//                    String keyName = postSnapshot.getKey();
+//                    int age = 98;
+//                    int imageId = R.mipmap.ic_launcher_round;                   //change this when proper database created
+//                    listOfPeopleClass upload = new listOfPeopleClass(keyName,age);
+////                    uploadList.add(upload);
+//
+//                    //addition :
+//                    System.out.println(upload.getName());
+//                    HashMap<String, String> hm = new HashMap<>();
+//                    hm.put("name", upload.getName());
+//                    hm.put("age", ""+upload.getAge());
+//                    hm.put("imageId", ""+upload.getImageId());
+//                    aList.add(hm);
+//                }
+//
+//                /*if(uploadList != null){
+//
+//                    String[] uploads = new String[uploadList.size()];
+//
+//                    for (int i = 0; i < uploads.length; i++) {
+//                        uploads[i] = uploadList.get(i).getName();
+//                    }
+//
+//                    //displaying it to list
+//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, uploads);
+//                    list.setAdapter(adapter);
+//                }
+//                else{
+//                    String[] up =new String[1] ;
+//                    up[0] = "no folder created ";
+//                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, up);
+//                }
+//                */
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//
+//        });
 
-        nameList.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                {
-                    String keyName = postSnapshot.getKey();
-                    listOfPeopleClass upload = new listOfPeopleClass(keyName);
-                    uploadList.add(upload);
-                }
+        HashMap<String,String> h1 = new HashMap<>();
+        h1.put("name","Nicola Tesla");
+        h1.put("age", "98");
+        h1.put("imageId", ""+R.mipmap.ic_launcher_round);
+        aList.add(h1);
+        String[] from = { "name", "age", "imageId"};
+        int[] to = { R.id.name, R.id.age, R.id.displayPicture};
 
-                if(uploadList != null){
+        SimpleAdapter sAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.people_listview_layout, from, to);
 
-                    String[] uploads = new String[uploadList.size()];
-
-                    for (int i = 0; i < uploads.length; i++) {
-                        uploads[i] = uploadList.get(i).getName();
-                    }
-
-                    //displaying it to list
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, uploads);
-                    list.setAdapter(adapter);
-
-                }
-                else{
-                    String[] up =new String[1] ;
-                    up[0] = "no folder created ";
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, up);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        list.setAdapter(sAdapter);
     }
 }
