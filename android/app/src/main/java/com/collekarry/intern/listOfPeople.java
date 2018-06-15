@@ -130,7 +130,7 @@ public class listOfPeople extends AppCompatActivity
         HashMap<String,String> h1 = new HashMap<>();
         h1.put("name","Nicola Tesla");
         h1.put("age", "98");
-        h1.put("imageId", ""+R.mipmap.ic_launcher_round);
+        h1.put("imageId", Integer.toString(R.mipmap.ic_launcher_round));
         aList.add(h1);
         String[] from = { "name", "age", "imageId"};
         int[] to = { R.id.name, R.id.age, R.id.displayPicture};
