@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.collekarry.intern.MainActivity.uId;
 
 public class listOfPeople extends AppCompatActivity
 {
@@ -71,9 +70,9 @@ public class listOfPeople extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_people);
-        String base = uId;
-        Log.i("name:",uId);
-        nameList = FirebaseDatabase.getInstance().getReference(uId);
+        String base = "";
+        Log.i("name:","");
+        nameList = FirebaseDatabase.getInstance().getReference("");
         uploadList = new ArrayList<>();
         list = (ListView) findViewById(R.id.peopleListView);
         aList = new ArrayList<>();
