@@ -7,13 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +38,11 @@ public class listOfPeople extends AppCompatActivity
     ListView list;
     List<listOfPeopleClass> uploadList;
     List<HashMap<String,String>> aList;
+
+    String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" };
+    int[] ages = { 98, 97, 99, 104, 84, 89, 78};
+    int[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,16 +137,56 @@ public class listOfPeople extends AppCompatActivity
 //
 //        });
 
-        HashMap<String,String> h1 = new HashMap<>();
-        h1.put("name","Nicola Tesla");
-        h1.put("age", "98");
-        h1.put("imageId", Integer.toString(R.mipmap.ic_launcher_round));
-        aList.add(h1);
-        String[] from = { "name", "age", "imageId"};
-        int[] to = { R.id.name, R.id.age, R.id.displayPicture};
 
-        SimpleAdapter sAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.people_listview_layout, from, to);
 
-        list.setAdapter(sAdapter);
+
+
+
+//        HashMap<String,String> h1 = new HashMap<>();
+//        h1.put("name","Nicola Tesla");
+//        h1.put("age", "98");
+//        h1.put("imageId", Integer.toString(R.mipmap.ic_launcher_round));
+//        aList.add(h1);
+//        String[] from = { "name", "age", "imageId"};
+//        int[] to = { R.id.name, R.id.age, R.id.displayPicture};
+//
+//        SimpleAdapter sAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.people_listview_layout, from, to);
+
+        list.setAdapter(new MyAdapter());
+    }
+
+    class MyAdapter extends BaseAdapter{
+
+
+        @Override
+        public int getCount() {
+            return names.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+
+            LayoutInflater lf = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View v = lf.inflate(R.layout.people_listview_layout, viewGroup, false);
+            ImageView iv1 = (ImageView) v.findViewById(R.id.displayPicture);
+            TextView name = (TextView) v.findViewById(R.id.name);
+            TextView age = (TextView) v.findViewById(R.id.age);
+
+            iv1.setImageResource(images[i]);
+            name.setText(names[i]);
+            age.setText(ages[i]);
+
+            return v;
+        }
     }
 }

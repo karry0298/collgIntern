@@ -50,13 +50,14 @@ public class MainActivity extends AppCompatActivity
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                if(firebaseAuth.getCurrentUser() !=  null){
                     Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                    //signIn();
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "Failed u idiot", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Failed u idiot", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.i("awdawd","awdawd");
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN)
         {
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                Log.i("awdawd","awdawdwadwadawdwad");
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("", "Google sign in failed", e);
@@ -120,7 +123,21 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         mAuth.addAuthStateListener(mAuthListner);
+
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        Log.i("awdawdawdawdawd,awdawd","awdawdawd");
+//        if(currentUser != null){
+//            Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(MainActivity.this,listOfPeople.class));
+//        }
+//        else{
+//            Toast.makeText(MainActivity.this, "failed you dumb shit", Toast.LENGTH_SHORT).show();
+//
+//        }
+
+//        updateUI(currentUser);
     }
+
 
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -145,4 +162,20 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
