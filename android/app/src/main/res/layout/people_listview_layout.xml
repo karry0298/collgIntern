@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="horizontal">
 
-    <TableRow>
-
-        <ImageView
+          <ImageView
             android:id="@+id/displayPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:contentDescription="@+string/Display Picture"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            android:padding="10dp"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            app:srcCompat="@mipmap/ic_launcher_round" />
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@+string/Jerome Nicholas"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+
+                />
 
             <TextView
                 android:id="@+id/age"
@@ -38,6 +32,5 @@
                 android:layout_height="wrap_content"
                 android:text="@+string/98"
                 android:textSize="12sp" />
-        </LinearLayout>
-    </TableRow>
-</TableLayout>
+
+</RelativeLayout>
