@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Intern</string>
     <string name="action_newname">ADD NAME</string>
-    <string name="action_update">UPDATE DETAILS</string>
+    <string name="action_logout">LOGOUT</string>
 </resources>

@@ -53,14 +53,17 @@ public class listOfPeople extends AppCompatActivity
         {
 
         }
-        else if (id == R.id.action_update)
+        else if (id == R.id.action_logout)
         {
-
+            signOut();
         }
 
         return false;
     }
 
+    private void signOut() {
+       
+    }
 
 
 
