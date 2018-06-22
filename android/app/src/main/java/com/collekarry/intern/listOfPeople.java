@@ -42,9 +42,9 @@ public class listOfPeople extends AppCompatActivity
     List<listOfPeopleClass> uploadList;
     List<HashMap<String,String>> aList;
 
-    String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" };
-    int[] ages = { 98, 97, 99, 104, 84, 89, 78};
-    int[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
+    String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
+    int[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
+    int[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
 
 
     @Override
@@ -88,10 +88,12 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
         String base = "";
         Log.i("name:","");
-        nameList = FirebaseDatabase.getInstance().getReference("");
+        nameList = FirebaseDatabase.getInstance().getReference("abc");
         uploadList = new ArrayList<>();
 
         aList = new ArrayList<>();
+
+
 
 //        nameList.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -199,8 +201,8 @@ public class listOfPeople extends AppCompatActivity
             TextView age = (TextView) rowView.findViewById(R.id.age);
 
             iv1.setImageResource(images[i]);
-            name.setText(names[i]);
-            age.setText(ages[i]);
+            name.setText(names[i].length()<=25 ? names[i] : names[i].substring(0, 25)+ "..." );
+            age.setText(String.valueOf( ages[i] ));
 
 
             return rowView;
