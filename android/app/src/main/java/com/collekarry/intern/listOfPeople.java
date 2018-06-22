@@ -1,8 +1,11 @@
 package com.collekarry.intern;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -48,7 +51,6 @@ public class listOfPeople extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menubar, menu);
-
         return true;
     }
 
@@ -88,7 +90,7 @@ public class listOfPeople extends AppCompatActivity
         Log.i("name:","");
         nameList = FirebaseDatabase.getInstance().getReference("");
         uploadList = new ArrayList<>();
-        list = (ListView) findViewById(R.id.peopleListView);
+
         aList = new ArrayList<>();
 
 //        nameList.addValueEventListener(new ValueEventListener() {
@@ -155,20 +157,29 @@ public class listOfPeople extends AppCompatActivity
 //
 //        SimpleAdapter sAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.people_listview_layout, from, to);
 
-        list.setAdapter(new MyAdapter());
+        MyAdapter adapter = new MyAdapter(this, names,ages, images);
+        list = (ListView) findViewById(R.id.peopleListView);
+        list.setAdapter(adapter);
     }
 
-    class MyAdapter extends BaseAdapter{
+    class MyAdapter extends ArrayAdapter<String>{
+        private final Context context;
+        private final String[] names;
+        private final int[] ages;
+        private final int[] images;
 
+        public MyAdapter(@NonNull Context context, String[] names, int[] ages, int[] images) {
+            super(context, R.layout.people_listview_layout, names);
+
+            this.context = context;
+            this.names = names;
+            this.ages = ages;
+            this.images  = images;
+        }
 
         @Override
         public int getCount() {
             return names.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
         }
 
         @Override
@@ -180,16 +191,19 @@ public class listOfPeople extends AppCompatActivity
         public View getView(int i, View view, ViewGroup viewGroup) {
 
             LayoutInflater lf = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View v = lf.inflate(R.layout.people_listview_layout, viewGroup, false);
-            ImageView iv1 = (ImageView) v.findViewById(R.id.displayPicture);
-            TextView name = (TextView) v.findViewById(R.id.name);
-            TextView age = (TextView) v.findViewById(R.id.age);
+            View rowView = lf.inflate(R.layout.people_listview_layout, null, true);
+
+
+            ImageView iv1 = (ImageView) rowView.findViewById(R.id.displayPicture);
+            TextView name = (TextView) rowView.findViewById(R.id.name);
+            TextView age = (TextView) rowView.findViewById(R.id.age);
 
             iv1.setImageResource(images[i]);
             name.setText(names[i]);
             age.setText(ages[i]);
 
-            return v;
+
+            return rowView;
         }
     }
 }
