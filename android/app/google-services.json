@@ -23,8 +23,12 @@
           }
         },
         {
-          "client_id": "696169170776-kdccfnvnj8udhap8q0b5crb8ls5k4e96.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "696169170776-vb8qolga7q4jrgn3l77d6ifr5fua2q6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.collekarry.intern",
+            "certificate_hash": "1af55127490e570a25fefa4c3ea2290e8c8dfeef"
+          }
         },
         {
           "client_id": "696169170776-kdccfnvnj8udhap8q0b5crb8ls5k4e96.apps.googleusercontent.com",

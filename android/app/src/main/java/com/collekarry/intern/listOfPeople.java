@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,8 +45,13 @@ public class listOfPeople extends AppCompatActivity
     List<HashMap<String,String>> aList;
 
     String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
-    int[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
-    int[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
+    Integer[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
+    Integer[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
+
+    List<String> Fnames ;
+    List<Integer> Fages;
+    List<Integer> Fimages;
+    List<HashMap> dsList;
 
 
     @Override
@@ -86,63 +93,61 @@ public class listOfPeople extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_people);
-        String base = "";
-        Log.i("name:","");
+//        String base = "";
+//        Log.i("name:","");
         nameList = FirebaseDatabase.getInstance().getReference("abc");
-        uploadList = new ArrayList<>();
+//        uploadList = new ArrayList<>();
 
-        aList = new ArrayList<>();
+        Fnames = new ArrayList<>();
+        Fages = new ArrayList<>();
+        Fimages = new ArrayList<>();
+        dsList = new ArrayList<>();
+
+//        aList = new ArrayList<>();
 
 
 
-//        nameList.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot)
-//            {
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-//                {
-//                    String keyName = postSnapshot.getKey();
-//                    int age = 98;
-//                    int imageId = R.mipmap.ic_launcher_round;                   //change this when proper database created
-//                    listOfPeopleClass upload = new listOfPeopleClass(keyName,age);
-////                    uploadList.add(upload);
-//
-//                    //addition :
+        nameList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    HashMap value = (HashMap) postSnapshot.getValue();
+                    if(!dsList.contains(value)) {
+
+                        dsList.add(value);
+//                        System.out.println(dsList);
+
+                        Fnames.add((String) value.get("name"));
+                        Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
+                        Fimages.add(R.mipmap.ic_launcher_round);    //add actual images
+
+                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
+                        System.out.println(Fnames);
+
+                        MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
+
+                        list = (ListView) findViewById(R.id.peopleListView);
+                        list.setAdapter(adapter);
+                    }
+
+                    //addition :
 //                    System.out.println(upload.getName());
 //                    HashMap<String, String> hm = new HashMap<>();
 //                    hm.put("name", upload.getName());
 //                    hm.put("age", ""+upload.getAge());
 //                    hm.put("imageId", ""+upload.getImageId());
 //                    aList.add(hm);
-//                }
-//
-//                /*if(uploadList != null){
-//
-//                    String[] uploads = new String[uploadList.size()];
-//
-//                    for (int i = 0; i < uploads.length; i++) {
-//                        uploads[i] = uploadList.get(i).getName();
-//                    }
-//
-//                    //displaying it to list
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, uploads);
-//                    list.setAdapter(adapter);
-//                }
-//                else{
-//                    String[] up =new String[1] ;
-//                    up[0] = "no folder created ";
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, up);
-//                }
-//                */
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//
-//        });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -159,7 +164,12 @@ public class listOfPeople extends AppCompatActivity
 //
 //        SimpleAdapter sAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.people_listview_layout, from, to);
 
-        MyAdapter adapter = new MyAdapter(this, names,ages, images);
+
+
+//        MyAdapter adapter = new MyAdapter(this, names,ages, images);
+
+        MyAdapter adapter = new MyAdapter(this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
+
         list = (ListView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
     }
@@ -167,10 +177,10 @@ public class listOfPeople extends AppCompatActivity
     class MyAdapter extends ArrayAdapter<String>{
         private final Context context;
         private final String[] names;
-        private final int[] ages;
-        private final int[] images;
+        private final Integer[] ages;
+        private final Integer[] images;
 
-        public MyAdapter(@NonNull Context context, String[] names, int[] ages, int[] images) {
+        public MyAdapter(@NonNull Context context, String[] names, Integer[] ages, Integer[] images) {
             super(context, R.layout.people_listview_layout, names);
 
             this.context = context;
