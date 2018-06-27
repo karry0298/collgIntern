@@ -1,30 +1,19 @@
 package com.collekarry.intern;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +30,7 @@ public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList;
     ListView list;
-    List<listOfPeopleClass> uploadList;
+    List<wardClass> uploadList;
     List<HashMap<String,String>> aList;
 
     String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
@@ -71,7 +60,7 @@ public class listOfPeople extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_newname)
         {
-
+            startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
         }
         else if (id == R.id.action_logout)
         {
@@ -123,7 +112,7 @@ public class listOfPeople extends AppCompatActivity
                         Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
                         Fimages.add(R.mipmap.ic_launcher_round);    //add actual images
 
-                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
                         System.out.println(Fnames);
 
                         MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
