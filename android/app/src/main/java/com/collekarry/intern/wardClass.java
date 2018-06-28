@@ -12,35 +12,38 @@ public class wardClass
     private int age;
     private String gender;
     private Integer[] imageId;
+    private String uid;
 
-    public wardClass(String name, int age, String gender, int imageId) {
+    public wardClass(String name, int age, String gender, int imageId, String uid) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.imageId = new Integer[10];
         this.imageId[0] = imageId;
+        this.uid = uid;
     }
 
+    public String getUid() {
+        return uid;
+    }
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public int getAge() {
         return age;
     }
-
     public void setAge(int age) {
         this.age = age;
     }
-
     public int getImageId() {
         return imageId[0];
     }
-
     public int getImageId(int index) {
 
         int i=0;
@@ -74,11 +77,9 @@ public class wardClass
         return true;
 
     }
-
     public String getGender() {
         return gender;
     }
-
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -90,6 +91,7 @@ public class wardClass
         A.put("age", this.age);
         A.put("gender", this.gender);
         A.put("imageId", this.imageId);
+        A.put("uid", this.uid);
 
         return A;
     }

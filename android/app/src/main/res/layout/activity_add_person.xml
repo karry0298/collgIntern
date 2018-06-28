@@ -131,7 +131,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@drawable/submit_button"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/roboto_thin"
             android:foregroundGravity="center"
             android:onClick="submitButtonClicked"
             android:text="Submit"

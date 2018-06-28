@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() !=  null){
-                    Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Logged in as "+ mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this,listOfPeople.class));
                     //signIn();
                 }
