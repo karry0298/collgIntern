@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,18 +66,12 @@ public class listOfPeople extends AppCompatActivity
         }
         else if (id == R.id.action_logout)
         {
-            signOut();
+            FirebaseAuth.getInstance().signOut();
         }
 
         return false;
     }
-
-    private void signOut() {
-       
-    }
-
-
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
