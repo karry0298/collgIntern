@@ -84,7 +84,7 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
 //        String base = "";
 //        Log.i("name:","");
-        nameList = FirebaseDatabase.getInstance().getReference("abc");
+        nameList = FirebaseDatabase.getInstance().getReference("wards");
 //        uploadList = new ArrayList<>();
 
         Fnames = new ArrayList<>();
