@@ -1,4 +1,5 @@
-package com.collekarry.intern;
+package com.collekarry.docside;
+
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity
 
 //        startActivity(new Intent(MainActivity.this, listOfPeople.class));
 
-
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         mAuth = FirebaseAuth.getInstance();
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() !=  null){
-                    Toast.makeText(MainActivity.this, "Logged in as "+ mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this,listOfPeople.class));
                     //signIn();
                 }
@@ -81,10 +81,10 @@ public class MainActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
-            signInButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v) {
+        signInButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -154,8 +154,19 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    public void signOut() {
-        mGoogleSignInClient.disconnect();
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

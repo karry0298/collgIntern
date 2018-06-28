@@ -3,45 +3,47 @@ package com.collekarry.intern;
 import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
 
-public class listOfPeopleClass
-{
-    String name;
-    int age;
-    Integer[] imageId;
+import java.util.HashMap;
+import java.util.Map;
 
-    public listOfPeopleClass(String name, int age, int imageId) {
+public class wardClass
+{
+    private String name;
+    private int age;
+    private String gender;
+    private Integer[] imageId;
+    private String uid;
+
+    public wardClass(String name, int age, String gender, int imageId, String uid) {
         this.name = name;
         this.age = age;
+        this.gender = gender;
         this.imageId = new Integer[10];
         this.imageId[0] = imageId;
+        this.uid = uid;
     }
 
-    public listOfPeopleClass(String name, int age) {
-        this.name = name;
-        this.age = age;
-        this.imageId = new Integer[10];
+    public String getUid() {
+        return uid;
     }
-
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public int getAge() {
         return age;
     }
-
     public void setAge(int age) {
         this.age = age;
     }
-
     public int getImageId() {
         return imageId[0];
     }
-
     public int getImageId(int index) {
 
         int i=0;
@@ -57,9 +59,9 @@ public class listOfPeopleClass
         }
     }
 
-    public void setImageId(int imageId, int index) {
-        this.imageId[index] = imageId;
-    }
+//    public void setImageId(int imageId, int index) {
+//        this.imageId[index] = imageId;
+//    }
 
     public boolean setImageId(int imageId) {
         int index=0;
@@ -74,5 +76,23 @@ public class listOfPeopleClass
         this.imageId[index] = imageId;
         return true;
 
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Map<String,Object> toMap(){
+        Map<String, Object> A = new HashMap<>();
+
+        A.put("name", this.name);
+        A.put("age", this.age);
+        A.put("gender", this.gender);
+        A.put("imageId", this.imageId);
+        A.put("uid", this.uid);
+
+        return A;
     }
 }

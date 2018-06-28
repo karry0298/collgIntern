@@ -1,34 +1,37 @@
-package com.collekarry.intern;
+package com.collekarry.docside;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +42,10 @@ public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList;
     ListView list;
-    List<wardClass> uploadList;
+    List<listOfPeopleClass> uploadList;
     List<HashMap<String,String>> aList;
+    FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListner;
 
     String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
     Integer[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
@@ -48,10 +53,8 @@ public class listOfPeople extends AppCompatActivity
 
     List<String> Fnames ;
     List<Integer> Fages;
-    List<StorageReference> Fimages;
-    List<String> dsList;
-
-    private StorageReference mStorageReference;
+    List<Integer> Fimages;
+    List<HashMap> dsList;
 
 
     @Override
@@ -65,22 +68,22 @@ public class listOfPeople extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_newname)
         {
-            startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
+
         }
         else if (id == R.id.action_logout)
         {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(listOfPeople.this, MainActivity.class));
+            mAuth.signOut();
         }
-
         return false;
     }
+
+
+
 
 
     @Override
@@ -90,15 +93,28 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
 //        String base = "";
 //        Log.i("name:","");
-        nameList = FirebaseDatabase.getInstance().getReference("wards");
+        nameList = FirebaseDatabase.getInstance().getReference("abc");
 //        uploadList = new ArrayList<>();
 
         Fnames = new ArrayList<>();
         Fages = new ArrayList<>();
         Fimages = new ArrayList<>();
         dsList = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
 
-        mStorageReference = FirebaseStorage.getInstance().getReference();
+        mAuthListner = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() ==  null){
+                    Toast.makeText(listOfPeople.this, "Logged in", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(listOfPeople.this,MainActivity.class));
+                }
+                else
+                {
+                    //Toast.makeText(MainActivity.this, "Failed u idiot", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
 
 //        aList = new ArrayList<>();
 
@@ -111,50 +127,19 @@ public class listOfPeople extends AppCompatActivity
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
                     HashMap value = (HashMap) postSnapshot.getValue();
-                    if(!dsList.contains(postSnapshot.getKey())) {
+                    if(!dsList.contains(value)) {
 
-                        dsList.add(postSnapshot.getKey());
+                        dsList.add(value);
 //                        System.out.println(dsList);
 
                         Fnames.add((String) value.get("name"));
                         Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
+                        Fimages.add(R.mipmap.ic_launcher_round);    //add actual images
 
+                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
+                        System.out.println(Fnames);
 
-                        final String uid = (String) value.get("uid");
-                        final String key = (String) postSnapshot.getKey();
-                        if(uid != null){
-                            System.out.println("here : " + uid + "/displayPictures/" + key +".jpg");
-                            StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key +".jpg");
-                            Fimages.add(imageRef);
-
-//
-//                            mStorageReference.child(uid + "/displayPictures/" + key +".jpg").getDownloadUrl()
-//                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                                        @Override
-//                                        public void onSuccess(Uri uri) {
-//                                            System.out.println("here : " + uid + "/displayPictures/" + key +".jpg");
-//                                            StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key +".jpg");
-//
-//                                            Fimages.add(imageRef);
-//                                        }
-//                                    })
-//                                    .addOnFailureListener(new OnFailureListener() {
-//                                        @Override
-//                                        public void onFailure(@NonNull Exception e) {
-//                                            Fimages.add(mStorageReference.child("dpic.jpg"));
-//                                        }
-//                                    });
-                        }
-                        else{
-                            Fimages.add(mStorageReference.child("dpic.jpg"));
-                        }
-
-
-//                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
-                        System.out.println("key :" + key);
-                        System.out.println("uid :" + uid);
-
-                        MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new StorageReference[Fimages.size()]));
+                        MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
 
                         list = (ListView) findViewById(R.id.peopleListView);
                         list.setAdapter(adapter);
@@ -196,9 +181,7 @@ public class listOfPeople extends AppCompatActivity
 
 //        MyAdapter adapter = new MyAdapter(this, names,ages, images);
 
-        MyAdapter adapter = new MyAdapter(this, Fnames.toArray(new String[Fnames.size()]),
-                Fages.toArray(new Integer[Fages.size()]),
-                Fimages.toArray(new StorageReference[Fimages.size()]));
+        MyAdapter adapter = new MyAdapter(this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
 
         list = (ListView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
@@ -208,9 +191,9 @@ public class listOfPeople extends AppCompatActivity
         private final Context context;
         private final String[] names;
         private final Integer[] ages;
-        private final StorageReference[] images;
+        private final Integer[] images;
 
-        public MyAdapter(@NonNull Context context, String[] names, Integer[] ages, StorageReference[] images) {
+        public MyAdapter(@NonNull Context context, String[] names, Integer[] ages, Integer[] images) {
             super(context, R.layout.people_listview_layout, names);
 
             this.context = context;
@@ -240,13 +223,7 @@ public class listOfPeople extends AppCompatActivity
             TextView name = (TextView) rowView.findViewById(R.id.name);
             TextView age = (TextView) rowView.findViewById(R.id.age);
 
-            System.out.println(images);
-            Glide.with(listOfPeople.this)
-                    .using(new FirebaseImageLoader())
-                    .load(images[i])
-                    .into(iv1);
-
-//            iv1.setImageResource(images[i]);
+            iv1.setImageResource(images[i]);
             name.setText(names[i].length()<=25 ? names[i] : names[i].substring(0, 25)+ "..." );
             age.setText(String.valueOf( ages[i] ));
 
