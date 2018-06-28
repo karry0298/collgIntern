@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class listOfPeople extends AppCompatActivity
@@ -76,6 +77,7 @@ public class listOfPeople extends AppCompatActivity
         else if (id == R.id.action_logout)
         {
             FirebaseAuth.getInstance().signOut();
+
             startActivity(new Intent(listOfPeople.this, MainActivity.class));
         }
 
@@ -108,25 +110,29 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     HashMap value = (HashMap) postSnapshot.getValue();
-                    if(!dsList.contains(postSnapshot.getKey())) {
+                    final String uid = (String) value.get("uid");
 
-                        dsList.add(postSnapshot.getKey());
+                    if (uid != null && FirebaseAuth.getInstance().getUid() != null) {
+                        if (FirebaseAuth.getInstance().getUid().equals(uid)) {
+
+                            if (!dsList.contains(postSnapshot.getKey())) {
+
+                                dsList.add(postSnapshot.getKey());
 //                        System.out.println(dsList);
 
-                        Fnames.add((String) value.get("name"));
-                        Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
+                                Fnames.add((String) value.get("name"));
+                                Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
 
 
-                        final String uid = (String) value.get("uid");
-                        final String key = (String) postSnapshot.getKey();
-                        if(uid != null){
-                            System.out.println("here : " + uid + "/displayPictures/" + key +".jpg");
-                            StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key +".jpg");
-                            Fimages.add(imageRef);
+                                final String key = (String) postSnapshot.getKey();
+                                System.out.println("here : " + uid + "/displayPictures/" + key + ".jpg");
+                                StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key + ".jpg");
+                                Fimages.add(imageRef);
 
+                                System.out.println("key :" + key);
+                                System.out.println("uid :" + uid);
 //
 //                            mStorageReference.child(uid + "/displayPictures/" + key +".jpg").getDownloadUrl()
 //                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -144,22 +150,18 @@ public class listOfPeople extends AppCompatActivity
 //                                            Fimages.add(mStorageReference.child("dpic.jpg"));
 //                                        }
 //                                    });
-                        }
-                        else{
-                            Fimages.add(mStorageReference.child("dpic.jpg"));
-                        }
+                            }
 
 
 //                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
-                        System.out.println("key :" + key);
-                        System.out.println("uid :" + uid);
 
-                        MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new StorageReference[Fimages.size()]));
 
-                        list = (ListView) findViewById(R.id.peopleListView);
-                        list.setAdapter(adapter);
+                            MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new StorageReference[Fimages.size()]));
+
+                            list = (ListView) findViewById(R.id.peopleListView);
+                            list.setAdapter(adapter);
+                        }
                     }
-
                     //addition :
 //                    System.out.println(upload.getName());
 //                    HashMap<String, String> hm = new HashMap<>();
