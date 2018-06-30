@@ -127,12 +127,12 @@ public class listOfPeople extends AppCompatActivity
 
 
                                 final String key = (String) postSnapshot.getKey();
-                                System.out.println("here : " + uid + "/displayPictures/" + key + ".jpg");
+//                                System.out.println("here : " + uid + "/displayPictures/" + key + ".jpg");
                                 StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key + ".jpg");
                                 Fimages.add(imageRef);
 
-                                System.out.println("key :" + key);
-                                System.out.println("uid :" + uid);
+//                                System.out.println("key :" + key);
+//                                System.out.println("uid :" + uid);
 //
 //                            mStorageReference.child(uid + "/displayPictures/" + key +".jpg").getDownloadUrl()
 //                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -242,10 +242,11 @@ public class listOfPeople extends AppCompatActivity
             TextView name = (TextView) rowView.findViewById(R.id.name);
             TextView age = (TextView) rowView.findViewById(R.id.age);
 
-            System.out.println(images);
+//            System.out.println(images);
             Glide.with(listOfPeople.this)
                     .using(new FirebaseImageLoader())
                     .load(images[i])
+                    .centerCrop()
                     .into(iv1);
 
 //            iv1.setImageResource(images[i]);

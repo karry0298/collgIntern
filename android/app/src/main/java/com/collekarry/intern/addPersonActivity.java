@@ -1,5 +1,6 @@
 package com.collekarry.intern;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -106,7 +108,7 @@ public class addPersonActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(addPersonActivity.this, "key: "+key+" added", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(addPersonActivity.this, listOfPeople.class));
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -118,9 +120,18 @@ public class addPersonActivity extends AppCompatActivity {
 
             StorageReference fileRef = mStorageRef.child( uid + "/displayPictures/" + key +".jpg");
 
+            Drawable img;
+            System.out.println("\n\n\n tadada: " + imageView.getTag() + "\n\n\n");
+            if(imageView.getTag().equals("R.drawable.dpic.jpg")){
+                img = getDrawable(R.drawable.default_dp);
+            }
+            else{
+                img = imageView.getDrawable();
+            }
+
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) img).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
@@ -134,8 +145,7 @@ public class addPersonActivity extends AppCompatActivity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
+                    startActivity(new Intent(addPersonActivity.this, listOfPeople.class));
                 }
             });
 
@@ -196,7 +206,7 @@ public class addPersonActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select photo"),1);
     }
 
-    public boolean checkPermissions(final Context context) {
+    public boolean checkPermissions(final Context context){
         if(userChosenTask.equals("Choose from Library")) {
             if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -222,11 +232,32 @@ public class addPersonActivity extends AppCompatActivity {
         }
         else{
             if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions((Activity) context, new String[] {android.Manifest.permission.CAMERA}, 124);
-                cameraIntent();
+//                ActivityCompat.requestPermissions((Activity) context, new String[] {android.Manifest.permission.CAMERA}, 124);
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Permission necessary");
+                    alertBuilder.setMessage("Camera permission is necessary");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
+                } else {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+
+
+
                 return false;
             }
-            return true;
+            else{
+                return true;
+            }
 
         }
 
@@ -253,6 +284,7 @@ public class addPersonActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
+            imageView.setTag("");
             if (requestCode == 1)               //1 for gallery
                 onSelectFromGalleryResult(data);
             else if (requestCode == 0)          //0 for camera

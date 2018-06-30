@@ -21,14 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".listOfPeople">
-
-        </activity>
-        <activity android:name=".addPersonActivity"></activity>
+        <activity android:name=".listOfPeople"></activity>
+        <activity
+            android:name=".addPersonActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".WardDetailsActivity"></activity>
     </application>
 
 </manifest>
