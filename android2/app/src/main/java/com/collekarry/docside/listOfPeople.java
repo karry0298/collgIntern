@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -42,10 +43,11 @@ public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList;
     ListView list;
-    List<listOfPeopleClass> uploadList;
+    List<MyBlaBla> uploadList;
     List<HashMap<String,String>> aList;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListner;
+    static String personName;
 
     String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
     Integer[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
@@ -71,11 +73,7 @@ public class listOfPeople extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(id == R.id.action_newname)
-        {
-
-        }
-        else if (id == R.id.action_logout)
+        if (id == R.id.action_logout)
         {
             mAuth.signOut();
         }
@@ -101,6 +99,7 @@ public class listOfPeople extends AppCompatActivity
         Fimages = new ArrayList<>();
         dsList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
+        list = (ListView) findViewById(R.id.peopleListView);
 
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -115,9 +114,52 @@ public class listOfPeople extends AppCompatActivity
                 }
             }
         };
+        //        aList = new ArrayList<>();
 
-//        aList = new ArrayList<>();
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+
+//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(listOfPeople.this);
+//                builderSingle.setTitle("Select One Choice:-");
+//
+//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(listOfPeople.this, android.R.layout.select_dialog_singlechoice);
+//                arrayAdapter.add("View Previous Record");
+//                arrayAdapter.add("View Previous Medication");
+//                arrayAdapter.add("Check Appoinment");
+//                arrayAdapter.add("Create a Medication List");
+//                arrayAdapter.add("Update The List");
+//
+//                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        String strName = arrayAdapter.getItem(which);
+//                        Toast.makeText(listOfPeople.this, "Opt:"+strName, Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(getApplicationContext() , listOfPeople.class);
+//                        startActivity(intent);
+//                    }
+//                });
+//                builderSingle.show();
+
+
+
+                    personName = Fnames.get(i);
+                    Log.i("abc",personName);
+
+                    Intent intent = new Intent(getApplicationContext() , tabbedChoice.class);
+                    startActivity(intent);
+
+            }
+        });
 
 
         nameList.addValueEventListener(new ValueEventListener() {
@@ -130,7 +172,6 @@ public class listOfPeople extends AppCompatActivity
                     if(!dsList.contains(value)) {
 
                         dsList.add(value);
-//                        System.out.println(dsList);
 
                         Fnames.add((String) value.get("name"));
                         Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
@@ -141,7 +182,6 @@ public class listOfPeople extends AppCompatActivity
 
                         MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
 
-                        list = (ListView) findViewById(R.id.peopleListView);
                         list.setAdapter(adapter);
                     }
 
@@ -153,7 +193,6 @@ public class listOfPeople extends AppCompatActivity
 //                    hm.put("imageId", ""+upload.getImageId());
 //                    aList.add(hm);
                 }
-
             }
 
             @Override
@@ -161,7 +200,6 @@ public class listOfPeople extends AppCompatActivity
 
             }
         });
-
 
 
 

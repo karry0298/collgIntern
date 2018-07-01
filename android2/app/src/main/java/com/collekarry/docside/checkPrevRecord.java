@@ -47,7 +47,10 @@ public class checkPrevRecord extends Fragment {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc");
         mDatabaseReference  = mDatabaseReference.child(personName).child("doc").child(typeName);
 
+        Log.i("abc","fuck u 1st");
+
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -55,16 +58,24 @@ public class checkPrevRecord extends Fragment {
                     uploadList.add(upload);
                 }
 
+                Log.i("abc","sdlgbjfbsgjbfjkdhgbvdf");
                 String[] uploads = new String[uploadList.size()];
 
                 for (int i = 0; i < uploads.length; i++) {
+
+                    Log.i("abc","pirvrvdgjvbrgv");
                     uploads[i] = uploadList.get(i).getDaProb();
                 }
+
+                Log.i("abc","fuck u 1st");
 
                 //displaying it to list
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, uploads);
                 recdView.setAdapter(adapter);
             }
+
+
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
