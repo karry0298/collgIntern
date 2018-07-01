@@ -20,7 +20,8 @@
         <activity
             android:name=".tabbedChoice"
             android:label="@string/title_activity_tabbed_choice"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".create_appoinment"></activity>
     </application>
 
 </manifest>

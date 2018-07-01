@@ -114,43 +114,12 @@ public class listOfPeople extends AppCompatActivity
                 }
             }
         };
-        //        aList = new ArrayList<>();
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
-
-//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(listOfPeople.this);
-//                builderSingle.setTitle("Select One Choice:-");
-//
-//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(listOfPeople.this, android.R.layout.select_dialog_singlechoice);
-//                arrayAdapter.add("View Previous Record");
-//                arrayAdapter.add("View Previous Medication");
-//                arrayAdapter.add("Check Appoinment");
-//                arrayAdapter.add("Create a Medication List");
-//                arrayAdapter.add("Update The List");
-//
-//                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String strName = arrayAdapter.getItem(which);
-//                        Toast.makeText(listOfPeople.this, "Opt:"+strName, Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(getApplicationContext() , listOfPeople.class);
-//                        startActivity(intent);
-//                    }
-//                });
-//                builderSingle.show();
-
-
 
                     personName = Fnames.get(i);
                     Log.i("abc",personName);

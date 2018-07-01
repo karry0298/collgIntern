@@ -1,7 +1,12 @@
 package com.collekarry.docside;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,15 +28,22 @@ import android.view.ViewGroup;
 
 import android.view.Window;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.Calendar;
+
 public class tabbedChoice extends AppCompatActivity
 {
+
+
     static String choicForPerson;
     static int flag;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -98,13 +111,11 @@ public class tabbedChoice extends AppCompatActivity
         }
         else if( id == R.id.action_create_appionment)
         {
+            startActivity(new Intent(tabbedChoice.this , create_appoinment.class));
 
-            //Dialog to come
             Toast.makeText(this, "d;gdcjghfgjdgvfdgvdfz", Toast.LENGTH_SHORT).show();
-
             return  true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -152,8 +163,8 @@ public class tabbedChoice extends AppCompatActivity
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-
+        public CharSequence getPageTitle(int position)
+        {
             switch (position)
             {
                 case 0: return "PAST RECORD";
@@ -164,6 +175,7 @@ public class tabbedChoice extends AppCompatActivity
         }
     }
 
-
-
 }
+
+
+

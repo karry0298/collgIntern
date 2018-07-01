@@ -75,8 +75,6 @@ public class checkPrevRecord extends Fragment {
             }
 
 
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
