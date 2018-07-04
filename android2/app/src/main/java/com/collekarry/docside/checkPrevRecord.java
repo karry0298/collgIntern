@@ -44,8 +44,9 @@ public class checkPrevRecord extends Fragment {
         uploadList = new ArrayList<>();
         recdView = (ListView) rootView.findViewById(R.id.recordListView);
 
+        Log.i("nameOf", ""+personName);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc");
-        mDatabaseReference  = mDatabaseReference.child(personName).child("doc").child(typeName);
+        mDatabaseReference  = mDatabaseReference.child(""+personName).child("doc").child(typeName);
 
         Log.i("abc","fuck u 1st");
 
