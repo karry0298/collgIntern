@@ -1,8 +1,10 @@
 package com.collekarry.intern;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,9 +12,24 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
 
 public class WardDetailsActivity extends AppCompatActivity
 //        implements TabLayout.OnTabSelectedListener,
@@ -26,7 +43,13 @@ public class WardDetailsActivity extends AppCompatActivity
     private WardPager adapter;
     private AppBarLayout mAppBarLayout;
     private CoordinatorLayout mCoordinatorLayour;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private ImageView imageView;
+    private wardClass ward;
+    private String key;
+
+    private StorageReference mStorageReference,imageRef;
+//    private DatabaseReference mDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +57,69 @@ public class WardDetailsActivity extends AppCompatActivity
         setContentView(R.layout.activity_ward_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent intent = getIntent();
 
         tabLayout = findViewById(R.id.tabLayout);
         mAppBarLayout = findViewById(R.id.app_bar);
         mCoordinatorLayour = findViewById(R.id.coordinator_layout);
+        mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+
         imageView = findViewById(R.id.profilePhoto);
+
+        if(FirebaseAuth.getInstance().getUid() == null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
+//        mDatabaseReference = FirebaseDatabase.getInstance().getReference("wards");
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+
+        ward = (wardClass) intent.getSerializableExtra("ward");
+
+        imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+
+        Glide.with(WardDetailsActivity.this)
+                .using(new FirebaseImageLoader())
+                .load(imageRef)
+                .placeholder(R.drawable.default_dp)
+                .centerCrop()
+                .into(imageView);
+
+        mCollapsingToolbarLayout.setTitle(ward.getName());
+
+//        DatabaseReference mRef = mDatabaseReference.child(FirebaseAuth.getInstance().getUid()).child(key);
+
+//        mRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                HashMap value = (HashMap) dataSnapshot.getValue();
+//
+//                ward = new wardClass(
+//                        key,
+//                        value.get("name").toString(),
+//                        Integer.valueOf(Long.toString((Long) value.get("age"))),
+//                        value.get("gender").toString(),
+//                        value.get("uid").toString()
+//                );
+//
+//                imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+//
+//                Glide.with(WardDetailsActivity.this)
+//                        .using(new FirebaseImageLoader())
+//                        .load(imageRef)
+//                        .centerCrop()
+//                        .into(imageView);
+//
+//                mCollapsingToolbarLayout.setTitle(ward.getName());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
+
 
         mAppBarLayout.post(new Runnable() {
             @Override
@@ -84,23 +165,35 @@ public class WardDetailsActivity extends AppCompatActivity
         behavior.onNestedPreScroll(mCoordinatorLayour, mAppBarLayout, null, 0, offsetPx, new int[]{0, 0}, 0);
     }
 
-//    @Override
-//    public void onTabSelected(TabLayout.Tab tab) {
-//        viewPager.setCurrentItem(tab.getPosition());
-//    }
-//
-//    @Override
-//    public void onTabUnselected(TabLayout.Tab tab) {
-//
-//    }
-//
-//    @Override
-//    public void onTabReselected(TabLayout.Tab tab) {
-//
-//    }
-//
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_ward_details, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if(id == R.id.action_add_meds)
+        {
+
+            startActivity(new Intent(WardDetailsActivity.this, addPersonActivity.class));
+        }
+        else if (id == R.id.action_logout)
+        {
+            startActivity(new Intent(WardDetailsActivity.this, MainActivity.class));
+        }
+
+        return false;
+    }
+
+
+
 }

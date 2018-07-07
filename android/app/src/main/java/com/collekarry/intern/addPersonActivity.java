@@ -67,10 +67,14 @@ public class addPersonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_person);
 
+        if(FirebaseAuth.getInstance().getUid() == null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
         nameView = findViewById(R.id.nameInput);
         ageView = findViewById(R.id.ageInput);
         genderView = findViewById(R.id.genderSwitch);
-        submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton = findViewById(R.id.submitButton);
         imageView = findViewById(R.id.imageButton);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -99,11 +103,13 @@ public class addPersonActivity extends AppCompatActivity {
 
             String uid = FirebaseAuth.getInstance().getUid();
 
-            wardClass ward = new wardClass(name,age,gender,223222, uid);
 
-            final String key = mDatabase.child("wards").push().getKey();
 
-            mDatabase.child("wards").child(key).setValue(ward)
+            final String key = mDatabase.child("wards").child(uid).push().getKey();
+
+            wardClass ward = new wardClass(key,name,age,gender,uid);
+
+            mDatabase.child("wards").child(uid).child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

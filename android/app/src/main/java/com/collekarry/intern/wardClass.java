@@ -3,26 +3,34 @@ package com.collekarry.intern;
 import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class wardClass
+public class wardClass implements Serializable
 {
+    private String key;
     private String name;
     private int age;
     private String gender;
-    private Integer[] imageId;
+
     private String uid;
 
-    public wardClass(String name, int age, String gender, int imageId, String uid) {
+    public wardClass(String key,String name, int age, String gender, String uid) {
+        this.key = key;
         this.name = name;
         this.age = age;
         this.gender = gender;
-        this.imageId = new Integer[10];
-        this.imageId[0] = imageId;
+
         this.uid = uid;
     }
 
+    public String getKey() {
+        return key;
+    }
+    public void setKey(String key) {
+        this.key = key;
+    }
     public String getUid() {
         return uid;
     }
@@ -41,42 +49,42 @@ public class wardClass
     public void setAge(int age) {
         this.age = age;
     }
-    public int getImageId() {
-        return imageId[0];
-    }
-    public int getImageId(int index) {
-
-        int i=0;
-
-        while(i<10 && this.imageId[i] != 0){
-            i++;
-        }
-        if(index < i) {
-            return imageId[index];
-        }
-        else{
-            return 0;
-        }
-    }
+//    public int getImageId() {
+//        return imageId[0];
+//    }
+//    public int getImageId(int index) {
+//
+//        int i=0;
+//
+//        while(i<10 && this.imageId[i] != 0){
+//            i++;
+//        }
+//        if(index < i) {
+//            return imageId[index];
+//        }
+//        else{
+//            return 0;
+//        }
+//    }
 
 //    public void setImageId(int imageId, int index) {
 //        this.imageId[index] = imageId;
 //    }
 
-    public boolean setImageId(int imageId) {
-        int index=0;
-
-        while(index<10 && this.imageId[index] != 0){
-            index++;
-        }
-        if(index==10){
-                return false;
-        }
-
-        this.imageId[index] = imageId;
-        return true;
-
-    }
+//    public boolean setImageId(int imageId) {
+//        int index=0;
+//
+//        while(index<10 && this.imageId[index] != 0){
+//            index++;
+//        }
+//        if(index==10){
+//                return false;
+//        }
+//
+//        this.imageId[index] = imageId;
+//        return true;
+//
+//    }
     public String getGender() {
         return gender;
     }
@@ -90,7 +98,7 @@ public class wardClass
         A.put("name", this.name);
         A.put("age", this.age);
         A.put("gender", this.gender);
-        A.put("imageId", this.imageId);
+//        A.put("imageId", this.imageId);
         A.put("uid", this.uid);
 
         return A;
