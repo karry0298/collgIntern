@@ -42,6 +42,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Time;
+import org.joda.time.LocalTime;
 import java.util.*;
 
 import java.util.regex.Matcher;
@@ -108,6 +110,17 @@ public class addPersonActivity extends AppCompatActivity {
             final String key = mDatabase.child("wards").child(uid).push().getKey();
 
             wardClass ward = new wardClass(key,name,age,gender,uid);
+
+
+            List<Medicine> tempMed = new ArrayList<>();
+            List<String> t = new ArrayList<>();
+            t.add("22:00:00");
+            t.add("23:30:00");
+
+            for(int i = 0; i < 10; i++){
+                tempMed.add(new Medicine("MedName","BrandName", new Date(), t, "Dr. Kannaswmi") );
+            }
+            ward.setMedicines(tempMed);
 
             mDatabase.child("wards").child(uid).child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

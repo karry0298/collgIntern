@@ -111,17 +111,20 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     HashMap value = (HashMap) postSnapshot.getValue();
 //                    final String uid = (String) value.get("uid");
+                    wardClass ward = postSnapshot.getValue(wardClass.class);
+//                    wardClass ward = new wardClass(
+//                            value.get("key").toString(),
+//                            value.get("name").toString(),
+//                            Integer.valueOf(Long.toString((Long) value.get("age"))),
+//                            value.get("gender").toString(),
+//                            value.get("uid").toString()
+//                    );
 
-                    wardClass ward = new wardClass(
-                            value.get("key").toString(),
-                            value.get("name").toString(),
-                            Integer.valueOf(Long.toString((Long) value.get("age"))),
-                            value.get("gender").toString(),
-                            value.get("uid").toString()
-                    );
+
 
                     if (ward.getUid() != null && FirebaseAuth.getInstance().getUid() != null) {
                         if (FirebaseAuth.getInstance().getUid().equals(ward.getUid())) {

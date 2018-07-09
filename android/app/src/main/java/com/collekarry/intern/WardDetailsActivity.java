@@ -133,7 +133,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
         viewPager = findViewById(R.id.pager);
 
-        adapter = new WardPager(getSupportFragmentManager());
+        adapter = new WardPager(getSupportFragmentManager(), ward);
 
         viewPager.setAdapter(adapter);
 
@@ -186,10 +186,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
             startActivity(new Intent(WardDetailsActivity.this, addPersonActivity.class));
         }
-        else if (id == R.id.action_logout)
-        {
-            startActivity(new Intent(WardDetailsActivity.this, MainActivity.class));
-        }
+
 
         return false;
     }
