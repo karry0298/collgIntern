@@ -13,6 +13,9 @@ public class sendNewMedication extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.send_new_medication, container, false);
 
+
+
+
         return rootView;
     }
 }

@@ -1,13 +1,6 @@
 package com.collekarry.docside;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,23 +12,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import android.view.Window;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-
-import java.util.Calendar;
 
 public class tabbedChoice extends AppCompatActivity
 {
@@ -142,7 +123,7 @@ public class tabbedChoice extends AppCompatActivity
                         flag =1;
                         return cp;
 
-                case 1: makeAppoinment ma = new makeAppoinment();
+                case 1: checkStatus ma = new checkStatus();
                         choicForPerson ="pastRec";
                         flag =2;
                         return ma;

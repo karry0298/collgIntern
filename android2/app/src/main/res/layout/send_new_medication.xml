@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
@@ -8,16 +8,59 @@
     tools:context=".tabbedChoice$PlaceholderFragment">
 
     <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        android:id="@+id/morngContent"
+        android:layout_width="393dp"
+        android:layout_height="113dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/morngTitle"
+        android:onClick="morngClick"
+        android:text="davhbsjvbjsdncdncdnc" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/afternoonTitle"
+        android:layout_width="98dp"
+        android:layout_height="29dp"
+        android:layout_above="@+id/afternoonContent"
+        android:layout_alignStart="@+id/afternoonContent"
+        android:text="Afternoon:"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/afternoonContent"
+        android:layout_width="393dp"
+        android:layout_height="113dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:onClick="noonClick"
+        android:text="hjvffhsjdjdbvjkbcvcxvncvn" />
+
+    <TextView
+        android:id="@+id/evenContent"
+        android:layout_width="393dp"
+        android:layout_height="113dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp"
+        android:onClick="eveninClick"
+        android:text="adkvbsdjvbjksdvksdvnsdvkdklcv" />
+
+    <TextView
+        android:id="@+id/morngTitle"
+        android:layout_width="98dp"
+        android:layout_height="29dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/afternoonTitle"
+        android:layout_marginTop="12dp"
+        android:text="Morning:"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/evenTitle"
+        android:layout_width="98dp"
+        android:layout_height="29dp"
+        android:layout_above="@+id/evenContent"
+        android:layout_alignStart="@+id/morngContent"
+        android:text="Evening:"
+        android:textSize="18sp" />
+
+</RelativeLayout>
