@@ -20,8 +20,8 @@
         android:id="@+id/afternoonTitle"
         android:layout_width="98dp"
         android:layout_height="29dp"
-        android:layout_above="@+id/afternoonContent"
-        android:layout_alignStart="@+id/afternoonContent"
+        android:layout_alignStart="@+id/morngContent"
+        android:layout_below="@+id/morngContent"
         android:text="Afternoon:"
         android:textSize="18sp" />
 
@@ -30,7 +30,7 @@
         android:layout_width="393dp"
         android:layout_height="113dp"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/afternoonTitle"
         android:onClick="noonClick"
         android:text="hjvffhsjdjdbvjkbcvcxvncvn" />
 
@@ -38,9 +38,8 @@
         android:id="@+id/evenContent"
         android:layout_width="393dp"
         android:layout_height="113dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="30dp"
+        android:layout_below="@+id/evenTitle"
         android:onClick="eveninClick"
         android:text="adkvbsdjvbjksdvksdvnsdvkdklcv" />
 
@@ -58,9 +57,19 @@
         android:id="@+id/evenTitle"
         android:layout_width="98dp"
         android:layout_height="29dp"
-        android:layout_above="@+id/evenContent"
         android:layout_alignStart="@+id/morngContent"
+        android:layout_below="@+id/afternoonContent"
         android:text="Evening:"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/submitBut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="99dp"
+        android:background="@drawable/submit_button"
+        android:text="Button" />
 
 </RelativeLayout>

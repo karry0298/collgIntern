@@ -28,7 +28,8 @@ import static com.collekarry.docside.listOfPeople.personName;
 import static com.collekarry.docside.tabbedChoice.choicForPerson;
 import static com.collekarry.docside.tabbedChoice.flag;
 
-public class checkPrevRecord extends Fragment {
+public class checkPrevRecord extends Fragment
+{
 
     DatabaseReference  mDatabaseReference;
     List<MyBlaBlaVnew> uploadList;
