@@ -1,9 +1,15 @@
 package com.collekarry.intern;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.joda.time.LocalTime;
 
@@ -31,6 +37,28 @@ public class wardClass implements Serializable
         this.age = age;
         this.gender = gender;
         this.uid = uid;
+    }
+
+    public boolean addMedicine(Medicine e){
+        final boolean[] ret = new boolean[1];
+
+        medicines.add(e);
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("wards").child(uid).child(key).setValue(this)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                ret[0] = true;
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                ret[0] = false;
+            }
+        });
+        return ret[0];
     }
 
     public List<Medicine> getMedicines() {

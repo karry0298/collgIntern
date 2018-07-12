@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.1'
 
     implementation 'com.android.support:recyclerview-v7:27.1.1'
-    compile 'joda-time:joda-time:2.10'
+    implementation 'joda-time:joda-time:2.10'
 //    implementation 'com.google.firebase:firebase-database:11.6.0'
 //    implementation 'com.google.firebase:firebase-auth:11.6.0'
 

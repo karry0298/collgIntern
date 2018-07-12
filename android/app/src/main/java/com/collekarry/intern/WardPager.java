@@ -28,7 +28,7 @@ public class WardPager extends FragmentPagerAdapter {
                 return MedicationFragment.newInstance(ward);
             case 2:
 //                AppointmentsFragment tab3 = new AppointmentsFragment();
-                return AppointmentsFragment.newInstance("","");
+                return PreviousMedicationFragment.newInstance(ward);
             default :
                 return null;
         }
@@ -48,7 +48,7 @@ public class WardPager extends FragmentPagerAdapter {
             case 1:
                 return "Medication";
             case 2:
-                return "Appointments";
+                return "History";
             default :
                 return "";
         }

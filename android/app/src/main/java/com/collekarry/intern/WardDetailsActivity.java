@@ -183,14 +183,10 @@ public class WardDetailsActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_add_meds)
         {
-
-            startActivity(new Intent(WardDetailsActivity.this, addPersonActivity.class));
+            AddMedicationFragment.newInstance("","").show(getSupportFragmentManager(), "add_med");
         }
 
 
         return false;
     }
-
-
-
 }

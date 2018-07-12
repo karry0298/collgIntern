@@ -6,42 +6,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.collekarry.intern.MedicationFragment.OnListFragmentInteractionListener;
+import com.collekarry.intern.PreviousMedicationFragment.OnListFragmentInteractionListener;
 
-
-import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link } and makes a call to the
+
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedicineRecyclerViewAdapter.ViewHolder> {
+public class MyPrevMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyPrevMedicineRecyclerViewAdapter.ViewHolder> {
 
     private final List<Medicine> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyMedicineRecyclerViewAdapter(List<Medicine> items, OnListFragmentInteractionListener listener) {
+    public MyPrevMedicineRecyclerViewAdapter(List<Medicine> items, OnListFragmentInteractionListener listener) {
 //        mValues = items;
         mListener = listener;
 
         List<Medicine> m = new ArrayList<>();
         for(Medicine x: items){
-            if(x.getDateStopped() == null){
+            if(x.getDateStopped() != null && x.getDateStopped().before(new Date())){
                 m.add(x);
             }
         }
-
         mValues = m;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_medicine, parent, false);
+                .inflate(R.layout.fragment_previous_medication, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,7 +47,7 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getName());
-        holder.mContentView.setText(mValues.get(position).getNextConsumptionTime(LocalTime.now()));
+        holder.mContentView.setText(mValues.get(position).getReasonStopped());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,9 +63,6 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
 
     @Override
     public int getItemCount() {
-        if(mValues == null){
-            return 0;
-        }
         return mValues.size();
     }
 

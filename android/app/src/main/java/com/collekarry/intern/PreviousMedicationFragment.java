@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class MedicationFragment extends Fragment {
+public class PreviousMedicationFragment extends Fragment {
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -30,16 +31,16 @@ public class MedicationFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public MedicationFragment() {
+    public PreviousMedicationFragment() {
     }
 
-
-    public static MedicationFragment newInstance(wardClass ward) {
-        MedicationFragment fragment = new MedicationFragment();
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static PreviousMedicationFragment newInstance(wardClass ward) {
+        PreviousMedicationFragment fragment = new PreviousMedicationFragment();
         Bundle args = new Bundle();
         fragment.ward = ward;
         args.putSerializable("ward", ward);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,17 +48,16 @@ public class MedicationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             ward = (wardClass) getArguments().getSerializable("ward");
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_medicine_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_previous_medication_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -68,8 +68,7 @@ public class MedicationFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            System.out.println(ward.getName());
-            recyclerView.setAdapter(new MyMedicineRecyclerViewAdapter(ward.getMedicines(), mListener));
+            recyclerView.setAdapter(new MyPrevMedicineRecyclerViewAdapter(ward.getMedicines(), mListener));
         }
         return view;
     }
