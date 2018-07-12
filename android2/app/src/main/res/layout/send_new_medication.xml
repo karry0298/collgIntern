@@ -13,7 +13,6 @@
         android:layout_height="113dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/morngTitle"
-        android:onClick="morngClick"
         android:text="davhbsjvbjsdncdncdnc" />
 
     <TextView
@@ -31,7 +30,6 @@
         android:layout_height="113dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/afternoonTitle"
-        android:onClick="noonClick"
         android:text="hjvffhsjdjdbvjkbcvcxvncvn" />
 
     <TextView
@@ -40,7 +38,6 @@
         android:layout_height="113dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/evenTitle"
-        android:onClick="eveninClick"
         android:text="adkvbsdjvbjksdvksdvnsdvkdklcv" />
 
     <TextView
@@ -70,6 +67,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="99dp"
         android:background="@drawable/submit_button"
-        android:text="Button" />
+        android:text="UPDATE" />
 
 </RelativeLayout>
