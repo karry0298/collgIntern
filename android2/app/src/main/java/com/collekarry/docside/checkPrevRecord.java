@@ -1,17 +1,23 @@
 package com.collekarry.docside;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +57,41 @@ public class checkPrevRecord extends Fragment
 
         Log.i("abc","fuck u 1st");
 
+        recdView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                MyBlaBlaVnew upName = uploadList.get(i);
+                String discrp = upName.getDiscription();
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+                builder.setTitle("Description of previous appointment:");
+
+                TextView mytext = new TextView(getActivity());
+                mytext.setText(discrp);
+                mytext.setPadding(60,10,0,0);
+                mytext.setTextSize(20);
+                builder.setView(mytext);
+
+                // Set up the buttons
+                builder.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -75,7 +116,6 @@ public class checkPrevRecord extends Fragment
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, uploads);
                 recdView.setAdapter(adapter);
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
