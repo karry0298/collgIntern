@@ -8,15 +8,16 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     >
+
     <TextView
+        android:id="@+id/timeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/roboto_bold"
-        android:text="7:10 am"
-        android:textSize="18sp"
-        android:id="@+id/timeTextView"
-        />
+        android:tag="time"
+        android:text="10:05 am"
+        android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/add_timing"

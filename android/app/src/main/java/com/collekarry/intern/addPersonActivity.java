@@ -105,8 +105,6 @@ public class addPersonActivity extends AppCompatActivity {
 
             String uid = FirebaseAuth.getInstance().getUid();
 
-
-
             final String key = mDatabase.child("wards").child(uid).push().getKey();
 
             wardClass ward = new wardClass(key,name,age,gender,uid);
@@ -114,8 +112,8 @@ public class addPersonActivity extends AppCompatActivity {
 
             List<Medicine> tempMed = new ArrayList<>();
             List<String> t = new ArrayList<>();
-            t.add("22:00:00");
-            t.add("23:30:00");
+            t.add("2:00 am");
+            t.add("11:30 pm");
 
             for(int i = 0; i < 10; i++){
                 tempMed.add(new Medicine("MedName","BrandName", new Date(), t, "Dr. Kannaswmi") );
@@ -345,5 +343,6 @@ public class addPersonActivity extends AppCompatActivity {
 
         imageView.setImageBitmap(thumbnail);
     }
+
 
 }

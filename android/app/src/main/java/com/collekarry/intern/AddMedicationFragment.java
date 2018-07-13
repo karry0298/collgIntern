@@ -16,14 +16,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,13 +49,20 @@ import java.util.Calendar;
 public class AddMedicationFragment extends DialogFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "ward";
+
+    private EditText medName;
+    private EditText medManufacturer;
     private TextView dateTextView;
     private LinearLayout datePickView;
     private ImageButton addTimingButton;
     private LinearLayout consumptionTimingLayout;
     private TextView timeTextViewMain;
+    private EditText medPrescriptionBy;
+
+    private DatabaseReference mDatabaseReference;
+
+    private Button medSubmitButton;
 
     private DatePickerDialog.OnDateSetListener mDatesetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -53,8 +73,8 @@ public class AddMedicationFragment extends DialogFragment{
     };
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private wardClass ward;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,11 +96,20 @@ public class AddMedicationFragment extends DialogFragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        medName = getView().findViewById(R.id.medName);
+        medManufacturer = getView().findViewById(R.id.medManufacturer);
         dateTextView = getView().findViewById(R.id.dateText);
         datePickView = getView().findViewById(R.id.date_pick_view);
         addTimingButton = getView().findViewById(R.id.action_add_timing);
         consumptionTimingLayout = getView().findViewById(R.id.consumption_timings);
         timeTextViewMain = getView().findViewById(R.id.timeTextViewMain);
+        medPrescriptionBy = getView().findViewById(R.id.medprescriptionBy);
+        medSubmitButton = getView().findViewById(R.id.medSubmitButton);
+
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
 
         datePickView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +152,6 @@ public class AddMedicationFragment extends DialogFragment{
         addTimingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(addTimingButton.getTag().equals("add")) {
 
                     LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -186,22 +214,83 @@ public class AddMedicationFragment extends DialogFragment{
                 }
             }
         });
+
+        medSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = medName.getText().toString();
+                String manufacturer = medManufacturer.getText().toString();
+                String dateText = dateTextView.getText().toString().trim();
+                String prescriptionBy = medPrescriptionBy.getText().toString();
+
+                if(name.length() <= 3){
+                    medName.setError("Too short");
+                }
+                else if(manufacturer.length() <= 3){
+                    medManufacturer.setError("Too short");
+                }
+                else if(prescriptionBy.length() <= 3){
+                    medPrescriptionBy.setError("Too Short");
+                }
+                else{
+                    Date date = new Date();
+                    try {
+                        date = new SimpleDateFormat("dd/MM/yyyy").parse(dateText);
+                    }catch (ParseException e){
+                        Toast.makeText(getContext(), "Invalid Date format.", Toast.LENGTH_SHORT);
+                    }
+
+                    List<String> timings = new ArrayList<>();
+                    int noOfTimings = consumptionTimingLayout.getChildCount();
+                    for(int i = 0; i < noOfTimings; i++){
+                        View t = consumptionTimingLayout.getChildAt(i);
+                        TextView tv = t.findViewWithTag("time");
+                        timings.add(tv.getText().toString());
+                    }
+
+                    Medicine newMed = new Medicine(name,manufacturer,date,timings,prescriptionBy);
+                    ward.addMedicine(newMed);
+
+                    mDatabaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    WardDetailsActivity w = (WardDetailsActivity) getActivity();
+//                                    w.setWard(ward);
+                                    Toast.makeText(getContext(), "Med added", Toast.LENGTH_SHORT).show();
+
+                                    dismiss();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(), "Med not added", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+
+
+            }
+
+        });
     }
+
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment AddMedicationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddMedicationFragment newInstance(String param1, String param2) {
+    public static AddMedicationFragment newInstance(wardClass param1) {
         AddMedicationFragment fragment = new AddMedicationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        fragment.ward = param1;
+        args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -210,11 +299,9 @@ public class AddMedicationFragment extends DialogFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            ward = (wardClass) getArguments().getSerializable(ARG_PARAM1);
+
         }
-
-
     }
 
     @Override
@@ -223,13 +310,6 @@ public class AddMedicationFragment extends DialogFragment{
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_add_medication, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

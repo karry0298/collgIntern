@@ -226,7 +226,7 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
-                intent.putExtra("ward", uploadList.get(position));
+                intent.putExtra("key", uploadList.get(position).getKey());
 
                 startActivity(intent);
             }

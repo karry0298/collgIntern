@@ -110,7 +110,13 @@ public class MainActivity extends AppCompatActivity
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                    }
+                };
+
                 Log.i("awdawd","awdawdwadwadawdwad");
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately

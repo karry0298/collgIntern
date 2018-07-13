@@ -4,9 +4,17 @@ import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Medicine implements Serializable{
@@ -24,20 +32,54 @@ public class Medicine implements Serializable{
             return null;
         }
         LocalTime x = new LocalTime(23,59);
+        LocalTime tomoTime = new LocalTime(23,59);
 
         for(int i = 0; i < consumptionTimings.size(); i++){
-            LocalTime a = LocalTime.parse(consumptionTimings.get(i));
+
+            LocalTime a = LocalTime.parse(consumptionTimings.get(i), DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
 
             if( a.isBefore(x) && (a.isAfter(t) || a.isEqual(t))  ){
                 x = a;
             }
+
+            if(a.isBefore(tomoTime)){
+                tomoTime = a;
+            }
         }
 
         if(x.isEqual(new LocalTime(23,59))){
-            return null;
+//            System.out.println("\t"+ name+"\t"+x.toString("hh:mm a"));
+            return "Tomorrow, " + tomoTime.toString("hh:mm a");
         }
         else{
-            return x.toString("HH:mm:ss");
+            return "Today, " + x.toString("hh:mm a");
+        }
+    }
+
+    public DateTime getNextConsumptionDateTime(LocalTime t){
+        if(consumptionTimings == null || consumptionTimings.size() == 0){
+            return new DateTime();
+        }
+        LocalTime x = new LocalTime(23,59);
+        LocalTime tomoTime = new LocalTime(23,59);
+
+        for(int i = 0; i < consumptionTimings.size(); i++){
+            LocalTime a = LocalTime.parse(consumptionTimings.get(i), DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            if( a.isBefore(x) && (a.isAfter(t) || a.isEqual(t))  ){
+                x = a;
+            }
+
+            if(a.isBefore(tomoTime)){
+                tomoTime = a;
+            }
+        }
+
+        if(x.isEqual(new LocalTime(23,59))){
+//            System.out.println("\t"+ name+"\t"+x.toString("hh:mm a"));
+            return tomoTime.toDateTimeToday().plusDays(1);
+        }
+        else{
+            return x.toDateTimeToday();
         }
     }
 

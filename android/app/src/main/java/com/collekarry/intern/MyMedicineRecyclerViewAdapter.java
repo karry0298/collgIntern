@@ -12,6 +12,8 @@ import com.collekarry.intern.MedicationFragment.OnListFragmentInteractionListene
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -34,6 +36,14 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
                 m.add(x);
             }
         }
+
+        Collections.sort(m, new Comparator<Medicine>() {
+            @Override
+            public int compare(Medicine o1, Medicine o2) {
+                    return  o1.getNextConsumptionDateTime(LocalTime.now()).compareTo(o2.getNextConsumptionDateTime(LocalTime.now()));
+                }
+
+        });
 
         mValues = m;
     }

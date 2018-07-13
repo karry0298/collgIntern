@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -49,7 +50,14 @@ public class WardDetailsActivity extends AppCompatActivity
     private String key;
 
     private StorageReference mStorageReference,imageRef;
-//    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReference;
+
+
+//    public void setWard(wardClass ward) {
+//        this.ward = ward;
+//    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,28 +71,59 @@ public class WardDetailsActivity extends AppCompatActivity
         mAppBarLayout = findViewById(R.id.app_bar);
         mCoordinatorLayour = findViewById(R.id.coordinator_layout);
         mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        viewPager = findViewById(R.id.pager);
 
         imageView = findViewById(R.id.profilePhoto);
 
         if(FirebaseAuth.getInstance().getUid() == null){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
+        key = intent.getStringExtra("key");
 
-//        mDatabaseReference = FirebaseDatabase.getInstance().getReference("wards");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("wards")
+                .child(FirebaseAuth.getInstance().getUid()).child(key);
+
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
-        ward = (wardClass) intent.getSerializableExtra("ward");
 
-        imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ward = dataSnapshot.getValue(wardClass.class);
 
-        Glide.with(WardDetailsActivity.this)
-                .using(new FirebaseImageLoader())
-                .load(imageRef)
-                .placeholder(R.drawable.default_dp)
-                .centerCrop()
-                .into(imageView);
+                imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
 
-        mCollapsingToolbarLayout.setTitle(ward.getName());
+                Glide.with(getApplicationContext())
+                        .using(new FirebaseImageLoader())
+                        .load(imageRef)
+                        .placeholder(R.drawable.default_dp)
+                        .centerCrop()
+                        .into(imageView);
+
+                mCollapsingToolbarLayout.setTitle(ward.getName());
+
+                adapter = new WardPager(getSupportFragmentManager(), ward);
+                adapter.notifyDataSetChanged();
+                viewPager.setAdapter(adapter);
+
+                tabLayout.setupWithViewPager(viewPager);
+
+                tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
+                tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
+                tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
+                tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                startActivity(new Intent(WardDetailsActivity.this, MainActivity.class));
+                Toast.makeText(getApplicationContext(), "ward retrieve error", Toast.LENGTH_SHORT);
+            }
+        });
+
+
+
+
 
 //        DatabaseReference mRef = mDatabaseReference.child(FirebaseAuth.getInstance().getUid()).child(key);
 
@@ -131,21 +170,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
 
 
-        viewPager = findViewById(R.id.pager);
 
-        adapter = new WardPager(getSupportFragmentManager(), ward);
-
-        viewPager.setAdapter(adapter);
-
-        tabLayout.setupWithViewPager(viewPager);
-
-//        tabLayout.addTab(tabLayout.newTab().setText("Heart rate"));
-        tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
-//        tabLayout.addTab(tabLayout.newTab().setText("Medication"));
-        tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
-//        tabLayout.addTab(tabLayout.newTab().setText("Appointments"));
-        tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 //        tabLayout.addOnTabSelectedListener(this);
 
@@ -183,7 +208,7 @@ public class WardDetailsActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_add_meds)
         {
-            AddMedicationFragment.newInstance("","").show(getSupportFragmentManager(), "add_med");
+            AddMedicationFragment.newInstance(ward).show(getSupportFragmentManager(), "add_med");
         }
 
 

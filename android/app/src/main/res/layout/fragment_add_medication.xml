@@ -54,7 +54,7 @@
             android:gravity="left|center">
 
             <EditText
-                android:id="@+id/medBrandName"
+                android:id="@+id/medManufacturer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -137,7 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/roboto_bold"
-                android:text="7:10 am"
+                android:tag="time"
+                android:text="10:05 am"
                 android:textSize="18sp" />
 
             <ImageButton
@@ -182,7 +183,7 @@
         android:background="@drawable/submit_button"
         android:fontFamily="@font/roboto_thin"
         android:foregroundGravity="center"
-        android:onClick="medSubmitButtonClicked"
+
         android:text="Submit"
         android:textColor="#FFFFFF"
         android:textSize="20sp" />
