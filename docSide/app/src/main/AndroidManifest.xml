@@ -16,15 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".listOfPeople" />
-        <activity
-            android:name=".tabbedChoice"
-            android:label="@string/title_activity_tabbed_choice"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".create_appoinment" />
-        <activity android:name=".updateTheMedication"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 </manifest>

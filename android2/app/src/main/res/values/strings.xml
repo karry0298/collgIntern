@@ -2,4 +2,11 @@
     <string name="app_name">docSide</string>
     <string name="action_newname">ADD NAME</string>
     <string name="action_logout">LOGOUT</string>
+    <string name="title_activity_tabbed_choice">tabbedChoice</string>
+    <string name="tab_text_1">PAST RECORD</string>
+    <string name="tab_text_2">CURRENT STATUS</string>
+    <string name="tab_text_3">SEND MEDICATION</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_appionment">Create a appoinment</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
