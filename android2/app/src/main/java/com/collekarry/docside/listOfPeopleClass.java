@@ -1,4 +1,4 @@
-package com.collekarry.intern;
+package com.collekarry.docside;
 
 import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
@@ -68,7 +68,7 @@ public class listOfPeopleClass
             index++;
         }
         if(index==10){
-                return false;
+            return false;
         }
 
         this.imageId[index] = imageId;
