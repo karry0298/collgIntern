@@ -7,6 +7,9 @@ import { CaretakerComponent } from './caretaker/caretaker.component';
 import { DoctorComponent } from './doctor/doctor.component';
 import { LoginComponent } from './login/login.component';
 import { GuardianComponent } from './guardian/guardian.component';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from './../environments/environment';
+import {AngularFireDatabaseModule } from 'angularfire2/database';
 
 
 @NgModule({
@@ -20,7 +23,9 @@ import { GuardianComponent } from './guardian/guardian.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
   ],
   providers: [],
   bootstrap: [AppComponent]
