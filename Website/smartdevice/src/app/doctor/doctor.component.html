@@ -26,7 +26,11 @@
 <div class="" style="overflow:hidden;">
   <div class="row">
     <div class="box col-lg-3 sidebar col-3">
-      <p>blajknajkenk</p>
+      <ul>
+        <li *ngFor="let user of products">
+          <a routerLink="/doctor">{{ user.Age }}</a>
+        </li>
+      </ul>
     </div>
     <div class="box col-lg-9 mainpage col-9 " style="padding:0px;">
       <div class="" style="height:20vh; background-color:wheat;">
