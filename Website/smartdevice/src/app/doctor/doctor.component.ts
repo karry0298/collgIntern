@@ -8,6 +8,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 export class DoctorComponent implements OnInit {
   products: any[];
+
   constructor(db: AngularFireDatabase) {
     db.list('/wards')
     .valueChanges()
