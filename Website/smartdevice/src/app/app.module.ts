@@ -11,6 +11,8 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from './../environments/environment';
 import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientview.component';
+import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
+import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientv
     LoginComponent,
     GuardianComponent,
     DoctorPatientviewComponent,
+    DoctorIssuesComponent,
+    DoctorMedicationsComponent,
 
   ],
   imports: [
