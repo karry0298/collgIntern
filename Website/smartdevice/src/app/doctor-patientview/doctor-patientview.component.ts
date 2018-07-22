@@ -8,6 +8,7 @@ import { Patient } from '../patient';
 })
 export class DoctorPatientviewComponent implements OnInit {
   @Input() patient: Patient;
+  isOn=1;
   constructor() { }
 
   ngOnInit() {

@@ -24,10 +24,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{show : isActive1}">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <span class="nav-link">ISSUES</span>
+            <span class="nav-link" (click)="isOn=1">ISSUES</span>
           </li>
           <li class="nav-item">
-            <span class="nav-link">Medications</span>
+            <span class="nav-link" (click)="isOn=0">Medications</span>
           </li>
 
         </ul>
@@ -35,10 +35,10 @@
       </div>
     </nav>
 
-    <div class="row" style="margin:0px;height:93%; ">
-      <app-doctor-medications [patient]="patient" ></app-doctor-medications>
-
-    </div>
+    <!-- <div class="row" style="margin:0px;height:93%; "> -->
+      <app-doctor-medications [patient]="patient"  *ngIf="isOn==0"></app-doctor-medications>
+      <app-doctor-issues [patient]="patient"  *ngIf="isOn==1"></app-doctor-issues>
+    <!-- </div> -->
   </div>
 
 </div>
