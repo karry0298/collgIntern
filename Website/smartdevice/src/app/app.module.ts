@@ -11,6 +11,9 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from './../environments/environment';
 import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientview.component';
+import { HttpModule } from '@angular/http';
+import { AuthGuard } from './auth.service';
+import { router } from './app-routing.module';
 
 
 @NgModule({
@@ -29,8 +32,10 @@ import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientv
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    HttpModule,
+    router,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
