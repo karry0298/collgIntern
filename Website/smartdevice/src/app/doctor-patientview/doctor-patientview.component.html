@@ -24,19 +24,20 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{show : isActive1}">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="../issues">ISSUES </a>
+            <span class="nav-link">ISSUES</span>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../medication">MEDICATION</a>
+            <span class="nav-link">Medications</span>
           </li>
 
         </ul>
 
       </div>
     </nav>
+
     <div class="row" style="margin:0px;height:93%; ">
-      <router-outlet name="lowerbar"></router-outlet>
-      <app-doctor-medications ></app-doctor-medications>
+      <app-doctor-medications [patient]="patient" ></app-doctor-medications>
+
     </div>
   </div>
 

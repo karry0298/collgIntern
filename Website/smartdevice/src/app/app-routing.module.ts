@@ -17,27 +17,7 @@ export const routes: Routes = [
     path: 'doctor',
     component: DoctorComponent,
     canActivate: [AuthGuard],
-    children: [
-  {
-    path: 'issues',
-    component: DoctorIssuesComponent,
-    outlet:"lowerbar"
-  },
-  {
-    path: 'medications',
-    component: DoctorMedicationsComponent,
-    outlet:"lowerbar"
-  },
-  {
-    path: 'medications',
-    component: DoctorComponent
-  },
-  {
-    path: 'issues',
-    component: DoctorComponent
-  },
-]
-  },
+
   {
     path: 'guardian',
     component: GuardianComponent
