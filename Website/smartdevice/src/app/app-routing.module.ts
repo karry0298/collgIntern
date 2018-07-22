@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
+import { NgModule,ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CaretakerComponent } from './caretaker/caretaker.component';
 import { DoctorComponent } from './doctor/doctor.component';
 import { GuardianComponent } from './guardian/guardian.component';
 import { LoginComponent } from './login/login.component';
+import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
+import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
 import { AuthGuard } from './auth.service';
 
-import { MedicationComponent } from './doctor-medications/doctor-medications.component';
-import { IssuesComponent } from './doctor-issues/doctor-issues.component';
 export const routes: Routes = [
   {
     path: 'caretaker',
@@ -16,7 +16,27 @@ export const routes: Routes = [
   {
     path: 'doctor',
     component: DoctorComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+  {
+    path: 'issues',
+    component: DoctorIssuesComponent,
+    outlet:"lowerbar"
+  },
+  {
+    path: 'medications',
+    component: DoctorMedicationsComponent,
+    outlet:"lowerbar"
+  },
+  {
+    path: 'medications',
+    component: DoctorComponent
+  },
+  {
+    path: 'issues',
+    component: DoctorComponent
+  },
+]
   },
   {
     path: 'guardian',
@@ -31,16 +51,7 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-  {
-    path: 'doctor/issues',
-    component: IssuesComponent,
-    outlet:lowerbar
-  },
-  {
-    path: 'doctor/medications',
-    component: MedicationComponent,
-    outlet:lowerbar
-  },
+
 ];
 
 @NgModule({

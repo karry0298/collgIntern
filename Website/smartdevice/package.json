@@ -29,6 +29,7 @@
     "popper.js": "^1.14.3",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.2",
+    "webpack": "^4.16.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
