@@ -1,0 +1,17 @@
+#grid {
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-gap: 10px;
+   grid-template-rows: 20% 20% 20% 20% 20%;
+}
+
+#grid > div {
+  // background-color: lime;
+}
+.side-panel{
+  height:20%;
+  align-items:center;
+   display:flex;
+   justify-content: center;
+}

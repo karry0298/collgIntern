@@ -7,10 +7,9 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./doctor.component.scss']
 })
 export class DoctorComponent implements OnInit {
-  products: AngularFireList<any>;
-
+  products: any[];
   constructor(db: AngularFireDatabase) {
-    db.list('/doctor/data/Vijay')
+    db.list('/wards')
     .valueChanges()
     .subscribe(product =>{
       this.products = product;

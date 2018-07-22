@@ -10,6 +10,7 @@ import { GuardianComponent } from './guardian/guardian.component';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from './../environments/environment';
 import {AngularFireDatabaseModule } from 'angularfire2/database';
+import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientview.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {AngularFireDatabaseModule } from 'angularfire2/database';
     DoctorComponent,
     LoginComponent,
     GuardianComponent,
+    DoctorPatientviewComponent,
 
   ],
   imports: [
