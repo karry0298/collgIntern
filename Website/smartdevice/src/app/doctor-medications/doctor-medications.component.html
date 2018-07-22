@@ -1,18 +1,18 @@
 <div class="col-12" style="padding:0px;" >
-  <button class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit">LogOut</button>
+  <button class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit">UPDATE</button>
   <div class="side-panel" style="padding-top:10px">
-    <p>Morning:{{ patient.name }}</p>
+    <p>Morning:{{ patient.medications.morning }}</p>
   </div>
 
   <div class="side-panel" style="">
-    <p>Afternoon:</p>
+    <p>Afternoon:{{ patient.medications.afternoon }}</p>
   </div>
 
   <div class="side-panel" style="">
-    <p>evening:</p>
+    <p>evening:{{ patient.medications.evening }}</p>
   </div>
 
   <div class="side-panel" style="">
-    <p>night:</p>
+    <p>night:{{ patient.medications.night }}</p>
   </div>
 </div>
