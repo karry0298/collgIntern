@@ -4,16 +4,19 @@ import { CaretakerComponent } from './caretaker/caretaker.component';
 import { DoctorComponent } from './doctor/doctor.component';
 import { GuardianComponent } from './guardian/guardian.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.service';
+
 import { MedicationComponent } from './doctor-medications/doctor-medications.component';
 import { IssuesComponent } from './doctor-issues/doctor-issues.component';
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'caretaker',
     component: CaretakerComponent
   },
   {
     path: 'doctor',
-    component: DoctorComponent
+    component: DoctorComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'guardian',
@@ -21,6 +24,11 @@ const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
     component: LoginComponent
   },
   {
@@ -40,3 +48,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+export const router: ModuleWithProviders = RouterModule.forRoot(routes);
