@@ -13,6 +13,9 @@ import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientview.component';
 import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
 import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
+import { HttpModule } from '@angular/http';
+import { AuthGuard } from './auth.service';
+import { router } from './app-routing.module';
 
 
 @NgModule({
@@ -33,8 +36,10 @@ import { DoctorMedicationsComponent } from './doctor-medications/doctor-medicati
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    HttpModule,
+    router,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
