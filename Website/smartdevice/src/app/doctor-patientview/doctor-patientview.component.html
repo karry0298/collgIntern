@@ -22,12 +22,9 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{show : isActive1}">
-        <ul class="navbar-nav mr-auto">    
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="../issues">ISSUES </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../diet">DIET</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../medication">MEDICATION</a>
@@ -38,27 +35,12 @@
       </div>
     </nav>
     <div class="row" style="margin:0px;height:93%; ">
-      <div class="col-3" style="padding:0px;" >
-        <div class="side-panel" style="">
-          <p>Sugar</p>
-        </div>
-        <div class="side-panel" style="">
-          <p>Blood Pressure</p>
-        </div>
-        <div class="side-panel" style="">
-          <p>Cholestrol</p>
-        </div>
-        <div class="side-panel" style="">
-          <p>Heart Rate</p>
-        </div>
-        <div class="side-panel" style="">
-          <p>LDL</p>
-        </div>
-      </div>
-      <div class="col-9" >
-      <p>Bla Bla Car</p>
-      </div>
+      <app-doctor-medications ></app-doctor-medications>
     </div>
   </div>
 
+</div>
+
+<div *ngIf="!patient">
+<p>click on the name</p>
 </div>

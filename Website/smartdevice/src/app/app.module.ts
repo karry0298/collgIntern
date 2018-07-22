@@ -11,6 +11,8 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from './../environments/environment';
 import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { DoctorPatientviewComponent } from './doctor-patientview/doctor-patientview.component';
+import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
+import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
 import { HttpModule } from '@angular/http';
 import { AuthGuard } from './auth.service';
 import { router } from './app-routing.module';
@@ -24,6 +26,8 @@ import { router } from './app-routing.module';
     LoginComponent,
     GuardianComponent,
     DoctorPatientviewComponent,
+    DoctorIssuesComponent,
+    DoctorMedicationsComponent,
 
   ],
   imports: [
