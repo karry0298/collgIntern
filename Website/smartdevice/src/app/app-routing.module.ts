@@ -17,7 +17,7 @@ export const routes: Routes = [
     path: 'doctor',
     component: DoctorComponent,
     canActivate: [AuthGuard],
-
+  },
   {
     path: 'guardian',
     component: GuardianComponent

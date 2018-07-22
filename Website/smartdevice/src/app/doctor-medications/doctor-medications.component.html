@@ -19,15 +19,31 @@
 
 
 
-<button id="myBtn" (click)="openModal()">Open Modal</button>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
+<button type="button" class="btn btn-info btn-lg" (click)=”openModal()”>click to open</button>
 
-  <!-- Modal content -->
-  <div class="modal-content" >
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
+  <div class="backdrop" [ngStyle]="{'display':display}"></div>
 
-</div>
+  <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span aria-hidden="true">&times;</span></button>
+
+          <h4 class="modal-title">Model Title</h4>
+
+        </div>
+        <div class="modal-body">
+
+          <p>Model body text</p>
+
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default" (click)="onCloseHandled()" >Close</button>
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal !-->

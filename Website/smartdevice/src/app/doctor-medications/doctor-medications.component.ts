@@ -7,28 +7,19 @@ import { Patient } from '../patient';
 })
 export class DoctorMedicationsComponent implements OnInit {
   @Input() patient: Patient;
-  constructor() { }
-  // display='none';
-  // onCloseHandled(){
-  //
-  //       this.display='none';
-  //
-  //    }
-  //  openModal(){
-  //
-  //       this.display=block;
-  //
-  //  }
 
-  openMod(){
-    this.display=block;
-  }
+    display:string='none';
+    constructor() { }
 
-  cloaseMod(){
-    this.display=none;
-  }
-isActive=true;
+openModal()
+{
+   this.display='block';
+}
 
+onCloseHandled()
+{
+   this.display='none';
+}
 
   ngOnInit() {
   }
