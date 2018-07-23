@@ -7,30 +7,24 @@ import { Patient } from '../patient';
 })
 export class DoctorMedicationsComponent implements OnInit {
   @Input() patient: Patient;
+display:string="block";
+  // let isDone: boolean = false;
+  // checkModal(  ): {
+  //   if(isDone)
+  //     this.display="block";
+  //
+  // }
+
+  // onSelect(hero: Patient): void {
+  //   this.selectedPatient = hero;
+  //   console.log(this.selectedPatient);
+  // }
   constructor() { }
-  // display='none';
-  // onCloseHandled(){
-  //
-  //       this.display='none';
-  //
-  //    }
-  //  openModal(){
-  //
-  //       this.display=block;
-  //
-  //  }
-
-  openMod(){
-    this.display=block;
-  }
-
-  cloaseMod(){
-    this.display=none;
-  }
-isActive=true;
-
+  // display="none";
+  //   let isDone: boolean = false; }
 
   ngOnInit() {
+
   }
 
 }
