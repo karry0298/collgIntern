@@ -19,14 +19,14 @@
 
 
 
-<button id="myBtn" (click)="checkModal()">Open Modal</button>
+<button id="myBtn" (click)="openModal()">Open Modal</button>
 
 <!-- The Modal -->
 <div id="myModal" class="modal" [ngStyle]="{'display':display}">
 
   <!-- Modal content -->
   <div class="modal-content" >
-    <span class="close" (click)="checkModal()"  >&times;</span>
+    <span class="close" (click)="closeModal()"  >&times;</span>
     <p>Some text in the Modal..</p>
   </div>
 

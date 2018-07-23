@@ -7,17 +7,14 @@ import { Patient } from '../patient';
 })
 export class DoctorMedicationsComponent implements OnInit {
   @Input() patient: Patient;
-display:string="block";
- isDone: boolean = false;
-  checkModal(): void{
-    this.isDone=!isDone
-    if(isDone)
-      this.display="block";
-    else
-      this.display="none";
+display:string="none";
 
+  openModal(): void{
+    this.display="block";
   }
-
+  closeModal(): void{
+    this.display="none";
+  }
   // onSelect(hero: Patient): void {
   //   this.selectedPatient = hero;
   //   console.log(this.selectedPatient);
