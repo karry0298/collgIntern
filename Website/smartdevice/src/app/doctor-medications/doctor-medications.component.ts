@@ -8,12 +8,15 @@ import { Patient } from '../patient';
 export class DoctorMedicationsComponent implements OnInit {
   @Input() patient: Patient;
 display:string="block";
-  // let isDone: boolean = false;
-  // checkModal(  ): {
-  //   if(isDone)
-  //     this.display="block";
-  //
-  // }
+ isDone: boolean = false;
+  checkModal(): void{
+    this.isDone=!isDone
+    if(isDone)
+      this.display="block";
+    else
+      this.display="none";
+
+  }
 
   // onSelect(hero: Patient): void {
   //   this.selectedPatient = hero;
