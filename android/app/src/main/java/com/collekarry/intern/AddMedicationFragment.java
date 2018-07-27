@@ -1,19 +1,31 @@
 package com.collekarry.intern;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,6 +42,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,10 +52,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddMedicationFragment.OnFragmentInteractionListener} interface
+ * {@link AddMedicationFragment.OnEntryComplete} interface
  * to handle interaction events.
  * Use the {@link AddMedicationFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -50,32 +65,35 @@ public class AddMedicationFragment extends DialogFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "ward";
+    private static final String ARG_PARAM2 = "intention";
+
+    private OnEntryComplete entryCompleteListener;
 
     private EditText medName;
     private EditText medManufacturer;
     private TextView dateTextView;
+    private TextView dateTextView2;
     private LinearLayout datePickView;
+    private LinearLayout datePickView2;
     private ImageButton addTimingButton;
     private LinearLayout consumptionTimingLayout;
     private TextView timeTextViewMain;
     private EditText medPrescriptionBy;
+    private EditText medCount;
+
 
     private DatabaseReference mDatabaseReference;
 
     private Button medSubmitButton;
 
-    private DatePickerDialog.OnDateSetListener mDatesetListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            String d = String.valueOf(dayOfMonth)+"/"+String.valueOf(month+1)+"/"+String.valueOf(year);
-            dateTextView.setText(d);
-        }
-    };
+
 
     // TODO: Rename and change types of parameters
     private wardClass ward;
+    private String intention;
 
-    private OnFragmentInteractionListener mListener;
+
+    private OnEntryComplete medListner;
 
     public AddMedicationFragment() {
         // Required empty public constructor
@@ -83,6 +101,15 @@ public class AddMedicationFragment extends DialogFragment{
 
 
     public void dateSelectClicked(View v){
+
+        DatePickerDialog.OnDateSetListener mDatesetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String d = String.valueOf(dayOfMonth)+"/"+String.valueOf(month+1)+"/"+String.valueOf(year);
+                dateTextView.setText(d);
+            }
+        };
+
         Calendar calender = Calendar.getInstance();
         Dialog mDialog = new DatePickerDialog(getContext(),
                 mDatesetListener, calender.get(Calendar.YEAR),
@@ -90,6 +117,77 @@ public class AddMedicationFragment extends DialogFragment{
                 .get(Calendar.DAY_OF_MONTH));
 
         mDialog.show();
+
+
+    }
+
+    public void requestPermissions(){
+
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+//            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR)) {
+//                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+//                alertBuilder.setCancelable(true);
+//                alertBuilder.setTitle("Permission necessary");
+//                alertBuilder.setMessage("Calendar permission is necessary.");
+//                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        requestPermissions(new String[]{android.Manifest.permission.WRITE_CALENDAR, android.Manifest.permission.READ_CALENDAR},
+//                                66);
+//                    }
+//                });
+//                AlertDialog alert = alertBuilder.create();
+//                alert.show();
+//            } else {
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_CALENDAR, android.Manifest.permission.READ_CALENDAR},
+                    66);
+//            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 66){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+            }
+            else{
+                requestPermissions();
+            }
+        }
+//        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
+    public long setReminder(Medicine newMed){
+        DateTime due = newMed.getDueDate();
+        long startMillis = due.getMillis();
+        DateTime dueEnd = due.plusDays(3);
+        long endMillis = dueEnd.getMillis();
+
+        String eventUriString = "content://com.android.calendar/events";
+        ContentValues eventValues = new ContentValues();
+
+        eventValues.put(CalendarContract.Events.CALENDAR_ID, 1);
+        eventValues.put(CalendarContract.Events.TITLE, "Buy Medicine");
+        eventValues.put(CalendarContract.Events.DESCRIPTION, newMed.getName() + "["+ newMed.getBrandName() + "]"  + " almost over");
+        eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, due.getZone().toTimeZone().getDisplayName());
+        eventValues.put(CalendarContract.Events.DTSTART, startMillis);
+        eventValues.put(CalendarContract.Events.DTEND, endMillis);
+        eventValues.put(CalendarContract.Events.STATUS, 0);
+        eventValues.put(CalendarContract.Events.ALL_DAY, 1);
+
+        Uri eventUri = getActivity().getContentResolver().insert(Uri.parse(eventUriString), eventValues);
+        long eventID = Long.parseLong(eventUri.getLastPathSegment());
+
+
+        String reminderUriString = "content://com.android.calendar/reminders";
+        ContentValues reminderValues = new ContentValues();
+        reminderValues.put("event_id", eventID);
+        reminderValues.put("minutes", 12*60);
+        reminderValues.put("method", 1);
+        Uri reminderUri = getActivity().getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
+
+        return eventID;
     }
 
     @Override
@@ -99,21 +197,44 @@ public class AddMedicationFragment extends DialogFragment{
         medName = getView().findViewById(R.id.medName);
         medManufacturer = getView().findViewById(R.id.medManufacturer);
         dateTextView = getView().findViewById(R.id.dateText);
+        dateTextView2 = getView().findViewById(R.id.dateText2);
         datePickView = getView().findViewById(R.id.date_pick_view);
+        datePickView2 = getView().findViewById(R.id.date_pick_view2);
         addTimingButton = getView().findViewById(R.id.action_add_timing);
         consumptionTimingLayout = getView().findViewById(R.id.consumption_timings);
         timeTextViewMain = getView().findViewById(R.id.timeTextViewMain);
         medPrescriptionBy = getView().findViewById(R.id.medprescriptionBy);
+        medCount = getView().findViewById(R.id.medCount);
         medSubmitButton = getView().findViewById(R.id.medSubmitButton);
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
-
         datePickView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dateSelectClicked(v);
+            }
+        });
+
+        datePickView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener mDatesetListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String d = String.valueOf(dayOfMonth)+"/"+String.valueOf(month+1)+"/"+String.valueOf(year);
+                        dateTextView2.setText(d);
+                    }
+                };
+
+                Calendar calender = Calendar.getInstance();
+                Dialog mDialog = new DatePickerDialog(getContext(),
+                        mDatesetListener, calender.get(Calendar.YEAR),
+                        calender.get(Calendar.MONTH), calender
+                        .get(Calendar.DAY_OF_MONTH));
+
+                mDialog.show();
             }
         });
 
@@ -141,7 +262,8 @@ public class AddMedicationFragment extends DialogFragment{
                 Calendar calender = Calendar.getInstance();
                 Dialog mDialog = new TimePickerDialog(getContext(),
                         mTimesetListener, calender.get(Calendar.HOUR_OF_DAY),
-                        calender.get(Calendar.MINUTE),false);
+                        calender.get(Calendar.MINUTE),
+                        false);
 
                 mDialog.show();
             }
@@ -213,13 +335,23 @@ public class AddMedicationFragment extends DialogFragment{
             }
         });
 
+
         medSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = medName.getText().toString();
                 String manufacturer = medManufacturer.getText().toString();
                 String dateText = dateTextView.getText().toString().trim();
+                String dateText2 = dateTextView2.getText().toString().trim();
                 String prescriptionBy = medPrescriptionBy.getText().toString();
+                int count;
+                if(medCount.getText().toString().equals("")){
+                    count = 0;
+                }
+                else{
+                    count = Integer.parseInt(medCount.getText().toString());
+                }
+                int noOfTimings = consumptionTimingLayout.getChildCount();
 
                 if(name.length() <= 3){
                     medName.setError("Too short");
@@ -230,42 +362,74 @@ public class AddMedicationFragment extends DialogFragment{
                 else if(prescriptionBy.length() <= 3){
                     medPrescriptionBy.setError("Too Short");
                 }
+                else if(count < 3*noOfTimings){
+                    medCount.setError("More pills required");
+                }
+                else if(dateText.equals("dd/MM/yyyy")){
+
+                    dateTextView.setError("Please select a date.");
+                }
+                else if(dateText2.equals("dd/MM/yyyy")){
+
+                    dateTextView2.setError("Please select a date.");
+                }
                 else{
                     Date date = new Date();
+                    Date date2 = new Date();
                     try {
                         date = new SimpleDateFormat("dd/MM/yyyy").parse(dateText);
+                        date2 = new SimpleDateFormat("dd/MM/yyyy").parse(dateText2);
                     }catch (ParseException e){
                         Toast.makeText(getContext(), "Invalid Date format.", Toast.LENGTH_SHORT);
                     }
 
                     List<String> timings = new ArrayList<>();
-                    int noOfTimings = consumptionTimingLayout.getChildCount();
+
                     for(int i = 0; i < noOfTimings; i++){
                         View t = consumptionTimingLayout.getChildAt(i);
                         TextView tv = t.findViewWithTag("time");
                         timings.add(tv.getText().toString());
                     }
 
-                    Medicine newMed = new Medicine(name,manufacturer,date,timings,prescriptionBy);
-                    ward.addMedicine(newMed);
+                    Medicine newMed = new Medicine(name,manufacturer,count,date,date2,timings,prescriptionBy);
 
-                    mDatabaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    WardDetailsActivity w = (WardDetailsActivity) getActivity();
+                    if(intention.equals("direct_entry")){
+
+                        while (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.WRITE_CALENDAR)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions();
+
+                        }
+
+                        long eventID = setReminder(newMed);
+
+                        newMed.setDueEventID(eventID);
+
+                        if(ward.addMedicine(newMed))
+                            Toast.makeText(getContext(), "Med added", Toast.LENGTH_SHORT).show();
+
+                        mDatabaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        WardDetailsActivity w = (WardDetailsActivity) getActivity();
 //                                    w.setWard(ward);
-                                    Toast.makeText(getContext(), "Med added", Toast.LENGTH_SHORT).show();
-
-                                    dismiss();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext(), "Med not added", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                        Toast.makeText(getContext(), "Med added", Toast.LENGTH_SHORT).show();
+                                        entryCompleteListener.onEntryComplete();
+                                        dismiss();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getContext(), "Med not added", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                    else{
+                        entryCompleteListener.onEntryComplete(newMed);
+                        dismiss();
+                    }
                 }
 
 
@@ -284,11 +448,13 @@ public class AddMedicationFragment extends DialogFragment{
      * @return A new instance of fragment AddMedicationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddMedicationFragment newInstance(wardClass param1) {
+    public static AddMedicationFragment newInstance(wardClass param1, String param2) {
         AddMedicationFragment fragment = new AddMedicationFragment();
         Bundle args = new Bundle();
         fragment.ward = param1;
+        fragment.intention = param2;
         args.putSerializable(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -298,7 +464,7 @@ public class AddMedicationFragment extends DialogFragment{
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             ward = (wardClass) getArguments().getSerializable(ARG_PARAM1);
-
+            intention = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -306,7 +472,7 @@ public class AddMedicationFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return inflater.inflate(R.layout.fragment_add_medication, container, false);
     }
 
@@ -318,7 +484,15 @@ public class AddMedicationFragment extends DialogFragment{
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        medListner = null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        entryCompleteListener = (OnEntryComplete) context;
+
     }
 
     /**
@@ -331,8 +505,9 @@ public class AddMedicationFragment extends DialogFragment{
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnEntryComplete {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onEntryComplete(Medicine med);
+        void onEntryComplete();
     }
 }

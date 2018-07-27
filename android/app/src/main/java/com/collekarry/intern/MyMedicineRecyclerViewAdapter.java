@@ -31,10 +31,13 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
         mListener = listener;
 
         List<Medicine> m = new ArrayList<>();
+        if(items == null || items.size() == 0){
+            mValues = m;
+            return;
+        }
         for(Medicine x: items){
-            if(x.getDateStopped() == null){
-                m.add(x);
-            }
+            m.add(x);
+
         }
 
         Collections.sort(m, new Comparator<Medicine>() {

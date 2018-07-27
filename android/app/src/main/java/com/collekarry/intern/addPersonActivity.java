@@ -19,6 +19,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,16 +53,20 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class addPersonActivity extends AppCompatActivity {
+public class addPersonActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete{
 
     private Button submitButton ;
     private EditText nameView;
     private EditText ageView;
     private Switch genderView;
+    private List<Medicine> meds;
 
     private DatabaseReference mDatabase;
     private StorageReference mStorageRef;
     private com.mikhaellopez.circularimageview.CircularImageView imageView;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private String userChosenTask;
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -78,9 +86,14 @@ public class addPersonActivity extends AppCompatActivity {
         genderView = findViewById(R.id.genderSwitch);
         submitButton = findViewById(R.id.submitButton);
         imageView = findViewById(R.id.imageButton);
+        meds = new ArrayList<>();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        recyclerView = findViewById(R.id.med_recycler_view);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
     }
 
 
@@ -108,17 +121,17 @@ public class addPersonActivity extends AppCompatActivity {
             final String key = mDatabase.child("wards").child(uid).push().getKey();
 
             wardClass ward = new wardClass(key,name,age,gender,uid);
+            ward.setMedicines(meds);
 
-
-            List<Medicine> tempMed = new ArrayList<>();
-            List<String> t = new ArrayList<>();
-            t.add("2:00 am");
-            t.add("11:30 pm");
-
-            for(int i = 0; i < 10; i++){
-                tempMed.add(new Medicine("MedName","BrandName", new Date(), t, "Dr. Kannaswmi") );
-            }
-            ward.setMedicines(tempMed);
+//            List<Medicine> tempMed = new ArrayList<>();
+//            List<String> t = new ArrayList<>();
+//            t.add("2:00 am");
+//            t.add("11:30 pm");
+//
+//            for(int i = 0; i < 10; i++){
+//                tempMed.add(new Medicine("MedName","BrandName",100, new Date(), t, "Dr. Kannaswmi") );
+//            }
+//            ward.setMedicines(tempMed);
 
             mDatabase.child("wards").child(uid).child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -344,5 +357,32 @@ public class addPersonActivity extends AppCompatActivity {
         imageView.setImageBitmap(thumbnail);
     }
 
+    public void addMed(View v){
 
+        AddMedicationFragment.newInstance(new wardClass(), "indirect_entry")
+                .show(getSupportFragmentManager(), "add_med_indirect");
+
+
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = vi.inflate(R.layout.new_medicine_layout, null);
+
+    }
+
+    @Override
+    public void onEntryComplete(Medicine med) {
+        meds.add(med);
+        System.out.println(meds);
+        mAdapter = new IndirectMedicineRecyclerViewAdapter(getApplicationContext(), meds);
+        recyclerView.setAdapter(mAdapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(addPersonActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onEntryComplete() {
+
+    }
 }

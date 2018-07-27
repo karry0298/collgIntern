@@ -23,6 +23,8 @@ public class Medicine implements Serializable{
     private String brandName;
     private Date dateStarted;
     private Date dateStopped;
+    private int count;
+    private long dueEventID;
     private String reasonStopped;
     private List<String> consumptionTimings;
     private String prescriptionBy;
@@ -83,13 +85,23 @@ public class Medicine implements Serializable{
         }
     }
 
+    public DateTime getDueDate(){
+        DateTime d = new DateTime(dateStarted).withTime(23,59,59,999);
+        int pillsPerDay = consumptionTimings.size();
+        int days = Integer.valueOf(count/pillsPerDay) - 3;
+
+        return d.plusDays(days);
+    }
+
     public Medicine() {
     }
 
-    public Medicine(String name, String brandName, Date dateStarted, List<String> consumptionTimings, String prescriptionBy) {
+    public Medicine(String name, String brandName, int count, Date dateStarted, Date dateStopped, List<String> consumptionTimings, String prescriptionBy) {
         this.name = name;
         this.brandName = brandName;
+        this.count = count;
         this.dateStarted = dateStarted;
+        this.dateStopped = dateStopped;
         this.consumptionTimings = consumptionTimings;
         this.prescriptionBy = prescriptionBy;
 
@@ -107,6 +119,13 @@ public class Medicine implements Serializable{
     }
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    public int getCount() {
+        return count;
+    }
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public Date getDateStarted() {
@@ -142,5 +161,12 @@ public class Medicine implements Serializable{
     }
     public void setPrescriptionBy(String prescriptionBy) {
         this.prescriptionBy = prescriptionBy;
+    }
+
+    public long getDueEventID() {
+        return dueEventID;
+    }
+    public void setDueEventID(long dueEventID) {
+        this.dueEventID = dueEventID;
     }
 }

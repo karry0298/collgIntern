@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.joda.time.LocalTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +38,15 @@ public class wardClass implements Serializable
         this.age = age;
         this.gender = gender;
         this.uid = uid;
+        this.medicines = new ArrayList<>();
     }
 
     public boolean addMedicine(Medicine e){
         final boolean[] ret = new boolean[1];
+
+        if(medicines == null){
+            medicines = new ArrayList<>();
+        }
 
         medicines.add(e);
 
@@ -50,6 +56,7 @@ public class wardClass implements Serializable
             @Override
             public void onSuccess(Void aVoid) {
                 ret[0] = true;
+
             }
         })
         .addOnFailureListener(new OnFailureListener() {

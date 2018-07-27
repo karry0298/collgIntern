@@ -28,6 +28,10 @@ public class MyPrevMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyPr
         mListener = listener;
 
         List<Medicine> m = new ArrayList<>();
+        if(items == null || items.size() == 0){
+            mValues = m;
+            return;
+        }
         for(Medicine x: items){
             if(x.getDateStopped() != null && x.getDateStopped().before(new Date())){
                 m.add(x);

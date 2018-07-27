@@ -32,7 +32,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
-public class WardDetailsActivity extends AppCompatActivity
+public class WardDetailsActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete
 //        implements TabLayout.OnTabSelectedListener,
 //        HeartRateFragment.OnFragmentInteractionListener,
 //        MedicationFragment.OnFragmentInteractionListener,
@@ -202,10 +202,20 @@ public class WardDetailsActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_add_meds)
         {
-            AddMedicationFragment.newInstance(ward).show(getSupportFragmentManager(), "add_med");
+            AddMedicationFragment.newInstance(ward,"direct_entry").show(getSupportFragmentManager(), "add_med");
         }
 
 
         return false;
+    }
+
+    @Override
+    public void onEntryComplete(Medicine med) {
+
+    }
+
+    @Override
+    public void onEntryComplete() {
+        adapter.notifyDataSetChanged();
     }
 }
