@@ -1,31 +1,21 @@
 package com.collekarry.docside;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import static com.collekarry.docside.listOfPeople.personName;
 
 public class tabbedChoice extends AppCompatActivity
 {
@@ -71,32 +61,37 @@ public class tabbedChoice extends AppCompatActivity
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
+        tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
+        tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phonenumber, null));
-                startActivity(intent);
-            }
-        });
-
-
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc").child(""+personName);
-
-        mDatabaseReference.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                phonenumber =  dataSnapshot.child("phn").getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
+
+        //mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc").child(""+personName);
+
+//        mDatabaseReference.addValueEventListener(new ValueEventListener()
+//        {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
 
@@ -116,14 +111,11 @@ public class tabbedChoice extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings){
-            return true;
-        }
-        else if( id == R.id.action_create_appionment)
+        if( id == R.id.action_create_appionment)
         {
             startActivity(new Intent(tabbedChoice.this , create_appoinment.class));
 
-            Toast.makeText(this, "d;gdcjghfgjdgvfdgvdfz", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "ABC is working", Toast.LENGTH_SHORT).show();
             return  true;
         }
         return super.onOptionsItemSelected(item);
@@ -142,33 +134,35 @@ public class tabbedChoice extends AppCompatActivity
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem(int position)
+        {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position)
             {
-                case 0: checkPrevRecord cp = new checkPrevRecord();
-                        choicForPerson ="pastRec";
-                        flag =1;
-                        return cp;
-
-                case 1: checkStatus ma = new checkStatus();
+                case 0: checkStatus ma = new checkStatus();
                         choicForPerson ="pastRec";
                         flag =2;
                         return ma;
 
-                case 2: sendNewMedication snm = new sendNewMedication();
+                case 1: sendNewMedication snm = new sendNewMedication();
                         flag = 3;
                         choicForPerson ="viewMed";
                         return snm;
+
+                case 2: checkPrevRecord cp = new checkPrevRecord();
+                        choicForPerson ="pastRec";
+                        flag =1;
+                        return cp;
+
 
                 default:return null;
             }
         }
 
         @Override
-        public int getCount() {
-            // Show 3 total pages.
+        public int getCount()
+        {
             return 3;
         }
 

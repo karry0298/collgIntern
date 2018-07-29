@@ -1,16 +1,10 @@
 package com.collekarry.docside;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,21 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,20 +36,12 @@ public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList;
     ListView list;
-    List<MyBlaBla> uploadList;
-    List<HashMap<String,String>> aList;
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
-    static String personName;
+    List<wardClass> uploadList;
 
-    String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
-    Integer[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
-    Integer[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
+    List<StorageReference> Fimages;
+    List<String> dsList;
 
-    List<String> Fnames ;
-    List<Integer> Fages;
-    List<Integer> Fimages;
-    List<HashMap> dsList;
+    private StorageReference mStorageReference;
 
 
     @Override
@@ -70,18 +55,23 @@ public class listOfPeople extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout)
+        if(id == R.id.action_newname)
         {
-            mAuth.signOut();
+            startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
         }
+        else if (id == R.id.action_logout)
+        {
+            FirebaseAuth.getInstance().signOut();
+
+            startActivity(new Intent(listOfPeople.this, MainActivity.MainActivity.class));
+        }
+
         return false;
     }
-
-
-
 
 
     @Override
@@ -91,69 +81,99 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
 //        String base = "";
 //        Log.i("name:","");
-        nameList = FirebaseDatabase.getInstance().getReference("abc");
-//        uploadList = new ArrayList<>();
 
-        Fnames = new ArrayList<>();
-        Fages = new ArrayList<>();
+        if(FirebaseAuth.getInstance().getUid() == null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.MainActivity.class));
+        }
+
+        nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
+        nameList.keepSynced(true);
+
+        uploadList = new ArrayList<>();
+
         Fimages = new ArrayList<>();
         dsList = new ArrayList<>();
-        mAuth = FirebaseAuth.getInstance();
-        list = (ListView) findViewById(R.id.peopleListView);
 
-        mAuthListner = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() ==  null){
-                    Toast.makeText(listOfPeople.this, "Logged in", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(listOfPeople.this,MainActivity.class));
-                }
-                else
-                {
-                    //Toast.makeText(MainActivity.this, "Failed u idiot", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+        mStorageReference = FirebaseStorage.getInstance().getReference();
 
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-            {
 
-                    personName = Fnames.get(i);
-                    Log.i("abc",personName);
+//        aList = new ArrayList<>();
 
-                    Intent intent = new Intent(getApplicationContext() , tabbedChoice.class);
-                    startActivity(intent);
-
-            }
-        });
 
 
         nameList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                {
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     HashMap value = (HashMap) postSnapshot.getValue();
-                    if(!dsList.contains(value)) {
+//                    final String uid = (String) value.get("uid");
+                    wardClass ward = postSnapshot.getValue(wardClass.class);
+//                    wardClass ward = new wardClass(
+//                            value.get("key").toString(),
+//                            value.get("name").toString(),
+//                            Integer.valueOf(Long.toString((Long) value.get("age"))),
+//                            value.get("gender").toString(),
+//                            value.get("uid").toString()
+//                    );
 
-                        dsList.add(value);
 
-                        Fnames.add((String) value.get("name"));
-                        Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
-                        Fimages.add(R.mipmap.ic_launcher_round);    //add actual images
 
-                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
-                        System.out.println(Fnames);
+                    if (ward.getUid() != null && FirebaseAuth.getInstance().getUid() != null) {
+                        if (FirebaseAuth.getInstance().getUid().equals(ward.getUid())) {
 
-                        MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
+                            if (!dsList.contains(value.get("key").toString() )) {
 
-                        list.setAdapter(adapter);
+                                dsList.add(value.get("key").toString());
+//                        System.out.println(dsList);
+
+
+                                uploadList.add(ward);
+//                                Fnames.add((String) value.get("name"));
+//                                Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
+
+
+                                final String key = (String) postSnapshot.getKey();
+//                                System.out.println("here : " + uid + "/displayPictures/" + key + ".jpg");
+                                StorageReference imageRef = mStorageReference
+                                        .child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+                                Fimages.add(imageRef);
+
+//                                System.out.println("key :" + key);
+//                                System.out.println("uid :" + uid);
+//
+//                            mStorageReference.child(uid + "/displayPictures/" + key +".jpg").getDownloadUrl()
+//                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                        @Override
+//                                        public void onSuccess(Uri uri) {
+//                                            System.out.println("here : " + uid + "/displayPictures/" + key +".jpg");
+//                                            StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key +".jpg");
+//
+//                                            Fimages.add(imageRef);
+//                                        }
+//                                    })
+//                                    .addOnFailureListener(new OnFailureListener() {
+//                                        @Override
+//                                        public void onFailure(@NonNull Exception e) {
+//                                            Fimages.add(mStorageReference.child("dpic.jpg"));
+//                                        }
+//                                    });
+                            }
+
+
+//                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
+
+
+                            MyAdapter adapter = new MyAdapter(listOfPeople.this,
+                                    uploadList,
+                                    Fimages);
+
+                            list = (ListView) findViewById(R.id.peopleListView);
+                            list.setAdapter(adapter);
+                        }
                     }
-
                     //addition :
 //                    System.out.println(upload.getName());
 //                    HashMap<String, String> hm = new HashMap<>();
@@ -162,6 +182,7 @@ public class listOfPeople extends AppCompatActivity
 //                    hm.put("imageId", ""+upload.getImageId());
 //                    aList.add(hm);
                 }
+
             }
 
             @Override
@@ -169,6 +190,7 @@ public class listOfPeople extends AppCompatActivity
 
             }
         });
+
 
 
 
@@ -188,30 +210,42 @@ public class listOfPeople extends AppCompatActivity
 
 //        MyAdapter adapter = new MyAdapter(this, names,ages, images);
 
-        MyAdapter adapter = new MyAdapter(this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new Integer[Fimages.size()]));
+        MyAdapter adapter = new MyAdapter(this,
+                uploadList,
+                Fimages);
 
         list = (ListView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
+                intent.putExtra("key", uploadList.get(position).getKey());
+
+                startActivity(intent);
+            }
+        });
     }
 
     class MyAdapter extends ArrayAdapter<String>{
         private final Context context;
-        private final String[] names;
-        private final Integer[] ages;
-        private final Integer[] images;
 
-        public MyAdapter(@NonNull Context context, String[] names, Integer[] ages, Integer[] images) {
-            super(context, R.layout.people_listview_layout, names);
+        private final List<wardClass> listElemets;
+        private final List<StorageReference> imageReferences;
 
+
+        public MyAdapter(@NonNull Context context, List<wardClass> listElements, List<StorageReference> imageReferences) {
+            super(context, R.layout.people_listview_layout);
+
+            this.listElemets = listElements;
+            this.imageReferences = imageReferences;
             this.context = context;
-            this.names = names;
-            this.ages = ages;
-            this.images  = images;
         }
 
         @Override
         public int getCount() {
-            return names.length;
+            return listElemets.size();
         }
 
         @Override
@@ -230,9 +264,17 @@ public class listOfPeople extends AppCompatActivity
             TextView name = (TextView) rowView.findViewById(R.id.name);
             TextView age = (TextView) rowView.findViewById(R.id.age);
 
-            iv1.setImageResource(images[i]);
-            name.setText(names[i].length()<=25 ? names[i] : names[i].substring(0, 25)+ "..." );
-            age.setText(String.valueOf( ages[i] ));
+//            System.out.println(images);
+            Glide.with(listOfPeople.this)
+                    .using(new FirebaseImageLoader())
+                    .load(imageReferences.get(i))
+                    .centerCrop()
+                    .into(iv1);
+
+            wardClass ward = listElemets.get(i);
+//            iv1.setImageResource(images[i]);
+            name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
+            age.setText( String.valueOf(ward.getAge())  );
 
 
             return rowView;

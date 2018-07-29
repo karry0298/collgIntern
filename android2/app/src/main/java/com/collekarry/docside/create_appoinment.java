@@ -3,10 +3,8 @@ package com.collekarry.docside;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +15,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-import static com.collekarry.docside.listOfPeople.personName;
 
 public class create_appoinment extends AppCompatActivity
 {
@@ -50,10 +46,10 @@ public class create_appoinment extends AppCompatActivity
         dbdate="";
         editTextinput="";
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc");
-        mDatabaseReference  = mDatabaseReference.child(""+personName).child("doc").child(typeName);
-
-        Log.i("nameOf", personName);
+//        mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc");
+//        mDatabaseReference  = mDatabaseReference.child(""+personName).child("doc").child(typeName);
+//
+//        Log.i("nameOf", personName);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +128,7 @@ public class create_appoinment extends AppCompatActivity
                 else
                 {
                     MyBlaBlaVnew newBla = new MyBlaBlaVnew(mydate+" :"+editTextinput,"NO REPORT",mydate,mytime);
-                    mDatabaseReference.child(dbdate).setValue(newBla);
+//                    mDatabaseReference.child(dbdate).setValue(newBla);
 
                     startActivity(new Intent(create_appoinment.this,tabbedChoice.class));
                     Toast.makeText(create_appoinment.this, "APPOINTMENT CREATED", Toast.LENGTH_SHORT).show();

@@ -75,7 +75,6 @@ public class AddMedicationFragment extends DialogFragment{
     // TODO: Rename and change types of parameters
     private wardClass ward;
 
-
     private OnFragmentInteractionListener mListener;
 
     public AddMedicationFragment() {
@@ -142,8 +141,7 @@ public class AddMedicationFragment extends DialogFragment{
                 Calendar calender = Calendar.getInstance();
                 Dialog mDialog = new TimePickerDialog(getContext(),
                         mTimesetListener, calender.get(Calendar.HOUR_OF_DAY),
-                        calender.get(Calendar.MINUTE),
-                        false);
+                        calender.get(Calendar.MINUTE),false);
 
                 mDialog.show();
             }
