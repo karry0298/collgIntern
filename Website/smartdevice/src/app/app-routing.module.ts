@@ -5,6 +5,7 @@ import { DoctorComponent } from './doctor/doctor.component';
 import { GuardianComponent } from './guardian/guardian.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.service';
+import { ModuleWithProviders } from "@angular/core";
 
 export const routes: Routes = [
   {
