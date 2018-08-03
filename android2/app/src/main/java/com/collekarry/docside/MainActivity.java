@@ -57,11 +57,10 @@ public class MainActivity extends AppCompatActivity
                 if(firebaseAuth.getCurrentUser() !=  null){
                     Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this,listOfPeople.class));
-                    //signIn();
                 }
                 else
                 {
-                    //Toast.makeText(MainActivity.this, "Failed u idiot", Toast.LENGTH_SHORT).show();
+
                 }
             }
         };

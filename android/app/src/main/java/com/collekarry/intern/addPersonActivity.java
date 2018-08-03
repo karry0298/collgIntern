@@ -1,5 +1,6 @@
 package com.collekarry.intern;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -40,6 +42,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Time;
+import org.joda.time.LocalTime;
 import java.util.*;
 
 import java.util.regex.Matcher;
@@ -65,10 +69,14 @@ public class addPersonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_person);
 
+        if(FirebaseAuth.getInstance().getUid() == null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
         nameView = findViewById(R.id.nameInput);
         ageView = findViewById(R.id.ageInput);
         genderView = findViewById(R.id.genderSwitch);
-        submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton = findViewById(R.id.submitButton);
         imageView = findViewById(R.id.imageButton);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -97,16 +105,27 @@ public class addPersonActivity extends AppCompatActivity {
 
             String uid = FirebaseAuth.getInstance().getUid();
 
-            wardClass ward = new wardClass(name,age,gender,223222, uid);
+            final String key = mDatabase.child("wards").child(uid).push().getKey();
 
-            final String key = mDatabase.child("wards").push().getKey();
+            wardClass ward = new wardClass(key,name,age,gender,uid);
 
-            mDatabase.child("wards").child(key).setValue(ward)
+
+            List<Medicine> tempMed = new ArrayList<>();
+            List<String> t = new ArrayList<>();
+            t.add("2:00 am");
+            t.add("11:30 pm");
+
+            for(int i = 0; i < 10; i++){
+                tempMed.add(new Medicine("MedName","BrandName", new Date(), t, "Dr. Kannaswmi") );
+            }
+            ward.setMedicines(tempMed);
+
+            mDatabase.child("wards").child(uid).child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(addPersonActivity.this, "key: "+key+" added", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(addPersonActivity.this, listOfPeople.class));
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -118,9 +137,18 @@ public class addPersonActivity extends AppCompatActivity {
 
             StorageReference fileRef = mStorageRef.child( uid + "/displayPictures/" + key +".jpg");
 
+            Drawable img;
+            System.out.println("\n\n\n tadada: " + imageView.getTag() + "\n\n\n");
+            if(imageView.getTag().equals("R.drawable.dpic.jpg")){
+                img = getDrawable(R.drawable.default_dp);
+            }
+            else{
+                img = imageView.getDrawable();
+            }
+
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) img).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
@@ -134,8 +162,7 @@ public class addPersonActivity extends AppCompatActivity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
+                    startActivity(new Intent(addPersonActivity.this, listOfPeople.class));
                 }
             });
 
@@ -196,7 +223,7 @@ public class addPersonActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select photo"),1);
     }
 
-    public boolean checkPermissions(final Context context) {
+    public boolean checkPermissions(final Context context){
         if(userChosenTask.equals("Choose from Library")) {
             if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -222,11 +249,32 @@ public class addPersonActivity extends AppCompatActivity {
         }
         else{
             if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions((Activity) context, new String[] {android.Manifest.permission.CAMERA}, 124);
-                cameraIntent();
+//                ActivityCompat.requestPermissions((Activity) context, new String[] {android.Manifest.permission.CAMERA}, 124);
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Permission necessary");
+                    alertBuilder.setMessage("Camera permission is necessary");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
+                } else {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+
+
+
                 return false;
             }
-            return true;
+            else{
+                return true;
+            }
 
         }
 
@@ -253,6 +301,7 @@ public class addPersonActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
+            imageView.setTag("");
             if (requestCode == 1)               //1 for gallery
                 onSelectFromGalleryResult(data);
             else if (requestCode == 0)          //0 for camera
@@ -294,5 +343,6 @@ public class addPersonActivity extends AppCompatActivity {
 
         imageView.setImageBitmap(thumbnail);
     }
+
 
 }

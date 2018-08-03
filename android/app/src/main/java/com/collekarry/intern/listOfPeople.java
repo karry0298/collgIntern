@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class listOfPeople extends AppCompatActivity
@@ -40,14 +42,7 @@ public class listOfPeople extends AppCompatActivity
     DatabaseReference nameList;
     ListView list;
     List<wardClass> uploadList;
-    List<HashMap<String,String>> aList;
 
-    String[] names = { "ABC", "DEF", "JHI", "JKL", "MNO", "PQR", "STU" ,"Obama", "Osama", "robzrjg", "miguel Rodrigues chacking max length", "Pable"};
-    Integer[] ages = { 98, 97, 99, 104, 84, 89, 78, 99, 99, 99, 99, 99};
-    Integer[] images = {R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round};
-
-    List<String> Fnames ;
-    List<Integer> Fages;
     List<StorageReference> Fimages;
     List<String> dsList;
 
@@ -76,6 +71,7 @@ public class listOfPeople extends AppCompatActivity
         else if (id == R.id.action_logout)
         {
             FirebaseAuth.getInstance().signOut();
+
             startActivity(new Intent(listOfPeople.this, MainActivity.class));
         }
 
@@ -90,15 +86,22 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
 //        String base = "";
 //        Log.i("name:","");
-        nameList = FirebaseDatabase.getInstance().getReference("wards");
-//        uploadList = new ArrayList<>();
 
-        Fnames = new ArrayList<>();
-        Fages = new ArrayList<>();
+        if(FirebaseAuth.getInstance().getUid() == null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
+        nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
+        nameList.keepSynced(true);
+
+        uploadList = new ArrayList<>();
+
         Fimages = new ArrayList<>();
         dsList = new ArrayList<>();
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
+
+
 
 //        aList = new ArrayList<>();
 
@@ -108,25 +111,43 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                {
-                    HashMap value = (HashMap) postSnapshot.getValue();
-                    if(!dsList.contains(postSnapshot.getKey())) {
 
-                        dsList.add(postSnapshot.getKey());
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    HashMap value = (HashMap) postSnapshot.getValue();
+//                    final String uid = (String) value.get("uid");
+                    wardClass ward = postSnapshot.getValue(wardClass.class);
+//                    wardClass ward = new wardClass(
+//                            value.get("key").toString(),
+//                            value.get("name").toString(),
+//                            Integer.valueOf(Long.toString((Long) value.get("age"))),
+//                            value.get("gender").toString(),
+//                            value.get("uid").toString()
+//                    );
+
+
+
+                    if (ward.getUid() != null && FirebaseAuth.getInstance().getUid() != null) {
+                        if (FirebaseAuth.getInstance().getUid().equals(ward.getUid())) {
+
+                            if (!dsList.contains(value.get("key").toString() )) {
+
+                                dsList.add(value.get("key").toString());
 //                        System.out.println(dsList);
 
-                        Fnames.add((String) value.get("name"));
-                        Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
+
+                                uploadList.add(ward);
+//                                Fnames.add((String) value.get("name"));
+//                                Fages.add(Integer.valueOf(Long.toString((Long) value.get("age"))));
 
 
-                        final String uid = (String) value.get("uid");
-                        final String key = (String) postSnapshot.getKey();
-                        if(uid != null){
-                            System.out.println("here : " + uid + "/displayPictures/" + key +".jpg");
-                            StorageReference imageRef = mStorageReference.child(uid + "/displayPictures/" + key +".jpg");
-                            Fimages.add(imageRef);
+                                final String key = (String) postSnapshot.getKey();
+//                                System.out.println("here : " + uid + "/displayPictures/" + key + ".jpg");
+                                StorageReference imageRef = mStorageReference
+                                        .child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+                                Fimages.add(imageRef);
 
+//                                System.out.println("key :" + key);
+//                                System.out.println("uid :" + uid);
 //
 //                            mStorageReference.child(uid + "/displayPictures/" + key +".jpg").getDownloadUrl()
 //                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -144,22 +165,20 @@ public class listOfPeople extends AppCompatActivity
 //                                            Fimages.add(mStorageReference.child("dpic.jpg"));
 //                                        }
 //                                    });
-                        }
-                        else{
-                            Fimages.add(mStorageReference.child("dpic.jpg"));
-                        }
+                            }
 
 
 //                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
-                        System.out.println("key :" + key);
-                        System.out.println("uid :" + uid);
 
-                        MyAdapter adapter = new MyAdapter(listOfPeople.this, Fnames.toArray(new String[Fnames.size()]), Fages.toArray(new Integer[Fages.size()]), Fimages.toArray(new StorageReference[Fimages.size()]));
 
-                        list = (ListView) findViewById(R.id.peopleListView);
-                        list.setAdapter(adapter);
+                            MyAdapter adapter = new MyAdapter(listOfPeople.this,
+                                    uploadList,
+                                    Fimages);
+
+                            list = (ListView) findViewById(R.id.peopleListView);
+                            list.setAdapter(adapter);
+                        }
                     }
-
                     //addition :
 //                    System.out.println(upload.getName());
 //                    HashMap<String, String> hm = new HashMap<>();
@@ -196,32 +215,42 @@ public class listOfPeople extends AppCompatActivity
 
 //        MyAdapter adapter = new MyAdapter(this, names,ages, images);
 
-        MyAdapter adapter = new MyAdapter(this, Fnames.toArray(new String[Fnames.size()]),
-                Fages.toArray(new Integer[Fages.size()]),
-                Fimages.toArray(new StorageReference[Fimages.size()]));
+        MyAdapter adapter = new MyAdapter(this,
+                uploadList,
+                Fimages);
 
         list = (ListView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
+                intent.putExtra("key", uploadList.get(position).getKey());
+
+                startActivity(intent);
+            }
+        });
     }
 
     class MyAdapter extends ArrayAdapter<String>{
         private final Context context;
-        private final String[] names;
-        private final Integer[] ages;
-        private final StorageReference[] images;
 
-        public MyAdapter(@NonNull Context context, String[] names, Integer[] ages, StorageReference[] images) {
-            super(context, R.layout.people_listview_layout, names);
+        private final List<wardClass> listElemets;
+        private final List<StorageReference> imageReferences;
 
+
+        public MyAdapter(@NonNull Context context, List<wardClass> listElements, List<StorageReference> imageReferences) {
+            super(context, R.layout.people_listview_layout);
+
+            this.listElemets = listElements;
+            this.imageReferences = imageReferences;
             this.context = context;
-            this.names = names;
-            this.ages = ages;
-            this.images  = images;
         }
 
         @Override
         public int getCount() {
-            return names.length;
+            return listElemets.size();
         }
 
         @Override
@@ -240,15 +269,17 @@ public class listOfPeople extends AppCompatActivity
             TextView name = (TextView) rowView.findViewById(R.id.name);
             TextView age = (TextView) rowView.findViewById(R.id.age);
 
-            System.out.println(images);
+//            System.out.println(images);
             Glide.with(listOfPeople.this)
                     .using(new FirebaseImageLoader())
-                    .load(images[i])
+                    .load(imageReferences.get(i))
+                    .centerCrop()
                     .into(iv1);
 
+            wardClass ward = listElemets.get(i);
 //            iv1.setImageResource(images[i]);
-            name.setText(names[i].length()<=25 ? names[i] : names[i].substring(0, 25)+ "..." );
-            age.setText(String.valueOf( ages[i] ));
+            name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
+            age.setText( String.valueOf(ward.getAge())  );
 
 
             return rowView;
