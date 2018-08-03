@@ -61,13 +61,13 @@ public class listOfPeople extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_newname)
         {
-            startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
+            startActivity(new Intent(listOfPeople.this, updateTheMedication.class));
         }
         else if (id == R.id.action_logout)
         {
             FirebaseAuth.getInstance().signOut();
 
-            startActivity(new Intent(listOfPeople.this, MainActivity.MainActivity.class));
+            startActivity(new Intent(listOfPeople.this, MainActivity.class));
         }
 
         return false;
@@ -83,7 +83,7 @@ public class listOfPeople extends AppCompatActivity
 //        Log.i("name:","");
 
         if(FirebaseAuth.getInstance().getUid() == null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
@@ -95,10 +95,6 @@ public class listOfPeople extends AppCompatActivity
         dsList = new ArrayList<>();
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
-
-
-
-//        aList = new ArrayList<>();
 
 
 
@@ -220,7 +216,7 @@ public class listOfPeople extends AppCompatActivity
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), tabbedChoice.class);
                 intent.putExtra("key", uploadList.get(position).getKey());
 
                 startActivity(intent);

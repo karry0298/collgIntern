@@ -10,21 +10,36 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-public class tabbedChoice extends AppCompatActivity
+public class    tabbedChoice extends AppCompatActivity
 {
 
 
     static String choicForPerson;
     static int flag;
+    private wardClass ward;
     String phonenumber;
+    private String key;
+
+
     DatabaseReference mDatabaseReference;
+    private StorageReference mStorageReference;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -46,25 +61,39 @@ public class tabbedChoice extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_choice);
 
+
+        Intent intent = getIntent();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
+
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
-        tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
-        tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        if(FirebaseAuth.getInstance().getUid() == null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
+        key = intent.getStringExtra("key");
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("wards")
+                .child(FirebaseAuth.getInstance().getUid()).child(key);
+
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -76,22 +105,28 @@ public class tabbedChoice extends AppCompatActivity
             }
         });
 
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ward = dataSnapshot.getValue(wardClass.class);
 
-        //mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc").child(""+personName);
+                Log.i("abcd",ward.getName());
 
-//        mDatabaseReference.addValueEventListener(new ValueEventListener()
-//        {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot)
-//            {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+                tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
+                tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
+                tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
+                tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                startActivity(new Intent(tabbedChoice.this, MainActivity.class));
+                Toast.makeText(getApplicationContext(), "ward retrieve error", Toast.LENGTH_SHORT);
+            }
+        });
+
+
     }
 
 
@@ -145,10 +180,7 @@ public class tabbedChoice extends AppCompatActivity
                         flag =2;
                         return ma;
 
-                case 1: sendNewMedication snm = new sendNewMedication();
-                        flag = 3;
-                        choicForPerson ="viewMed";
-                        return snm;
+                case 1: return sendNewMedication.newInstance(ward);
 
                 case 2: checkPrevRecord cp = new checkPrevRecord();
                         choicForPerson ="pastRec";

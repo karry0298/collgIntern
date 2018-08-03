@@ -123,8 +123,6 @@ public class WardDetailsActivity extends AppCompatActivity
 
 
 
-
-
 //        DatabaseReference mRef = mDatabaseReference.child(FirebaseAuth.getInstance().getUid()).child(key);
 
 //        mRef.addValueEventListener(new ValueEventListener() {
@@ -158,8 +156,6 @@ public class WardDetailsActivity extends AppCompatActivity
 //        });
 
 
-
-
         mAppBarLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -167,9 +163,6 @@ public class WardDetailsActivity extends AppCompatActivity
                 setAppBarOffset(heightPx/2);
             }
         });
-
-
-
 
 
 //        tabLayout.addOnTabSelectedListener(this);
@@ -192,7 +185,8 @@ public class WardDetailsActivity extends AppCompatActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_ward_details, menu);
         return true;

@@ -22,10 +22,10 @@ public class updateTheMedication extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_the_medication);
 
-        morn = (EditText) findViewById(R.id.morngUpdate);
-        aft = (EditText) findViewById(R.id.afternoonUpdate);
-        even = (EditText) findViewById(R.id.evenUpdate);
-        change = (Button) findViewById(R.id.sub);
+//        morn = (EditText) findViewById(R.id.morngUpdate);
+//        aft = (EditText) findViewById(R.id.afternoonUpdate);
+//        even = (EditText) findViewById(R.id.evenUpdate);
+//        change = (Button) findViewById(R.id.sub);
         String typeName = "sendMed";
 
 //        mDatabaseReference = FirebaseDatabase.getInstance().getReference("abc");
