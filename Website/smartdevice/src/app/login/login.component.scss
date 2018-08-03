@@ -1,0 +1,28 @@
+.button {
+    background-color: white;
+    color:#2170ef;
+    border: 2px solid #2170ef;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+.button:hover {
+    background-color: #2170ef;
+    color: white;
+    border-radius: 10px;
+}
+
+.center{
+  margin: auto;
+  width: 50%;
+  align: center;
+}
+
+.color{
+  background-color: gray;
+}
+
+.title1{
+  font-size: 40px;
+  font-family: monospace;
+}

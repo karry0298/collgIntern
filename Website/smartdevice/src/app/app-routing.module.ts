@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
 import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
 import { AuthGuard } from './auth.service';
+import { ModuleWithProviders } from "@angular/core";
 
 export const routes: Routes = [
   {
