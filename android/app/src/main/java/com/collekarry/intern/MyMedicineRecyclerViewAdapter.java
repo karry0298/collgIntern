@@ -42,7 +42,6 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
             public int compare(Medicine o1, Medicine o2) {
                     return  o1.getNextConsumptionDateTime(LocalTime.now()).compareTo(o2.getNextConsumptionDateTime(LocalTime.now()));
                 }
-
         });
 
         mValues = m;

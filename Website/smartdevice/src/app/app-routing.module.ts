@@ -1,17 +1,23 @@
-import { NgModule } from '@angular/core';
+import { NgModule,ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CaretakerComponent } from './caretaker/caretaker.component';
 import { DoctorComponent } from './doctor/doctor.component';
 import { GuardianComponent } from './guardian/guardian.component';
 import { LoginComponent } from './login/login.component';
-const routes: Routes = [
+import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
+import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
+import { AuthGuard } from './auth.service';
+import { ModuleWithProviders } from "@angular/core";
+
+export const routes: Routes = [
   {
     path: 'caretaker',
     component: CaretakerComponent
   },
   {
     path: 'doctor',
-    component: DoctorComponent
+    component: DoctorComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'guardian',
@@ -19,8 +25,14 @@ const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
     component: LoginComponent
   },
+
 ];
 
 @NgModule({
@@ -28,3 +40,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+export const router: ModuleWithProviders = RouterModule.forRoot(routes);

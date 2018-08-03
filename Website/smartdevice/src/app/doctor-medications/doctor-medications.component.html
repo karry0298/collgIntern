@@ -1,0 +1,33 @@
+<div class="col-12" style="padding:0px;" >
+  <button class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit">UPDATE</button>
+  <div class="side-panel" style="padding-top:10px">
+    <p>Morning:{{ patient.medications.morning }}</p>
+  </div>
+
+  <div class="side-panel" style="">
+    <p>Afternoon:{{ patient.medications.afternoon }}</p>
+  </div>
+
+  <div class="side-panel" style="">
+    <p>evening:{{ patient.medications.evening }}</p>
+  </div>
+
+  <div class="side-panel" style="">
+    <p>night:{{ patient.medications.night }}</p>
+  </div>
+</div>
+
+
+
+<button id="myBtn" (click)="openModal()">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal" [ngStyle]="{'display':display}">
+
+  <!-- Modal content -->
+  <div class="modal-content" >
+    <span class="close" (click)="closeModal()"  >&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div><!-- /.modal !-->
