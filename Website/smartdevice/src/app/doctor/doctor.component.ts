@@ -1,4 +1,7 @@
 import { Component, OnInit, Input  } from '@angular/core';
+import { NgModule }      from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Patient } from '../patient';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -15,13 +18,22 @@ export class DoctorComponent implements OnInit {
   products: any[];
   name: any;
   selectedPatient: Patient;
+  filtername: string="";
 
 onSelect(hero: Patient): void {
   this.selectedPatient = hero;
   console.log(this.selectedPatient);
 }
+// console.log(filter);
 
-
+filter(patient : Patient) : boolean{
+  // Return true if don't want this job in the results.
+  // e.g. lets filter jobs with price < 25;
+  if (patient.name.toUpperCase().indexOf(this.filtername.toUpperCase())>-1){
+    return false;
+  }
+  return true; 
+}
 
 
   constructor(db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router) {
