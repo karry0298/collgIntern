@@ -6,11 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.collekarry.intern.PreviousMedicationFragment.OnListFragmentInteractionListener;
+import com.collekarry.intern.HistoryFragment.OnListFragmentInteractionListener;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,40 +19,37 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyPrevMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyPrevMedicineRecyclerViewAdapter.ViewHolder> {
+public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Medicine> mValues;
+    private final List<History> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyPrevMedicineRecyclerViewAdapter(List<Medicine> items, OnListFragmentInteractionListener listener) {
-//        mValues = items;
+    public HistoryRecyclerViewAdapter(List<History> items, OnListFragmentInteractionListener listener) {
         mListener = listener;
 
-        List<Medicine> m = new ArrayList<>();
+        List<History> m = new ArrayList<>();
         if(items == null || items.size() == 0){
             mValues = m;
             return;
         }
-        for(Medicine x: items){
-            if(x.getDateStopped() != null && x.getDateStopped().before(new Date())){
-                m.add(x);
-            }
-        }
-        mValues = m;
+
+        mValues = items;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_previous_medication, parent, false);
+                .inflate(R.layout.fragment_history, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
-        holder.mContentView.setText(mValues.get(position).getReasonStopped());
+        holder.mIdView.setText(mValues.get(position).getTitle());
+
+            holder.mContentView.setText(new SimpleDateFormat("dd/MM/yyyy").format(mValues.get(position).getDate()));
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +72,13 @@ public class MyPrevMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyPr
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Medicine mItem;
+        public History mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.history_date);
         }
 
         @Override

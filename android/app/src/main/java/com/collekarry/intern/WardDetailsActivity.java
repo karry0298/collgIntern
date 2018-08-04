@@ -32,13 +32,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
-public class WardDetailsActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete
-//        implements TabLayout.OnTabSelectedListener,
-//        HeartRateFragment.OnFragmentInteractionListener,
-//        MedicationFragment.OnFragmentInteractionListener,
-//        AppointmentsFragment.OnFragmentInteractionListener
+public class WardDetailsActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete, AddHistoryFragment.OnEntryCompleteListener
 {
-
+    private int tabPosition;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private WardPager adapter;
@@ -72,6 +68,7 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
         mCoordinatorLayour = findViewById(R.id.coordinator_layout);
         mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         viewPager = findViewById(R.id.pager);
+        tabPosition = 0;
 
         imageView = findViewById(R.id.profilePhoto);
 
@@ -82,6 +79,7 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("wards")
                 .child(FirebaseAuth.getInstance().getUid()).child(key);
+        mDatabaseReference.keepSynced(true);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
@@ -103,7 +101,7 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
                 mCollapsingToolbarLayout.setTitle(ward.getName());
 
                 adapter = new WardPager(getSupportFragmentManager(), ward);
-                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
                 viewPager.setAdapter(adapter);
 
                 tabLayout.setupWithViewPager(viewPager);
@@ -122,40 +120,6 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
         });
 
 
-
-//        DatabaseReference mRef = mDatabaseReference.child(FirebaseAuth.getInstance().getUid()).child(key);
-
-//        mRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                HashMap value = (HashMap) dataSnapshot.getValue();
-//
-//                ward = new wardClass(
-//                        key,
-//                        value.get("name").toString(),
-//                        Integer.valueOf(Long.toString((Long) value.get("age"))),
-//                        value.get("gender").toString(),
-//                        value.get("uid").toString()
-//                );
-//
-//                imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
-//
-//                Glide.with(WardDetailsActivity.this)
-//                        .using(new FirebaseImageLoader())
-//                        .load(imageRef)
-//                        .centerCrop()
-//                        .into(imageView);
-//
-//                mCollapsingToolbarLayout.setTitle(ward.getName());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
         mAppBarLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -165,7 +129,21 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
         });
 
 
-//        tabLayout.addOnTabSelectedListener(this);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabPosition = tab.getPosition();
+                System.out.println("s : " + tabPosition);
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -185,8 +163,7 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_ward_details, menu);
         return true;
@@ -200,22 +177,32 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(id == R.id.action_add_meds)
-        {
+        if(id == R.id.action_add_meds){
             AddMedicationFragment.newInstance(ward,"direct_entry").show(getSupportFragmentManager(), "add_med");
         }
-
+        else if(id == R.id.action_add_history){
+            AddHistoryFragment.newInstance(ward,"direct_entry").show(getSupportFragmentManager(), "add_history");
+        }
 
         return false;
     }
 
+
+
     @Override
     public void onEntryComplete(Medicine med) {
-
+        adapter.notifyDataSetChanged();
     }
-
     @Override
     public void onEntryComplete() {
+        int a = tabPosition;
+        System.out.println("pos : " + a);
+        adapter.notifyDataSetChanged();
+//        viewPager.setAdapter(adapter);
+        tabLayout.getTabAt(a).select();
+    }
+    @Override
+    public void onEntryComplete(History history) {
         adapter.notifyDataSetChanged();
     }
 }

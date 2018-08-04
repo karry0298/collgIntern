@@ -10,16 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class PreviousMedicationFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -31,13 +28,13 @@ public class PreviousMedicationFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PreviousMedicationFragment() {
+    public HistoryFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PreviousMedicationFragment newInstance(wardClass ward) {
-        PreviousMedicationFragment fragment = new PreviousMedicationFragment();
+    public static HistoryFragment newInstance(wardClass ward) {
+        HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         fragment.ward = ward;
         args.putSerializable("ward", ward);
@@ -57,7 +54,7 @@ public class PreviousMedicationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_previous_medication_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -68,7 +65,7 @@ public class PreviousMedicationFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPrevMedicineRecyclerViewAdapter(ward.getMedicines(), mListener));
+            recyclerView.setAdapter(new HistoryRecyclerViewAdapter(ward.getHistories(), mListener));
         }
         return view;
     }
@@ -91,6 +88,6 @@ public class PreviousMedicationFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Medicine item);
+        void onListFragmentInteraction(History item);
     }
 }

@@ -1,5 +1,10 @@
 package com.collekarry.intern;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
+import android.provider.CalendarContract;
+
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -91,6 +96,38 @@ public class Medicine implements Serializable{
         int days = Integer.valueOf(count/pillsPerDay) - 3;
 
         return d.plusDays(days);
+    }
+
+    public long setReminder(Context context, Medicine newMed){
+        DateTime due = newMed.getDueDate();
+        long startMillis = due.getMillis();
+        DateTime dueEnd = due.plusDays(3);
+        long endMillis = dueEnd.getMillis();
+
+        String eventUriString = "content://com.android.calendar/events";
+        ContentValues eventValues = new ContentValues();
+
+        eventValues.put(CalendarContract.Events.CALENDAR_ID, 1);
+        eventValues.put(CalendarContract.Events.TITLE, "Buy Medicine");
+        eventValues.put(CalendarContract.Events.DESCRIPTION, newMed.getName() + "["+ newMed.getBrandName() + "]"  + " almost over");
+        eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, due.getZone().toTimeZone().getDisplayName());
+        eventValues.put(CalendarContract.Events.DTSTART, startMillis);
+        eventValues.put(CalendarContract.Events.DTEND, endMillis);
+        eventValues.put(CalendarContract.Events.STATUS, 0);
+        eventValues.put(CalendarContract.Events.ALL_DAY, 1);
+
+        Uri eventUri = context.getContentResolver().insert(Uri.parse(eventUriString), eventValues);
+        long eventID = Long.parseLong(eventUri.getLastPathSegment());
+
+
+        String reminderUriString = "content://com.android.calendar/reminders";
+        ContentValues reminderValues = new ContentValues();
+        reminderValues.put("event_id", eventID);
+        reminderValues.put("minutes", 12*60);
+        reminderValues.put("method", 1);
+        Uri reminderUri = context.getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
+
+        return eventID;
     }
 
     public Medicine() {

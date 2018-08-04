@@ -80,6 +80,7 @@ public class AddMedicationFragment extends DialogFragment{
     private TextView timeTextViewMain;
     private EditText medPrescriptionBy;
     private EditText medCount;
+    private ImageButton closeButton;
 
 
     private DatabaseReference mDatabaseReference;
@@ -158,37 +159,7 @@ public class AddMedicationFragment extends DialogFragment{
         }
 //        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
-    public long setReminder(Medicine newMed){
-        DateTime due = newMed.getDueDate();
-        long startMillis = due.getMillis();
-        DateTime dueEnd = due.plusDays(3);
-        long endMillis = dueEnd.getMillis();
 
-        String eventUriString = "content://com.android.calendar/events";
-        ContentValues eventValues = new ContentValues();
-
-        eventValues.put(CalendarContract.Events.CALENDAR_ID, 1);
-        eventValues.put(CalendarContract.Events.TITLE, "Buy Medicine");
-        eventValues.put(CalendarContract.Events.DESCRIPTION, newMed.getName() + "["+ newMed.getBrandName() + "]"  + " almost over");
-        eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, due.getZone().toTimeZone().getDisplayName());
-        eventValues.put(CalendarContract.Events.DTSTART, startMillis);
-        eventValues.put(CalendarContract.Events.DTEND, endMillis);
-        eventValues.put(CalendarContract.Events.STATUS, 0);
-        eventValues.put(CalendarContract.Events.ALL_DAY, 1);
-
-        Uri eventUri = getActivity().getContentResolver().insert(Uri.parse(eventUriString), eventValues);
-        long eventID = Long.parseLong(eventUri.getLastPathSegment());
-
-
-        String reminderUriString = "content://com.android.calendar/reminders";
-        ContentValues reminderValues = new ContentValues();
-        reminderValues.put("event_id", eventID);
-        reminderValues.put("minutes", 12*60);
-        reminderValues.put("method", 1);
-        Uri reminderUri = getActivity().getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
-
-        return eventID;
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -206,7 +177,14 @@ public class AddMedicationFragment extends DialogFragment{
         medPrescriptionBy = getView().findViewById(R.id.medprescriptionBy);
         medCount = getView().findViewById(R.id.medCount);
         medSubmitButton = getView().findViewById(R.id.medSubmitButton);
+        closeButton = getView().findViewById(R.id.med_close_button);
 
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -398,22 +376,18 @@ public class AddMedicationFragment extends DialogFragment{
                         while (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.WRITE_CALENDAR)
                                 != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions();
-
                         }
 
-                        long eventID = setReminder(newMed);
+                        long eventID = newMed.setReminder(getActivity(), newMed);
 
                         newMed.setDueEventID(eventID);
 
-                        if(ward.addMedicine(newMed))
-                            Toast.makeText(getContext(), "Med added", Toast.LENGTH_SHORT).show();
+                        ward.addMedicine(newMed);
 
                         mDatabaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        WardDetailsActivity w = (WardDetailsActivity) getActivity();
-//                                    w.setWard(ward);
                                         Toast.makeText(getContext(), "Med added", Toast.LENGTH_SHORT).show();
                                         entryCompleteListener.onEntryComplete();
                                         dismiss();
@@ -494,6 +468,8 @@ public class AddMedicationFragment extends DialogFragment{
         entryCompleteListener = (OnEntryComplete) context;
 
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

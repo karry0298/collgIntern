@@ -19,16 +19,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,31 +37,26 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Time;
-import org.joda.time.LocalTime;
 import java.util.*;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class addPersonActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete{
+public class addPersonActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete, AddHistoryFragment.OnEntryCompleteListener{
 
     private Button submitButton ;
     private EditText nameView;
     private EditText ageView;
     private Switch genderView;
     private List<Medicine> meds;
+    private List<History> histories;
 
     private DatabaseReference mDatabase;
     private StorageReference mStorageRef;
     private com.mikhaellopez.circularimageview.CircularImageView imageView;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView medRecyclerView;
+    private RecyclerView historyRecyclerView;
+    private RecyclerView.Adapter mAdapter, mAdapterB;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private String userChosenTask;
@@ -87,13 +78,16 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
         submitButton = findViewById(R.id.submitButton);
         imageView = findViewById(R.id.imageButton);
         meds = new ArrayList<>();
+        histories = new ArrayList<>();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        recyclerView = findViewById(R.id.med_recycler_view);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setHasFixedSize(true);
+        medRecyclerView = findViewById(R.id.med_recycler_view);
+        medRecyclerView.setNestedScrollingEnabled(false);
+        medRecyclerView.setHasFixedSize(true);
+
+        historyRecyclerView = findViewById(R.id.history_recycler_view);
     }
 
 
@@ -121,7 +115,13 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
             final String key = mDatabase.child("wards").child(uid).push().getKey();
 
             wardClass ward = new wardClass(key,name,age,gender,uid);
+
+            for(Medicine m: meds){
+                m.setDueEventID(m.setReminder(getApplicationContext(), m));
+            }
+
             ward.setMedicines(meds);
+            ward.setHistories(histories);
 
 //            List<Medicine> tempMed = new ArrayList<>();
 //            List<String> t = new ArrayList<>();
@@ -137,7 +137,9 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+
                             Toast.makeText(addPersonActivity.this, "key: "+key+" added", Toast.LENGTH_SHORT).show();
+
 
                         }
                     })
@@ -362,10 +364,16 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
         AddMedicationFragment.newInstance(new wardClass(), "indirect_entry")
                 .show(getSupportFragmentManager(), "add_med_indirect");
 
+//
+//        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View row = vi.inflate(R.layout.new_medicine_layout, null);
 
-        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = vi.inflate(R.layout.new_medicine_layout, null);
+    }
 
+    public void addHistory(View v){
+
+        AddHistoryFragment.newInstance(new wardClass(), "indirect_entry")
+                .show(getSupportFragmentManager(), "add_history_indirect");
     }
 
     @Override
@@ -373,10 +381,10 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
         meds.add(med);
         System.out.println(meds);
         mAdapter = new IndirectMedicineRecyclerViewAdapter(getApplicationContext(), meds);
-        recyclerView.setAdapter(mAdapter);
+        medRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(addPersonActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
+        medRecyclerView.setLayoutManager(layoutManager);
 
         mAdapter.notifyDataSetChanged();
     }
@@ -384,5 +392,18 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
     @Override
     public void onEntryComplete() {
 
+    }
+
+    @Override
+    public void onEntryComplete(History history) {
+        histories.add(history);
+
+        mAdapterB = new IndirectHistoryRecyclerViewAdapter(getApplicationContext(), histories);
+        historyRecyclerView.setAdapter(mAdapterB);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(addPersonActivity.this);
+        historyRecyclerView.setLayoutManager(layoutManager);
+
+        mAdapterB.notifyDataSetChanged();
     }
 }

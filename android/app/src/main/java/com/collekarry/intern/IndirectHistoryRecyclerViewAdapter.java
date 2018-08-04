@@ -11,34 +11,31 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class IndirectMedicineRecyclerViewAdapter extends RecyclerView.Adapter<IndirectMedicineRecyclerViewAdapter.ViewHolder> {
+public class IndirectHistoryRecyclerViewAdapter extends android.support.v7.widget.RecyclerView.Adapter<IndirectHistoryRecyclerViewAdapter.ViewHolder> {
 
-    private List<Medicine> meds;
+    private List<History> histories;
     private Context context;
 
-    public IndirectMedicineRecyclerViewAdapter(Context context, List<Medicine> meds) {
+    public IndirectHistoryRecyclerViewAdapter(Context context, List<History> histories) {
+        this.histories = histories;
         this.context = context;
-        this.meds = meds;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_layout, parent, false);
-//        TextView tv = row.findViewById(R.id.medTextViewMain);
-//        ImageButton ib = row.findViewById(R.id.action_remove_med);
-        ViewHolder vh = new ViewHolder(row);
-        return vh;
+
+        return new ViewHolder(row);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.nameView.setText(meds.get(position).getName());
+        holder.nameView.setText(histories.get(position).getTitle());
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                meds.remove(position);
+                histories.remove(position);
                 notifyDataSetChanged();
             }
         });
@@ -46,11 +43,11 @@ public class IndirectMedicineRecyclerViewAdapter extends RecyclerView.Adapter<In
 
     @Override
     public int getItemCount() {
-        if(meds == null){
+        if(histories==null){
             return 0;
         }
         else{
-            return meds.size();
+            return histories.size();
         }
     }
 

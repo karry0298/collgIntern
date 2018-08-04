@@ -27,6 +27,7 @@ public class wardClass implements Serializable
     private String gender;
     private String uid;
     private List<Medicine> medicines;
+    private List<History> histories;
 
     public wardClass() {
 
@@ -39,9 +40,10 @@ public class wardClass implements Serializable
         this.gender = gender;
         this.uid = uid;
         this.medicines = new ArrayList<>();
+        this.histories = new ArrayList<>();
     }
 
-    public boolean addMedicine(Medicine e){
+    public void addMedicine(Medicine e){
         final boolean[] ret = new boolean[1];
 
         if(medicines == null){
@@ -50,22 +52,6 @@ public class wardClass implements Serializable
 
         medicines.add(e);
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("wards").child(uid).child(key).setValue(this)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                ret[0] = true;
-
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                ret[0] = false;
-            }
-        });
-        return ret[0];
     }
 
     public List<Medicine> getMedicines() {
@@ -99,74 +85,24 @@ public class wardClass implements Serializable
     public void setAge(int age) {
         this.age = age;
     }
-//    public int getImageId() {
-//        return imageId[0];
-//    }
-//    public int getImageId(int index) {
-//
-//        int i=0;
-//
-//        while(i<10 && this.imageId[i] != 0){
-//            i++;
-//        }
-//        if(index < i) {
-//            return imageId[index];
-//        }
-//        else{
-//            return 0;
-//        }
-//    }
-
-//    public void setImageId(int imageId, int index) {
-//        this.imageId[index] = imageId;
-//    }
-
-//    public boolean setImageId(int imageId) {
-//        int index=0;
-//
-//        while(index<10 && this.imageId[index] != 0){
-//            index++;
-//        }
-//        if(index==10){
-//                return false;
-//        }
-//
-//        this.imageId[index] = imageId;
-//        return true;
-//
-//    }
     public String getGender() {
         return gender;
     }
     public void setGender(String gender) {
         this.gender = gender;
     }
+    public List<History> getHistories() {
+        return histories;
+    }
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+    public void addHistory(History history){
 
-//    public Map<String,Object> toMap(){
-//        Map<String, Object> A = new HashMap<>();
-//        Map<String, Object> meds = new HashMap<>();
-//
-//            for(Medicine m: medicines){
-//                Map<String, Object> medDetails = new HashMap<>();
-//                    medDetails.put("brandName", m.getBrandName());
-//                    medDetails.put("dateStarted", m.getDateStopped());
-//                    medDetails.put("reasonStopped", m.getReasonStopped());
-//                    Map<String, Object> t = new HashMap<>();
-//                        for(LocalTime p: m.getConsumptionTimings()){
-//                            t.put("0", p);
-//                        }
-//                    medDetails.put("consumptionTimings",t);
-//                    medDetails.put("prescriptionBy", m.getPrescriptionBy());
-//
-//                meds.put(m.getName(), medDetails);
-//            }
-//
-//        A.put("name", this.name);
-//        A.put("age", this.age);
-//        A.put("gender", this.gender);
-//        A.put("uid", this.uid);
-//        A.put("Medicines", meds);
-//
-//        return A;
-//    }
+        if(histories == null){
+            histories = new ArrayList<>();
+        }
+
+        this.histories.add(history);
+    }
 }

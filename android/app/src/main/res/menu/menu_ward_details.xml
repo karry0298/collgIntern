@@ -7,4 +7,9 @@
         android:orderInCategory="100"
         android:title="@string/add_medication"
         />
+    <item
+        android:id="@+id/action_add_history"
+        android:orderInCategory="100"
+        android:title="@string/add_history"
+        />
 </menu>
