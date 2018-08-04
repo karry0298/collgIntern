@@ -1,8 +1,10 @@
 package com.collekarry.intern;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,8 +34,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
+import java.util.List;
 
-public class WardDetailsActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete, AddHistoryFragment.OnEntryCompleteListener
+public class WardDetailsActivity extends AppCompatActivity
+        implements AddMedicationFragment.OnEntryComplete,
+        AddHistoryFragment.OnEntryCompleteListener,
+        MyMedicineRecyclerViewAdapter.OnMedClickedListener,
+        MedicineDetailsFragment.OnFragmentInteractionListener
 {
     private int tabPosition;
     private TabLayout tabLayout;
@@ -195,14 +203,45 @@ public class WardDetailsActivity extends AppCompatActivity implements AddMedicat
     }
     @Override
     public void onEntryComplete() {
-        int a = tabPosition;
-        System.out.println("pos : " + a);
-        adapter.notifyDataSetChanged();
-//        viewPager.setAdapter(adapter);
-        tabLayout.getTabAt(a).select();
+//        int a = tabPosition;
+//        System.out.println("pos : " + a);
+//        adapter.notifyDataSetChanged();
+////        viewPager.setAdapter(adapter);
+//        tabLayout.getTabAt(a).select();
+        recreate();
     }
     @Override
     public void onEntryComplete(History history) {
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void medClicked(Medicine m) {
+        MedicineDetailsFragment.newInstance(m).show(getSupportFragmentManager(),"show_medicine_details");
+    }
+
+    @Override
+    public void onMedRemoveAction(Medicine m) {
+        List<Medicine> medicineList = ward.getMedicines();
+        medicineList.remove(m);
+        ward.setMedicines(medicineList);
+
+        Uri deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, m.getDueEventID());
+        int rows = getContentResolver().delete(deleteUri, null, null);
+
+        if(rows>0){
+            Toast.makeText(getApplicationContext(), "deleted rows : "+ rows,  Toast.LENGTH_SHORT).show();
+        }
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        ref.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "cloud db edited too",  Toast.LENGTH_SHORT).show();
+                        recreate();
+                    }
+                });
     }
 }

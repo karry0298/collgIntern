@@ -30,9 +30,13 @@ public class Medicine implements Serializable{
     private Date dateStopped;
     private int count;
     private long dueEventID;
-    private String reasonStopped;
+
     private List<String> consumptionTimings;
     private String prescriptionBy;
+
+    public void removeTiming(String timing){
+        consumptionTimings.remove(timing);
+    }
 
     public String getNextConsumptionTime(LocalTime t){
         if(consumptionTimings == null || consumptionTimings.size() == 0){
@@ -177,13 +181,6 @@ public class Medicine implements Serializable{
     }
     public void setDateStopped(Date dateStopped) {
         this.dateStopped = dateStopped;
-    }
-
-    public String getReasonStopped() {
-        return reasonStopped;
-    }
-    public void setReasonStopped(String reasonStopped) {
-        this.reasonStopped = reasonStopped;
     }
 
     public List<String> getConsumptionTimings() {

@@ -18,13 +18,11 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class MedicationFragment extends Fragment {
+public class MedicationFragment extends Fragment{
 
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private wardClass ward;
-
-    private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,6 +36,7 @@ public class MedicationFragment extends Fragment {
         MedicationFragment fragment = new MedicationFragment();
         Bundle args = new Bundle();
         fragment.ward = ward;
+
         args.putSerializable("ward", ward);
 //        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
@@ -69,7 +68,7 @@ public class MedicationFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             System.out.println(ward.getName());
-            recyclerView.setAdapter(new MyMedicineRecyclerViewAdapter(ward.getMedicines(), mListener));
+            recyclerView.setAdapter(new MyMedicineRecyclerViewAdapter(context, ward.getMedicines()));
         }
         return view;
     }
@@ -77,7 +76,6 @@ public class MedicationFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     /**
@@ -92,6 +90,6 @@ public class MedicationFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Medicine item);
+        void itemClicked(Medicine item);
     }
 }

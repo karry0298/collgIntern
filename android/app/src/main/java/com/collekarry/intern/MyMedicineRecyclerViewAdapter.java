@@ -1,5 +1,6 @@
 package com.collekarry.intern;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,12 @@ import java.util.List;
 public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedicineRecyclerViewAdapter.ViewHolder> {
 
     private final List<Medicine> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnMedClickedListener mListener;
 
-    public MyMedicineRecyclerViewAdapter(List<Medicine> items, OnListFragmentInteractionListener listener) {
-//        mValues = items;
-        mListener = listener;
+
+
+    public MyMedicineRecyclerViewAdapter(Context context, List<Medicine> items) {
+        mListener = (OnMedClickedListener) context;
 
         List<Medicine> m = new ArrayList<>();
         if(items == null || items.size() == 0){
@@ -69,10 +71,12 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.medClicked(holder.mItem);
                 }
             }
         });
+
+
     }
 
     @Override
@@ -100,5 +104,9 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
+    }
+
+    public interface OnMedClickedListener{
+        public void medClicked(Medicine m);
     }
 }
