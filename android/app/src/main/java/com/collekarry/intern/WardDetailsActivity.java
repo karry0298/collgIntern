@@ -14,6 +14,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +56,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
     private StorageReference mStorageReference,imageRef;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference stateChange;
 
 
 //    public void setWard(wardClass ward) {
@@ -89,6 +91,8 @@ public class WardDetailsActivity extends AppCompatActivity
                 .child(FirebaseAuth.getInstance().getUid()).child(key);
         mDatabaseReference.keepSynced(true);
 
+        stateChange = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid()).child(key);
+
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
 
@@ -107,6 +111,7 @@ public class WardDetailsActivity extends AppCompatActivity
                         .into(imageView);
 
                 mCollapsingToolbarLayout.setTitle(ward.getName());
+                Log.i("xyz", ward.getImp());
 
                 adapter = new WardPager(getSupportFragmentManager(), ward);
 //                adapter.notifyDataSetChanged();
@@ -157,8 +162,9 @@ public class WardDetailsActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String change="true";
+                Log.i("xxxyz", ward.getImp());
+                stateChange.child("imp").setValue(change);
             }
         });
     }

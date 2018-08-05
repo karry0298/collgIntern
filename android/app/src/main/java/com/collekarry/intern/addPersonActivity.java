@@ -113,8 +113,9 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
             String uid = FirebaseAuth.getInstance().getUid();
 
             final String key = mDatabase.child("wards").child(uid).push().getKey();
+            String imp = "false";
 
-            wardClass ward = new wardClass(key,name,age,gender,uid);
+            wardClass ward = new wardClass(key,name,age,gender,uid,imp);
 
             for(Medicine m: meds){
                 m.setDueEventID(m.setReminder(getApplicationContext(), m));
