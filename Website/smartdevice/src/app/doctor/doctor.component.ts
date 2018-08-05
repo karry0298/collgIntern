@@ -1,5 +1,5 @@
 import { Component, OnInit, Input  } from '@angular/core';
-import { NgModule }      from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -32,7 +32,7 @@ filter(patient : Patient) : boolean{
   if (patient.name.toUpperCase().indexOf(this.filtername.toUpperCase())>-1){
     return false;
   }
-  return true; 
+  return true;
 }
 
 
