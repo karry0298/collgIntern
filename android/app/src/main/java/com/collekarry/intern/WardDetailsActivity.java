@@ -164,6 +164,7 @@ public class WardDetailsActivity extends AppCompatActivity
             public void onClick(View view) {
                 String change="true";
                 Log.i("xxxyz", ward.getImp());
+                Toast.makeText(WardDetailsActivity.this, "SOS sent to docSide bhiyaJi" , Toast.LENGTH_SHORT).show();
                 stateChange.child("imp").setValue(change);
             }
         });
