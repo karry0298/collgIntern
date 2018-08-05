@@ -45,7 +45,7 @@ public class listOfPeople extends AppCompatActivity
     List<String> dsList;
 
     private StorageReference mStorageReference;
-
+    private DatabaseReference stateChange;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +90,7 @@ public class listOfPeople extends AppCompatActivity
         }
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
+        stateChange = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
         nameList.keepSynced(true);
 
         uploadList = new ArrayList<>();
@@ -219,6 +220,11 @@ public class listOfPeople extends AppCompatActivity
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String mk = uploadList.get(position).getKey();
+
+                stateChange.child(mk).child("imp").setValue("false");
+
                 Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
                 intent.putExtra("key", uploadList.get(position).getKey());
 

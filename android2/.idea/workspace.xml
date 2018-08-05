@@ -35,11 +35,11 @@
       <file leaf-file-name="listOfPeople.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/collekarry/docside/listOfPeople.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="284" column="34" lean-forward="false" selection-start-line="284" selection-start-column="34" selection-end-line="284" selection-end-column="34" />
+            <state relative-caret-position="289">
+              <caret line="226" column="0" lean-forward="false" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
               <folding>
-                <element signature="e#8039#8430#0" expanded="true" />
-                <element signature="e#8429#8430#0" expanded="true" />
+                <element signature="e#8200#8727#0" expanded="true" />
+                <element signature="e#8726#8727#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2807,11 +2807,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/collekarry/docside/listOfPeople.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="284" column="34" lean-forward="false" selection-start-line="284" selection-start-column="34" selection-end-line="284" selection-end-column="34" />
+        <state relative-caret-position="289">
+          <caret line="226" column="0" lean-forward="false" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
           <folding>
-            <element signature="e#8039#8430#0" expanded="true" />
-            <element signature="e#8429#8430#0" expanded="true" />
+            <element signature="e#8200#8727#0" expanded="true" />
+            <element signature="e#8726#8727#0" expanded="true" />
           </folding>
         </state>
       </provider>
