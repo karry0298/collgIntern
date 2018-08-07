@@ -19,7 +19,7 @@ export class DoctorComponent implements OnInit {
   name: any;
   selectedPatient: Patient;
   filtername: string="";
-
+  show:boolean = true;
 onSelect(hero: Patient): void {
   this.selectedPatient = hero;
   console.log(this.selectedPatient);
@@ -29,10 +29,11 @@ onSelect(hero: Patient): void {
 filter(patient : Patient) : boolean{
   // Return true if don't want this job in the results.
   // e.g. lets filter jobs with price < 25;
-  if (patient.name.toUpperCase().indexOf(this.filtername.toUpperCase())>-1){
-    return false;
+
+  if (patient.name.indexOf(this.filtername)>-1){
+    return true;
   }
-  return true;
+  return false;
 }
 
 

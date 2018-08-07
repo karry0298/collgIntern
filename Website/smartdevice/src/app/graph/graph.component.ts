@@ -25,9 +25,15 @@ export class GraphComponent implements OnInit {
     .subscribe(product =>{
       this.products = product;
       console.log(this.products);
-      this.age = product.map(product => product.age);
-      this.name = product.map(product => product.name);
+      // this.age = product.map(product => product.age);
+      // this.name = product.map(product => product.name);
     });
+  }
+
+
+
+  ngOnInit() {
+
   }
 
   printData(){
@@ -35,37 +41,32 @@ export class GraphComponent implements OnInit {
     this.name.splice(29,2);
     console.log(this.age);
     console.log(this.name);
-  }
-
-  ngOnInit() {
-    let age = this.age;
-    let name = this.name;
     this.chart = new Chart('canvas', {
-            type: 'line',
-            data: {
-              labels: name,
-              datasets: [
-                {
-                  data: age,
-                  borderColor: "#3cba9f",
-                  fill: false
-                },
-              ]
-            },
-            options: {
-              legend: {
-                display: true,
-						  }
-            },
-              scales: {
-                xAxes: [{
-                  display: true,
-                }],
-                yAxes: [{
-                  display: true
-                }],
-              }
-          });
+      type: 'line',
+      data: {
+        labels: this.name,
+        datasets: [
+          {
+            data: this.age,
+            borderColor: "#3cba9f",
+            fill: false
+          },
+        ]
+      },
+      options: {
+        legend: {
+          display: false,
+        }
+      },
+        scales: {
+          xAxes: [{
+            display: true,
+          }],
+          yAxes: [{
+            display: true
+          }],
+        }
+    });
   }
 
 }
