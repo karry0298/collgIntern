@@ -129,7 +129,7 @@ public class AddMedicationFragment extends DialogFragment{
 //            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR)) {
 //                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
 //                alertBuilder.setCancelable(true);
-//                alertBuilder.setTitle("Permission necessary");
+//                alertBuilder.setWriter("Permission necessary");
 //                alertBuilder.setMessage("Calendar permission is necessary.");
 //                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 //                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
