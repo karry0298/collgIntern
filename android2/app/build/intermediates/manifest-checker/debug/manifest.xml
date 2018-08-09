@@ -40,11 +40,19 @@
         </activity>
         <activity android:name="com.collekarry.docside.listOfPeople" />
         <activity
-            android:name="com.collekarry.docside.tabbedChoice"
-            android:label="@string/title_activity_tabbed_choice"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.collekarry.docside.create_appoinment" />
-        <activity android:name="com.collekarry.docside.updateTheMedication" />
+            android:name="com.collekarry.docside.addPersonActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name="com.collekarry.docside.WardDetailsActivity"
+            android:label="@string/title_activity_ward_details"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
         <activity
             android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
             android:excludeFromRecents="true"

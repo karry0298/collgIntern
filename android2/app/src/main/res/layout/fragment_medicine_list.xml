@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".sendNewMedication"
+    tools:context=".MedicationFragment"
     tools:listitem="@layout/fragment_medicine" />

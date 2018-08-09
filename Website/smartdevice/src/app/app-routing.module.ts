@@ -2,12 +2,12 @@ import { NgModule,ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CaretakerComponent } from './caretaker/caretaker.component';
 import { DoctorComponent } from './doctor/doctor.component';
+import { GraphComponent } from './graph/graph.component';
 import { GuardianComponent } from './guardian/guardian.component';
 import { LoginComponent } from './login/login.component';
 import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
 import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
 import { AuthGuard } from './auth.service';
-import { ModuleWithProviders } from "@angular/core";
 
 export const routes: Routes = [
   {
@@ -32,7 +32,10 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-
+  {
+    path: 'graph',
+    component: GraphComponent
+  },
 ];
 
 @NgModule({

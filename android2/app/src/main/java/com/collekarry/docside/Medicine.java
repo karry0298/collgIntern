@@ -1,17 +1,10 @@
 package com.collekarry.docside;
 
-import com.google.firebase.database.Exclude;
-
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -47,19 +40,22 @@ public class Medicine implements Serializable{
             }
         }
 
-        if(x.isEqual(new LocalTime(23,59))){
-//            System.out.println("\t"+ name+"\t"+x.toString("hh:mm a"));
+        if(x.isEqual(new LocalTime(23,59)))
+        {
             return "Tomorrow, " + tomoTime.toString("hh:mm a");
         }
-        else{
+        else
+        {
             return "Today, " + x.toString("hh:mm a");
         }
     }
 
-    public DateTime getNextConsumptionDateTime(LocalTime t){
+    public DateTime getNextConsumptionDateTime(LocalTime t)
+    {
         if(consumptionTimings == null || consumptionTimings.size() == 0){
             return new DateTime();
         }
+
         LocalTime x = new LocalTime(23,59);
         LocalTime tomoTime = new LocalTime(23,59);
 

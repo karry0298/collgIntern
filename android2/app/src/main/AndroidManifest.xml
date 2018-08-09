@@ -17,12 +17,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".listOfPeople" />
+
         <activity
-            android:name=".tabbedChoice"
-            android:label="@string/title_activity_tabbed_choice"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".create_appoinment" />
-        <activity android:name=".updateTheMedication"></activity>
+            android:name=".addPersonActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".WardDetailsActivity"
+            android:label="@string/title_activity_ward_details"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.CALL_PHONE" />

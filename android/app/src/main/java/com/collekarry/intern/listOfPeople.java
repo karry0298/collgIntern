@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -179,6 +180,8 @@ public class listOfPeople extends AppCompatActivity
                             list.setAdapter(adapter);
                         }
                     }
+
+
                     //addition :
 //                    System.out.println(upload.getName());
 //                    HashMap<String, String> hm = new HashMap<>();
@@ -281,6 +284,7 @@ public class listOfPeople extends AppCompatActivity
             name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
             age.setText( String.valueOf(ward.getAge())  );
 
+            Log.i("sssss", ward.getImp());
 
             return rowView;
         }

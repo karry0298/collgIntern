@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.collekarry.docside.sendNewMedication.OnListFragmentInteractionListener;
+import com.collekarry.docside.MedicationFragment.OnListFragmentInteractionListener;
 
 import org.joda.time.LocalTime;
 
@@ -20,6 +20,7 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
+
 public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedicineRecyclerViewAdapter.ViewHolder> {
 
     private final List<Medicine> mValues;
@@ -30,6 +31,7 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
         mListener = listener;
 
         List<Medicine> m = new ArrayList<>();
+
         for(Medicine x: items){
             if(x.getDateStopped() == null){
                 m.add(x);
@@ -41,15 +43,9 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
             public int compare(Medicine o1, Medicine o2) {
                     return  o1.getNextConsumptionDateTime(LocalTime.now()).compareTo(o2.getNextConsumptionDateTime(LocalTime.now()));
                 }
-
         });
 
         mValues = m;
-    }
-
-    public MyMedicineRecyclerViewAdapter(List<Medicine> medicines, OnListFragmentInteractionListener mListener, List<Medicine> mValues, OnListFragmentInteractionListener mListener1) {
-        this.mValues = mValues;
-        this.mListener = mListener1;
     }
 
     @Override

@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 
 public class listOfPeople extends AppCompatActivity
 {
@@ -42,7 +45,7 @@ public class listOfPeople extends AppCompatActivity
     List<String> dsList;
 
     private StorageReference mStorageReference;
-
+    private DatabaseReference stateChange;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,7 +64,7 @@ public class listOfPeople extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_newname)
         {
-            startActivity(new Intent(listOfPeople.this, updateTheMedication.class));
+            startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
         }
         else if (id == R.id.action_logout)
         {
@@ -87,6 +90,7 @@ public class listOfPeople extends AppCompatActivity
         }
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
+        stateChange = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
         nameList.keepSynced(true);
 
         uploadList = new ArrayList<>();
@@ -216,7 +220,12 @@ public class listOfPeople extends AppCompatActivity
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), tabbedChoice.class);
+
+                String mk = uploadList.get(position).getKey();
+
+                stateChange.child(mk).child("imp").setValue("false");
+
+                Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
                 intent.putExtra("key", uploadList.get(position).getKey());
 
                 startActivity(intent);
@@ -257,6 +266,7 @@ public class listOfPeople extends AppCompatActivity
 
 
             ImageView iv1 = (ImageView) rowView.findViewById(R.id.displayPicture);
+            ImageView iv2 = (ImageView) rowView.findViewById(R.id.ivv);
             TextView name = (TextView) rowView.findViewById(R.id.name);
             TextView age = (TextView) rowView.findViewById(R.id.age);
 
@@ -272,6 +282,14 @@ public class listOfPeople extends AppCompatActivity
             name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
             age.setText( String.valueOf(ward.getAge())  );
 
+            if(ward.getImp().equals("false"))
+            {
+                iv2.setVisibility(INVISIBLE);
+            }
+            else
+            {
+                iv2.setVisibility(VISIBLE);
+            }
 
             return rowView;
         }

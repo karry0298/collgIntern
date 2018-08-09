@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:minWidth="500dp"
+    tools:context=".AddMedicationFragment"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp"
+    android:minWidth="500dp"
+    android:orientation="vertical">
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center_horizontal"
+        android:text="Add Medication"
+        android:textSize="24sp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/medName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+            android:hint="Medicine Name"
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left|center">
+
+            <EditText
+                android:id="@+id/medManufacturer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+
+                android:hint="Manufacturer"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/date_pick_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
+            android:gravity="right|center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_calendar" />
+
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:ems="10"
+                android:fontFamily="@font/roboto_thin"
+
+
+                android:text="10/07/2018"
+                android:textAlignment="viewStart"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:paddingLeft="8dp"
+        android:text="Consumption timings"
+        android:textAlignment="viewStart" />
+
+    <LinearLayout
+        android:id="@+id/consumption_timings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/timeTextViewMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_bold"
+                android:tag="time"
+                android:text="10:05 am"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/action_add_timing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                android:tag="add" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/medprescriptionBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+            android:hint="Prescription by"
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/medSubmitButton"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/submit_button"
+        android:fontFamily="@font/roboto_thin"
+        android:foregroundGravity="center"
+
+        android:text="Submit"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+</LinearLayout>
+</ScrollView>

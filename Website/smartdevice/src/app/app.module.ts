@@ -17,6 +17,7 @@ import { DoctorMedicationsComponent } from './doctor-medications/doctor-medicati
 import { HttpModule } from '@angular/http';
 import { AuthGuard } from './auth.service';
 import { router } from './app-routing.module';
+import { GraphComponent } from './graph/graph.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { router } from './app-routing.module';
     DoctorPatientviewComponent,
     DoctorIssuesComponent,
     DoctorMedicationsComponent,
+    GraphComponent,
 
   ],
   imports: [
