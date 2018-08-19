@@ -11,7 +11,7 @@ export class DoctorPatientviewComponent implements OnInit {
   isOn=1;
   
   check(): void{
-  console.log(this.patien);  
+  console.log(this.patient);  
   }
   constructor() { }
 
