@@ -17,9 +17,28 @@
   </div>
 </div> -->
 
+<div>
+    <button id="myBtn" (click)="openModal()">Add Medications</button>
+    <div class="row" >
+        <div class="col-3"><p>BRAND NAME </p></div>
+        <div class="col-3">NAME</div>
+        <div class="col-3">PRESCRIPTION BY</div>
+        <div class="col-3"></div>
+      </div>
+    <ng-container *ngFor="let user of patient.medicines" > 
+        <!-- [class.selected]="user === selectedPatient"  -->
+
+        <div class="row" (click)="onSelect(user);" >
+          <div class="col-3"><p>{{ user.brandName }} </p></div>
+          <div class="col-3">{{ user.name}}</div>
+          <div class="col-3">{{ user.prescriptionBy}}</div>
+          <div class="col-3"></div>
+        </div>
+   </ng-container>
+
+</div>
 
 
-<button id="myBtn" (click)="openModal()">Add Medications</button>
 
 <!-- The Modal -->
 <div id="myModal" class="modal" [ngStyle]="{'display':display}">

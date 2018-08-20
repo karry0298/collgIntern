@@ -4,5 +4,5 @@ export class Patient{
   name: string;
   gender:string;
   imageId:string;
-  medicine:Medecine[];
+  medicines:Medecine[];
 }

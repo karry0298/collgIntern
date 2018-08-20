@@ -15,6 +15,11 @@ display:string="none";
   closeModal(): void{
     this.display="none";
   }
+  
+  onSelect(hero: Patient): void {
+    console.log(hero.medicines);
+  }
+
   // onSelect(hero: Patient): void {
   //   this.selectedPatient = hero;
   //   console.log(this.selectedPatient);
@@ -24,7 +29,7 @@ display:string="none";
   //   let isDone: boolean = false; }
 
   ngOnInit() {
-
+    console.log(this.patient.medicines);
   }
 
 }

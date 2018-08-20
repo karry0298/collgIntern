@@ -1,5 +1,5 @@
 export class Medecine {
-    brandname:String;
+    brandName:String;
     name:String;
     prescriptionBy:String;
     consumptionTimings:String[];
