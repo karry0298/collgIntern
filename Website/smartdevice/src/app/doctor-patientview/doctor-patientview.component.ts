@@ -9,9 +9,9 @@ import { Patient } from '../patient';
 export class DoctorPatientviewComponent implements OnInit {
   @Input() patient: Patient;
   isOn=1;
-  
+
   check(): void{
-  console.log(this.patien);  
+  console.log(this.patient);  
   }
   constructor() { }
 
