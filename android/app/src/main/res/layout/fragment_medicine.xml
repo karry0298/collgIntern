@@ -15,7 +15,7 @@
         android:fontFamily="@font/roboto_bold"
         android:gravity="left"
         android:text="medicine name"
-        android:textAlignment="viewStart"
+
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
@@ -26,7 +26,6 @@
         android:layout_weight="1"
         android:fontFamily="@font/roboto_thin"
         android:gravity="right"
-        android:text="22:00"
         android:textAlignment="gravity"
         android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>

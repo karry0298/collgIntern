@@ -65,7 +65,7 @@ public class HistoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HistoryRecyclerViewAdapter(ward.getHistories(), mListener));
+            recyclerView.setAdapter(new HistoryRecyclerViewAdapter(context, ward.getHistories()));
         }
         return view;
     }

@@ -1,12 +1,11 @@
 package com.collekarry.intern;
 
-import android.content.Intent;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.collekarry.intern.HistoryFragment.OnListFragmentInteractionListener;
 
@@ -16,8 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v4.content.ContextCompat.startActivity;
-
 /**
 
  * specified {@link OnListFragmentInteractionListener}.
@@ -26,10 +23,10 @@ import static android.support.v4.content.ContextCompat.startActivity;
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
 
     private final List<History> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnHistoryClickedListener mListener;
 
-    public HistoryRecyclerViewAdapter(List<History> items, OnListFragmentInteractionListener listener) {
-        mListener = listener;
+    public HistoryRecyclerViewAdapter(Context context, List<History> items) {
+        mListener = (OnHistoryClickedListener) context;
 
         List<History> m = new ArrayList<>();
         if(items == null || items.size() == 0){
@@ -61,8 +58,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-  
+                    mListener.historyClicked(holder.mItem);
                 }
             }
         });
@@ -90,5 +86,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
+    }
+
+    public interface OnHistoryClickedListener{
+        public void historyClicked(History h);
     }
 }

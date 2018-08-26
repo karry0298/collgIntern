@@ -4,24 +4,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Comment implements Serializable{
-    private String title;
+    private String writer;
     private String content;
     private Date date;
 
     public Comment() {
     }
 
-    public Comment(String title, String content, Date date) {
-        this.title = title;
+    public Comment(String writer, String content, Date date) {
+        this.writer = writer;
         this.content = content;
         this.date = date;
     }
 
-    public String getTitle() {
-        return title;
+    public String getWriter() {
+        return writer;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getContent() {
