@@ -25,8 +25,8 @@ export class GraphComponent implements OnInit {
     .subscribe(product =>{
       this.products = product;
       console.log(this.products);
-      this.age = product.map(product => product.age);
-      this.name = product.map(product => product.name);
+      // this.age = product.map(product => product.age);
+      // this.name = product.map(product => product.name);
     });
   }
 
