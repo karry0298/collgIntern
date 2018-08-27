@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
 MERGED from [com.android.support:design:27.1.1] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\d47deb8f77a154759fac87422e00aa58\AndroidManifest.xml:17:1-22:12
 MERGED from [com.firebaseui:firebase-ui-storage:0.6.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-ui-storage-0.6.0.aar\d8febd038865b7c8d13ea1edfc94c0ef\AndroidManifest.xml:2:1-11:12
 MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\eef97f68700a7943186c9bc6e3dadaef\AndroidManifest.xml:17:1-22:12
@@ -56,25 +56,25 @@ MERGED from [android.arch.core:runtime:1.1.0] C:\Users\Chell\.gradle\caches\tran
 MERGED from [com.google.firebase:firebase-analytics-impl-license:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-license-11.8.0.aar\9bc54e68cd185d194a41caff5042326b\AndroidManifest.xml:2:1-6:12
 MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\75ff3c347a9567a9e79852389c185823\AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-storage-common-license:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-storage-common-license-11.8.0.aar\785529674033cbdb795888888ab771c8\AndroidManifest.xml:2:1-6:12
-INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
 	package
 		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:3:5-37
 		INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
 		INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-42:12
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:1-55:12
 		INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:5:5-38:19
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:5:5-51:19
 MERGED from [com.android.support.constraint:constraint-layout:1.1.1] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.1.aar\e7b88d4c7655078e06b99ec1a7583883\AndroidManifest.xml:9:5-20
 MERGED from [com.android.support.constraint:constraint-layout:1.1.1] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.1.aar\e7b88d4c7655078e06b99ec1a7583883\AndroidManifest.xml:9:5-20
 MERGED from [com.mikhaellopez:circularimageview:3.0.2] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\circularimageview-3.0.2.aar\8ef7617648a61cc2a115e72784db78ff\AndroidManifest.xml:11:5-13:38
@@ -176,17 +176,37 @@ ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\And
 	android:name
 		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:28:13-43
 activity#com.collekarry.docside.WardDetailsActivity
-ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:31:9-36:20
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:31:9-35:20
 	android:label
 		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:33:13-64
 	android:theme
 		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:34:13-56
 	android:name
 		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:32:13-48
-uses-permission#android.permission.CALL_PHONE
-ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:40:5-69
+service#com.collekarry.docside.MyFirebaseInstanceIdService
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:37:9-42:19
 	android:name
-		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:40:22-66
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:38:13-56
+intent-filter#action:name:com.google.firebase.INSTANCE_ID_EVENT
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:39:13-41:29
+action#com.google.firebase.INSTANCE_ID_EVENT
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:40:17-79
+	android:name
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:40:25-77
+service#com.collekarry.docside.MyFirebaseMessagingService
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:44:9-49:19
+	android:name
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:45:13-55
+intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:46:13-48:29
+action#com.google.firebase.MESSAGING_EVENT
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:47:17-77
+	android:name
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:47:25-75
+uses-permission#android.permission.CALL_PHONE
+ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:53:5-69
+	android:name
+		ADDED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml:53:22-66
 uses-sdk
 INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Chell\Desktop\projects\collgIntern\android2\app\src\main\AndroidManifest.xml
@@ -329,14 +349,6 @@ ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradl
 		ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.8.0.aar\cd86083b6b01c1ceb1afd0486c5f9cce\AndroidManifest.xml:30:13-36
 	android:name
 		ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.8.0.aar\cd86083b6b01c1ceb1afd0486c5f9cce\AndroidManifest.xml:29:13-82
-intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.8.0.aar\cd86083b6b01c1ceb1afd0486c5f9cce\AndroidManifest.xml:31:13-33:29
-	android:priority
-		ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.8.0.aar\cd86083b6b01c1ceb1afd0486c5f9cce\AndroidManifest.xml:31:28-51
-action#com.google.firebase.MESSAGING_EVENT
-ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.8.0.aar\cd86083b6b01c1ceb1afd0486c5f9cce\AndroidManifest.xml:32:17-78
-	android:name
-		ADDED from [com.google.firebase:firebase-messaging:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.8.0.aar\cd86083b6b01c1ceb1afd0486c5f9cce\AndroidManifest.xml:32:25-75
 activity#com.google.firebase.auth.internal.FederatedSignInActivity
 ADDED from [com.google.firebase:firebase-auth:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-auth-11.8.0.aar\a786ea4d22f3ab9c69041a7dd97b9f18\AndroidManifest.xml:23:9-29:75
 	android:excludeFromRecents
@@ -483,14 +495,6 @@ ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\cach
 		ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.8.0.aar\a5a5b6760d881ad33145ca6ec163bf07\AndroidManifest.xml:52:13-36
 	android:name
 		ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.8.0.aar\a5a5b6760d881ad33145ca6ec163bf07\AndroidManifest.xml:51:13-77
-intent-filter#action:name:com.google.firebase.INSTANCE_ID_EVENT
-ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.8.0.aar\a5a5b6760d881ad33145ca6ec163bf07\AndroidManifest.xml:53:13-55:29
-	android:priority
-		ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.8.0.aar\a5a5b6760d881ad33145ca6ec163bf07\AndroidManifest.xml:53:28-51
-action#com.google.firebase.INSTANCE_ID_EVENT
-ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.8.0.aar\a5a5b6760d881ad33145ca6ec163bf07\AndroidManifest.xml:54:17-80
-	android:name
-		ADDED from [com.google.firebase:firebase-iid:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.8.0.aar\a5a5b6760d881ad33145ca6ec163bf07\AndroidManifest.xml:54:25-77
 provider#com.google.firebase.provider.FirebaseInitProvider
 ADDED from [com.google.firebase:firebase-common:11.8.0] C:\Users\Chell\.gradle\caches\transforms-1\files-1.1\firebase-common-11.8.0.aar\747a4793aa66872a29828859f4797598\AndroidManifest.xml:8:9-12:39
 	android:authorities
