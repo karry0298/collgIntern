@@ -3,5 +3,5 @@ export class Medecine {
     name:String;
     prescriptionBy:String;
     consumptionTimings:String[];
-    dateStarted:String[];
+    dateStarted:Date;
 }
