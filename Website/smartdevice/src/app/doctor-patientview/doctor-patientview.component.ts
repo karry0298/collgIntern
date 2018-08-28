@@ -13,7 +13,9 @@ export class DoctorPatientviewComponent implements OnInit {
   check(): void{
   console.log(this.patient);  
   }
-  constructor() { }
+  constructor() {
+    console.log
+   }
 
   ngOnInit() {
 

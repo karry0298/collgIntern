@@ -2,6 +2,8 @@ import { Component, OnInit ,Input} from '@angular/core';
 import { Patient } from '../patient';
 import { Medecine } from '../medecine';
 import * as firebase from 'firebase/app';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 @Component({
   selector: 'app-doctor-medications',
   templateUrl: './doctor-medications.component.html',
@@ -25,16 +27,18 @@ display:string="none";
     this.display="none";
   }
   
-  submitMedsForm():any{
-    this.medicine.brandName=this.brandName;
-    this.medicine.dateStarted=this.dateTime;
-    for(var  i=0;i<4;i++){
-      if(this.meds[i]!=null){
-        this.medicine.consumptionTimings.push(this.meds[i]);
-      }
-    }
-    this.medicine.prescriptionBy="Dr."+
-  } 
+  // submitMedsForm(db: AngularFireDatabase,auth:AngularFireAuth):any{
+  //   this.medicine.brandName=this.brandName;
+  //   this.medicine.dateStarted=this.dateTime;
+  //   for(var  i=0;i<4;i++){
+  //     if(this.meds[i]!=null){
+  //       this.medicine.consumptionTimings.push(this.meds[i]);
+  //     }
+  //   }
+  //   this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
+
+  // var ref = db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
+  // } 
   onSelect(hero: Patient): void {
     console.log(hero.medicines);
   }
