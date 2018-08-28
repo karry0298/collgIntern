@@ -15,8 +15,9 @@ import * as firebase from 'firebase/app';
 })
 export class GraphComponent implements OnInit {
   products: any[];
-  age: any[];
-  name: any[];
+  objectKeys = Object.keys;
+  age = [];
+  name =[];
   chart = []; //to hold chart info
 
   constructor(db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router) {
@@ -25,6 +26,14 @@ export class GraphComponent implements OnInit {
     .subscribe(product =>{
       this.products = product;
       console.log(this.products);
+      for(let manager of this.products){
+        for(let key of this.objectKeys(manager)){
+          this.age.push(manager[key].age);
+          this.name.push(manager[key].name);
+          //console.log(manager[key].age);
+        }
+      }
+      this.printData();
       // this.age = product.map(product => product.age);
       // this.name = product.map(product => product.name);
     });
@@ -37,10 +46,10 @@ export class GraphComponent implements OnInit {
   }
 
   printData(){
-    this.age.splice(29,2);
-    this.name.splice(29,2);
-    console.log(this.age);
-    console.log(this.name);
+    //this.age.splice(29,2);
+    //this.name.splice(29,2);
+    //console.log(this.age);
+    //console.log(this.name);
     this.chart = new Chart('canvas', {
       type: 'line',
       data: {
