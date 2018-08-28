@@ -284,7 +284,7 @@ public class listOfPeople extends AppCompatActivity
             name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
             age.setText( String.valueOf(ward.getAge())  );
 
-            Log.i("sssss", ward.getImp());
+
 
             return rowView;
         }
