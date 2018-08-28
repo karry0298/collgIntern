@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
