@@ -113,7 +113,7 @@ public class WardDetailsActivity extends AppCompatActivity
                         .into(imageView);
 
                 mCollapsingToolbarLayout.setTitle(ward.getName());
-                Log.i("xyz", ward.getImp());
+//                Log.i("xyz", ward.getImp());
 
                 adapter = new WardPager(getSupportFragmentManager(), ward);
 //                adapter.notifyDataSetChanged();
