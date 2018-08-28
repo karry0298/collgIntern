@@ -31,7 +31,7 @@ export class DoctorComponent implements OnInit {
   }
   // console.log(filter);
   getUid(): string {
-    console.log(firebase.auth().currentUser.uid);
+    console.log(firebase.auth().currentUser.displayName);
     return firebase.auth().currentUser.uid;
   }
 
@@ -58,7 +58,7 @@ export class DoctorComponent implements OnInit {
     this.user = this.getUid();
     // console.log(db.list('/wards').valueChanges());
 
-this.filtername = "sefes";
+this.filtername = "";
 
 
 
