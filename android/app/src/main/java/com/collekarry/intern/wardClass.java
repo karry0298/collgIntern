@@ -29,10 +29,18 @@ public class wardClass implements Serializable
     private String uid;
     private List<Medicine> medicines;
     private List<History> histories;
+    private long docID;
 
-    public wardClass() {
 
+    public long getDocID() {
+        return docID;
     }
+
+    public void setDocID(long docID) {
+        this.docID = docID;
+    }
+
+    public wardClass() { }
 
     public wardClass(String key, String name, int age, String gender, String uid , String imp) {
         this.key = key;

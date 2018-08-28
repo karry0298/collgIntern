@@ -107,6 +107,6 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
     }
 
     public interface OnMedClickedListener{
-        public void medClicked(Medicine m);
+        void medClicked(Medicine m);
     }
 }

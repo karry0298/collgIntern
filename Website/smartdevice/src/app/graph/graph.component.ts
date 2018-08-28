@@ -15,8 +15,9 @@ import * as firebase from 'firebase/app';
 })
 export class GraphComponent implements OnInit {
   products: any[];
-  age: any[];
-  name: any[];
+  objectKeys = Object.keys;
+  age = [];
+  name =[];
   chart = []; //to hold chart info
 
   constructor(db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router) {
@@ -25,47 +26,56 @@ export class GraphComponent implements OnInit {
     .subscribe(product =>{
       this.products = product;
       console.log(this.products);
-      this.age = product.map(product => product.age);
-      this.name = product.map(product => product.name);
+      for(let manager of this.products){
+        for(let key of this.objectKeys(manager)){
+          this.age.push(manager[key].age);
+          this.name.push(manager[key].name);
+          //console.log(manager[key].age);
+        }
+      }
+      this.printData();
+      // this.age = product.map(product => product.age);
+      // this.name = product.map(product => product.name);
     });
   }
 
-  printData(){
-    this.age.splice(29,2);
-    this.name.splice(29,2);
-    console.log(this.age);
-    console.log(this.name);
-  }
+
 
   ngOnInit() {
-    let age = this.age;
-    let name = this.name;
+
+  }
+
+  printData(){
+    //this.age.splice(29,2);
+    //this.name.splice(29,2);
+    //console.log(this.age);
+    //console.log(this.name);
     this.chart = new Chart('canvas', {
-            type: 'line',
-            data: {
-              labels: name,
-              datasets: [
-                {
-                  data: age,
-                  borderColor: "#3cba9f",
-                  fill: false
-                },
-              ]
-            },
-            options: {
-              legend: {
-                display: true,
-						  }
-            },
-              scales: {
-                xAxes: [{
-                  display: true,
-                }],
-                yAxes: [{
-                  display: true
-                }],
-              }
-          });
+      type: 'line',
+      data: {
+        labels: this.name,
+        datasets: [
+          {
+            data: this.age,
+            borderColor: "#3cba9f",
+            fill: false
+          },
+        ]
+      },
+      options: {
+        legend: {
+          display: false,
+        }
+      },
+        scales: {
+          xAxes: [{
+            display: true,
+          }],
+          yAxes: [{
+            display: true
+          }],
+        }
+    });
   }
 
 }

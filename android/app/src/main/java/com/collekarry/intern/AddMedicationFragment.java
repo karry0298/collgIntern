@@ -129,7 +129,7 @@ public class AddMedicationFragment extends DialogFragment{
 //            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR)) {
 //                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
 //                alertBuilder.setCancelable(true);
-//                alertBuilder.setTitle("Permission necessary");
+//                alertBuilder.setWriter("Permission necessary");
 //                alertBuilder.setMessage("Calendar permission is necessary.");
 //                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 //                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -222,17 +222,17 @@ public class AddMedicationFragment extends DialogFragment{
                 TimePickerDialog.OnTimeSetListener mTimesetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String AM_PM ;
-                        if(hourOfDay < 12) {
-                            AM_PM = "am";
-                        } else {
-                            if(hourOfDay>12){
-                                hourOfDay -= 12;
-                            }
-                            AM_PM = "pm";
+
+                        String time = String.format("%02d", hourOfDay) + ":" + String.format("%02d",minute);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                        try {
+                            Date d = sdf.parse(time);
+                            timeTextViewMain.setText(new SimpleDateFormat("hh:mm aa").format(d));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
 
-                        timeTextViewMain.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + " " + AM_PM);
                     }
 
                 };
@@ -266,17 +266,17 @@ public class AddMedicationFragment extends DialogFragment{
                             TimePickerDialog.OnTimeSetListener mTimesetListener = new TimePickerDialog.OnTimeSetListener() {
                                 @Override
                                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                    String AM_PM ;
-                                    if(hourOfDay < 12) {
-                                        AM_PM = "am";
-                                    } else {
-                                        if(hourOfDay>12){
-                                            hourOfDay -= 12;
-                                        }
-                                        AM_PM = "pm";
+                                    String time = String.format("%02d", hourOfDay) + ":" + String.format("%02d",minute);
+
+                                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                                    try {
+                                        Date d = sdf.parse(time);
+                                        timeTextView.setText(new SimpleDateFormat("hh:mm aa").format(d));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
                                     }
 
-                                    timeTextView.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + " " + AM_PM);
+
                                 }
 
                             };

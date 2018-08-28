@@ -41,7 +41,9 @@ public class WardDetailsActivity extends AppCompatActivity
         implements AddMedicationFragment.OnEntryComplete,
         AddHistoryFragment.OnEntryCompleteListener,
         MyMedicineRecyclerViewAdapter.OnMedClickedListener,
-        MedicineDetailsFragment.OnFragmentInteractionListener
+        MedicineDetailsFragment.OnFragmentInteractionListener,
+        HistoryRecyclerViewAdapter.OnHistoryClickedListener,
+        HistoryDetailsFragment.OnFragmentInteractionListener
 {
     private int tabPosition;
     private TabLayout tabLayout;
@@ -111,7 +113,7 @@ public class WardDetailsActivity extends AppCompatActivity
                         .into(imageView);
 
                 mCollapsingToolbarLayout.setTitle(ward.getName());
-                Log.i("xyz", ward.getImp());
+//                Log.i("xyz", ward.getImp());
 
                 adapter = new WardPager(getSupportFragmentManager(), ward);
 //                adapter.notifyDataSetChanged();
@@ -239,6 +241,29 @@ public class WardDetailsActivity extends AppCompatActivity
         if(rows>0){
             Toast.makeText(getApplicationContext(), "deleted rows : "+ rows,  Toast.LENGTH_SHORT).show();
         }
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        ref.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "cloud db edited too",  Toast.LENGTH_SHORT).show();
+                        recreate();
+                    }
+                });
+    }
+
+    @Override
+    public void historyClicked(History h) {
+        HistoryDetailsFragment.newInstance(h).show(getSupportFragmentManager(), "show_history_details");
+    }
+
+    @Override
+    public void onHistoryRemove(History h) {
+        List<History> historyList = ward.getHistories();
+        historyList.remove(h);
+        ward.setHistories(historyList);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 

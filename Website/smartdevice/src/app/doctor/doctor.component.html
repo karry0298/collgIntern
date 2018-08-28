@@ -8,7 +8,7 @@
     <ul class="navbar-nav mr-auto">
         <input class="form-control mr-sm-2" [(ngModel)]="filtername" placeholder="Search"  name="filtername" >
         <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
-        <li>{{ filtername }}</li>
+        <!-- <li>{{ filtername }}</li> -->
 
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -22,10 +22,23 @@
   <div class="row">
     <div class="box col-lg-3 sidebar col-3">
       <ul style="overflow-x: hidden; overflow-y:scroll">
-        <li *ngFor="let user of products" [class.selected]="user === selectedPatient" (click)="onSelect(user)" [hidden]=filter(user) >
-          <!--  -->
-          <p>{{ user.name }}</p>
-        </li>
+          <ng-container *ngFor="let manager of products"  >
+
+             <div *ngFor="let key of objectKeys(manager)">
+                <li   (click)="onSelect( manager[key]);" >
+                    <p>              {{ manager[key].name}}</p>
+                </li>
+              
+
+
+             </div>
+              <!-- <ng-container *ngFor="let patient of manager" >
+                  <li   (click)="onSelect(user);" >
+                      <p>{{ user.name }}</p>
+                  </li>
+              </ng-container> -->
+           
+          </ng-container>
       </ul>
     </div>
     <div class="box col-lg-9 mainpage col-9 " style="padding:0px;">
