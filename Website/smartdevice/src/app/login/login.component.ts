@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,6 +29,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    particlesJS.load('particles-js', 'assets/particles.json', function() {
+    console.log('callback - particles.js config loaded');
+  });
   }
 
 }
