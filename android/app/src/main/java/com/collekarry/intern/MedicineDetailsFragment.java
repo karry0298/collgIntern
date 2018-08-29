@@ -94,8 +94,12 @@ public class MedicineDetailsFragment extends DialogFragment{
 
         titleView.setText(mParam1.getName());
         manufacturerView.setText(mParam1.getBrandName());
-        startDateView.setText(new SimpleDateFormat("dd/MM/yyyy").format(mParam1.getDateStarted()));
-        endDateView.setText(new SimpleDateFormat("dd/MM/yyyy").format(mParam1.getDateStopped()));
+//        startDateView.setText(new SimpleDateFormat("dd/MM/yyyy").format(mParam1.getDateStarted()));
+//        endDateView.setText(new SimpleDateFormat("dd/MM/yyyy").format(mParam1.getDateStopped()));
+
+        startDateView.setText(mParam1.getDateStarted());
+        endDateView.setText(mParam1.getDateStopped());
+
         prescriptionView.setText(mParam1.getPrescriptionBy());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
