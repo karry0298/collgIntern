@@ -44,11 +44,13 @@ display:string="none";
         console.log(this.meds[i]);
         console.log(this.medicine.consumptionTimings);
         this.medicine.consumptionTimings.push(this.meds[i]);
+        
       }
     }
     this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
 
   var ref = this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
+
 
   } 
 =======
