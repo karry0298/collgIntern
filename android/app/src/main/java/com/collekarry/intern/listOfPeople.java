@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ public class listOfPeople extends AppCompatActivity
     DatabaseReference nameList;
     RecyclerView list;
     List<wardClass> uploadList;
+    SwipeRefreshLayout srl;
 
     List<StorageReference> Fimages;
     List<String> dsList;
@@ -106,6 +108,24 @@ public class listOfPeople extends AppCompatActivity
         dsList = new ArrayList<>();
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
+
+        list = (RecyclerView) findViewById(R.id.peopleListView);
+
+        srl = findViewById(R.id.swipe_container);
+
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                MyAdapter adapter = new MyAdapter(listOfPeople.this,
+                        uploadList,
+                        Fimages);
+
+
+                list.setAdapter(adapter);
+                srl.setRefreshing(false);
+            }
+        });
 
 
 
@@ -181,7 +201,7 @@ public class listOfPeople extends AppCompatActivity
                                     uploadList,
                                     Fimages);
 
-                            list = (RecyclerView) findViewById(R.id.peopleListView);
+
                             list.setAdapter(adapter);
 
                             RecyclerView.LayoutManager lm = new LinearLayoutManager(listOfPeople.this);
