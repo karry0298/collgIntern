@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
@@ -20,7 +21,6 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 public class Medicine implements Serializable{
 
@@ -47,7 +47,7 @@ public class Medicine implements Serializable{
 
         for(int i = 0; i < consumptionTimings.size(); i++){
 
-            LocalTime a = LocalTime.parse(consumptionTimings.get(i), DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            LocalTime a = LocalTime.parse(consumptionTimings.get(i).replace(".","") , DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
 
             if( a.isBefore(x) && (a.isAfter(t) || a.isEqual(t))  ){
                 x = a;
@@ -75,7 +75,10 @@ public class Medicine implements Serializable{
         LocalTime tomoTime = new LocalTime(23,59);
 
         for(int i = 0; i < consumptionTimings.size(); i++){
-            LocalTime a = LocalTime.parse(consumptionTimings.get(i), DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            Log.e("Edwin", consumptionTimings.get(i).replace(".",""));
+            LocalTime a = LocalTime.parse(consumptionTimings.get(i).replace(".","") ,
+                    DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            Log.e("Edwin_END", " ---");
             if( a.isBefore(x) && (a.isAfter(t) || a.isEqual(t))  ){
                 x = a;
             }
@@ -204,3 +207,4 @@ public class Medicine implements Serializable{
         this.dueEventID = dueEventID;
     }
 }
+

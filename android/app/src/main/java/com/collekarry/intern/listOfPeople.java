@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +44,7 @@ import java.util.Objects;
 public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList;
-    ListView list;
+    RecyclerView list;
     List<wardClass> uploadList;
 
     List<StorageReference> Fimages;
@@ -87,6 +90,8 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
 //        String base = "";
 //        Log.i("name:","");
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setElevation(0);
 
         if(FirebaseAuth.getInstance().getUid() == null){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -176,8 +181,11 @@ public class listOfPeople extends AppCompatActivity
                                     uploadList,
                                     Fimages);
 
-                            list = (ListView) findViewById(R.id.peopleListView);
+                            list = (RecyclerView) findViewById(R.id.peopleListView);
                             list.setAdapter(adapter);
+
+                            RecyclerView.LayoutManager lm = new LinearLayoutManager(listOfPeople.this);
+                            list.setLayoutManager(lm);
                         }
                     }
 
@@ -222,71 +230,80 @@ public class listOfPeople extends AppCompatActivity
                 uploadList,
                 Fimages);
 
-        list = (ListView) findViewById(R.id.peopleListView);
+        list = (RecyclerView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
-                intent.putExtra("key", uploadList.get(position).getKey());
-
-                startActivity(intent);
-            }
-        });
     }
 
-    class MyAdapter extends ArrayAdapter<String>{
+    class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         private final Context context;
-
         private final List<wardClass> listElemets;
         private final List<StorageReference> imageReferences;
 
 
         public MyAdapter(@NonNull Context context, List<wardClass> listElements, List<StorageReference> imageReferences) {
-            super(context, R.layout.people_listview_layout);
-
             this.listElemets = listElements;
             this.imageReferences = imageReferences;
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public int getCount() {
-            return listElemets.size();
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.people_listview_layout, parent, false);
+            ViewHolder vh = new ViewHolder(row);
+            return vh;
         }
 
         @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-
-            LayoutInflater lf = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View rowView = lf.inflate(R.layout.people_listview_layout, null, true);
-
-
-            ImageView iv1 = (ImageView) rowView.findViewById(R.id.displayPicture);
-            TextView name = (TextView) rowView.findViewById(R.id.name);
-            TextView age = (TextView) rowView.findViewById(R.id.age);
-
-//            System.out.println(images);
+        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
             Glide.with(listOfPeople.this)
                     .using(new FirebaseImageLoader())
-                    .load(imageReferences.get(i))
+                    .load(imageReferences.get(position))
                     .centerCrop()
-                    .into(iv1);
+                    .into(holder.iv1);
 
-            wardClass ward = listElemets.get(i);
-//            iv1.setImageResource(images[i]);
-            name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
-            age.setText( String.valueOf(ward.getAge())  );
+            holder.name.setText(listElemets.get(position).getName());
+            holder.age.setText(String.valueOf(listElemets.get(position).getAge()));
+            holder.gender.setText(listElemets.get(position).getGender());
+
+            holder.row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
+                    intent.putExtra("key", uploadList.get(position).getKey());
+
+                    startActivity(intent);
+                }
+            });
+        }
 
 
+        @Override
+        public int getItemCount() {
+            if (listElemets == null){
+                return 0;
+            }
+            else{
+                return listElemets.size();
+            }
+        }
 
-            return rowView;
+        public class ViewHolder extends RecyclerView.ViewHolder{
+            ImageView iv1 ;
+            View row;
+            TextView name ;
+            TextView age ;
+            TextView gender;
+
+            public ViewHolder(View rowView) {
+                super(rowView);
+                row = rowView;
+                iv1 = (ImageView) rowView.findViewById(R.id.displayPicture);
+                name = (TextView) rowView.findViewById(R.id.name);
+                age = (TextView) rowView.findViewById(R.id.age);
+                gender = (TextView) rowView.findViewById(R.id.gender);
+            }
         }
     }
 }

@@ -367,8 +367,9 @@ public class AddMedicationFragment extends DialogFragment{
                         View t = consumptionTimingLayout.getChildAt(i);
                         TextView tv = t.findViewWithTag("time");
                         timings.add(tv.getText().toString());
-                    }
 
+                    }
+                    System.out.println(timings);
                     Medicine newMed = new Medicine(name,manufacturer,count,date,date2,timings,prescriptionBy);
 
                     if(intention.equals("direct_entry")){
@@ -379,7 +380,7 @@ public class AddMedicationFragment extends DialogFragment{
                         }
 
                         long eventID = newMed.setReminder(getActivity(), newMed);
-
+                        System.out.println(ward);
                         newMed.setDueEventID(eventID);
 
                         ward.addMedicine(newMed);
