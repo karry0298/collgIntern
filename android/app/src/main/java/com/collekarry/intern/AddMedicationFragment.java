@@ -326,7 +326,7 @@ public class AddMedicationFragment extends DialogFragment{
                 if(medCount.getText().toString().equals("")){
                     count = 0;
                 }
-                else{
+                else{+
                     count = Integer.parseInt(medCount.getText().toString());
                 }
                 int noOfTimings = consumptionTimingLayout.getChildCount();
