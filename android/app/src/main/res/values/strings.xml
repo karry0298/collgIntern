@@ -98,4 +98,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_medication">Add Medication</string>
     <string name="add_history">Add History</string>
+    <string name="delete_ward">Delete</string>
 </resources>
