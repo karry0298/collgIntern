@@ -1,5 +1,7 @@
 import { Component, OnInit, Input  } from '@angular/core';
 import { Patient } from '../patient';
+import { DoctorUIDService } from "../doctor-uid.service";
+
 
 @Component({
   selector: 'app-doctor-patientview',
@@ -8,17 +10,26 @@ import { Patient } from '../patient';
 })
 export class DoctorPatientviewComponent implements OnInit {
   @Input() patient: Patient;
+  doctorDetails:string;
+
   isOn=1;
 
   check(): void{
-  console.log(this.patient);  
+  console.log(this.patient);
   }
+<<<<<<< HEAD
   constructor() {
+=======
+  constructor(private data: DoctorUIDService) {
+>>>>>>> master
     console.log
    }
 
   ngOnInit() {
-
+    this.data.currentMessage.subscribe(doctorDetails => {this.doctorDetails = doctorDetails; ;
+})
   }
+
+
 
 }

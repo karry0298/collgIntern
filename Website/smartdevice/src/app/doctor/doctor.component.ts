@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Patient } from '../patient';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -11,6 +10,10 @@ import * as firebase from 'firebase/app';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+
+import { DoctorUIDService } from "../doctor-uid.service";
+import { AngularFireStorage } from 'angularfire2/storage';
+
 
 @Component({
   selector: 'app-doctor',
@@ -25,13 +28,29 @@ export class DoctorComponent implements OnInit {
   filtername: string = "";
   show: boolean = true;
   user: any;
+
+  message:string;
+
+
   onSelect(hero: Patient): void {
     this.selectedPatient = hero;
-    console.log(this.selectedPatient);
+    // console.log(this.selectedPatient);
+
+    var doctorUid = this.getUid();
+    var patientUid = this.selectedPatient.key;
+    console.log(doctorUid);
+    console.log(patientUid);
+
+    // const id = this.selectedPatient.;
+    // this.ref = this.afStorage.ref(id);
   }
   // console.log(filter);
   getUid(): string {
+<<<<<<< HEAD
     console.log(firebase.auth().currentUser.displayName);
+=======
+    //console.log(firebase.auth().currentUser.displayName);
+>>>>>>> master
     return firebase.auth().currentUser.uid;
   }
 
@@ -54,8 +73,9 @@ export class DoctorComponent implements OnInit {
   // }
 
 
-  constructor(db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router) {
+  constructor(private afStorage: AngularFireStorage, db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router, private data: DoctorUIDService) {
     this.user = this.getUid();
+
     // console.log(db.list('/wards').valueChanges());
 
 this.filtername = "";
@@ -73,7 +93,7 @@ this.filtername = "";
 
     //     const size$ = new Subject<string>();
     //   const queryObservable = size$.pipe(
-    //   switchMap(size => 
+    //   switchMap(size =>
     //     db.list('/wards', ref => ref.orderByChild('size').equalTo(size)).valueChanges()
     //   )
     // );
@@ -85,6 +105,14 @@ this.filtername = "";
     this.router.navigateByUrl('');
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // this.data.currentMessage.subscribe(message => this.message = message)
+    this.newMessage();
+
+}
+
+  newMessage() {
+      this.data.changeMessage(this.getUid())
+    }
 
 }
