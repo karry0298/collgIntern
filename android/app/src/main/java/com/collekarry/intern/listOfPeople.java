@@ -63,6 +63,9 @@ public class listOfPeople extends AppCompatActivity
     }
 
 
+    public void addWard(View v){
+        startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
