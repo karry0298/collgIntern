@@ -1,18 +1,18 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light loginBackground">
+  <a class="navbar-brand" href="/doctor" style="color:white;font-size:20px">Home</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isActive = !isActive">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{show : isActive}">
     <ul class="navbar-nav mr-auto">
-        <input class="form-control mr-sm-2" [(ngModel)]="filtername" placeholder="Search"  name="filtername" >
+        <input class="form-control mr-sm-2" [(ngModel)]="filtername" placeholder="Search"  name="filtername">
         <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
         <!-- <li>{{ filtername }}</li> -->
 
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <button (click)="logout()" class="btn btn-outline-success my-2 my-sm-0" type="submit">LogOut</button>
+      <button (click)="logout()" class="logOut btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
     </form>
   </div>
 </nav>
@@ -25,10 +25,10 @@
           <ng-container *ngFor="let manager of products"  >
 
              <div *ngFor="let key of objectKeys(manager)">
-                <li   (click)="onSelect( manager[key]);" >
-                    <p>              {{ manager[key].name}}</p>
+                <li style="list-style: none; padding-top:20px" (click)="onSelect( manager[key]);" >
+                    <div class="sidebar-names">{{ manager[key].name}}</div>
                 </li>
-              
+
 
 
              </div>
@@ -42,7 +42,7 @@
       </ul>
     </div>
     <div class="box col-lg-9 mainpage col-9 " style="padding:0px;">
-      <app-doctor-patientview  [patient]="selectedPatient" ></app-doctor-patientview>
+      <app-doctor-patientview  [patient]="selectedPatient"></app-doctor-patientview>
       <app-graph></app-graph>
       <!--  -->
     </div>

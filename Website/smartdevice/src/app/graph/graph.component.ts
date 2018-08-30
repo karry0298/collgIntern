@@ -57,8 +57,8 @@ export class GraphComponent implements OnInit {
         datasets: [
           {
             data: this.age,
-            borderColor: "#3cba9f",
-            fill: false
+            borderColor: "#186B95",
+            fill: true
           },
         ]
       },
