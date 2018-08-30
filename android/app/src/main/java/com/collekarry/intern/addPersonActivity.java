@@ -3,6 +3,7 @@ package com.collekarry.intern;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -150,8 +151,6 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                         @Override
                         public void onSuccess(Void aVoid) {
 
-                            Toast.makeText(addPersonActivity.this, "key: "+key+" added", Toast.LENGTH_SHORT).show();
-
 
                         }
                     })
@@ -161,6 +160,13 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                             Toast.makeText(addPersonActivity.this, "Failed successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
+
+            ProgressDialog dialog = ProgressDialog.show(addPersonActivity.this, "",
+                    "Loading. Please wait...", true);
+
+
 
             StorageReference fileRef = mStorageRef.child( uid + "/displayPictures/" + key +".jpg");
 
@@ -200,6 +206,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 //            childUpdates.put("/wards/" + key, wardValues);
 //
 //            mDatabase.updateChildren(childUpdates);
+
 
 
 
