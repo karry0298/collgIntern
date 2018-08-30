@@ -21,6 +21,8 @@
 .table-style{
   background-color: #80D3ED;
   border-radius: 15px;
+
+
 }
 
 th,td{
@@ -39,9 +41,39 @@ th,td{
 
 .footer{
   position:fixed;
-  left:0;
   bottom:0;
+  left: 2.5% ;
+  width:95%;
+  padding-bottom: 13px;
+  padding-left: 4px;
+  font-size: 13px;
+
+span {
+  position: relative;
+  left:42vw;
+}
+  hr{
+    margin:0.5rem;
+    border-color: #ccc;
+
+  }
+}
+.top-nav-bar  {
+  position:fixed;
+  left: 2.5% ;
+  width:95%;
+    top:0;
   padding-bottom: 3px;
   padding-left: 4px;
   font-size: 13px;
+
+  span {
+    position: relative;
+    left:42vw;
+  }
+    hr{
+      margin:0.5rem;
+      border-color: #ccc;
+
+    }
 }
