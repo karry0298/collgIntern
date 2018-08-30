@@ -48,9 +48,11 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/curved_bag"
-            app:tabGravity="fill"
+            android:layout_marginTop="-15dp"
+            android:background="@drawable/curved_bad_primary"
 
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabMode="fixed" />
 
 
