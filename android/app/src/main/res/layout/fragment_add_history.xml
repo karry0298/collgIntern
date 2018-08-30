@@ -77,7 +77,7 @@
             <Button
                 android:id="@+id/hisSubmitButton"
                 android:layout_width="200dp"
-                android:layout_height="0dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
