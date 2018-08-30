@@ -55,9 +55,9 @@ public class listOfPeople extends AppCompatActivity
 
     private StorageReference mStorageReference;
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menubar, menu);
         return true;
@@ -121,13 +121,15 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onRefresh() {
 
-                MyAdapter adapter = new MyAdapter(listOfPeople.this,
-                        uploadList,
-                        Fimages);
+//                MyAdapter adapter = new MyAdapter(listOfPeople.this,
+//                        uploadList,
+//                        Fimages);
+//
+//
+//                list.setAdapter(adapter);
+//                srl.setRefreshing(false);
+                startActivity(new Intent( getApplicationContext() ,listOfPeople.class));
 
-
-                list.setAdapter(adapter);
-                srl.setRefreshing(false);
             }
         });
 
