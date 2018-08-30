@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -255,6 +256,15 @@ public class listOfPeople extends AppCompatActivity
 
         list = (RecyclerView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
+
+        FloatingActionButton fab = findViewById(R.id.ambulance_call_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
+                startActivity(i);
+            }
+        });
 
     }
 

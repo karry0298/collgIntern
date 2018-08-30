@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Intern</string>
-    <string name="action_newname">Add person</string>
-    <string name="action_logout">LOGOUT</string>
+    <string name="app_name">dWatch</string>
+    <string name="action_newname">Add Ward</string>
+    <string name="action_logout">Logout</string>
     <string name="title_activity_ward_details">WardDetailsActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -94,7 +94,7 @@
     </string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_medication">Add Medication</string>
     <string name="add_history">Add History</string>
