@@ -26,7 +26,9 @@ export class DoctorComponent implements OnInit {
   show: boolean = true;
   user: any;
   onSelect(hero: Patient): void {
+
     this.selectedPatient = hero;
+    
     console.log(this.selectedPatient);
   }
   // console.log(filter);
@@ -40,7 +42,7 @@ export class DoctorComponent implements OnInit {
     // Return true if don't want this job in the results.
     // e.g. lets filter jobs with price < 25;
 
-    if (patient.name.indexOf(this.filtername) > -1) {
+    if (patient.name.toLowerCase().indexOf(this.filtername.toLowerCase()) > -1) {
       return true;
     }
     return false;
@@ -59,7 +61,6 @@ export class DoctorComponent implements OnInit {
     // console.log(db.list('/wards').valueChanges());
 
 this.filtername = "";
-
 
 
     db.list('/wards')

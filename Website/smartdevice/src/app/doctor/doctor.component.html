@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{show : isActive}">
     <ul class="navbar-nav mr-auto">
         <input class="form-control mr-sm-2" [(ngModel)]="filtername" placeholder="Search"  name="filtername" >
-        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         <!-- <li>{{ filtername }}</li> -->
 
     </ul>
@@ -25,9 +25,14 @@
           <ng-container *ngFor="let manager of products"  >
 
              <div *ngFor="let key of objectKeys(manager)">
-                <li   (click)="onSelect( manager[key]);" >
-                    <p>              {{ manager[key].name}}</p>
-                </li>
+                  <!-- {{filter(manager[key])}} -->
+              
+               <div *ngIf=filter(manager[key])>
+                  <li   (click)="onSelect( manager[key]);" >
+                      <p>              {{ manager[key].name}}</p>
+                  </li>
+               </div>
+
               
 
 

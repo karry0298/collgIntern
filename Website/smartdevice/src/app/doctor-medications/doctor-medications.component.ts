@@ -11,12 +11,12 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class DoctorMedicationsComponent implements OnInit {
   constructor(private db: AngularFireDatabase) {
-    
+    db.list('/wards').valueChanges();
   }
   @Input() patient: Patient;
   medicine:Medecine=new Medecine();
   brandName:String="";
- 
+  objectKeys = Object.keys;
   auth:AngularFireAuth;
   
   dateTime:Date;
@@ -43,17 +43,21 @@ display:string="none";
         console.log(this.meds[i]);
         console.log(this.medicine.consumptionTimings);
         this.medicine.consumptionTimings.push(this.meds[i]);
-        
+        this.meds[i]="";
       }
     }
+
     this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
 
   var ref = this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
+  
+
 
 
   } 
   onSelect(hero: Patient): void {
     console.log(hero.medicines);
+
   }
 
   // onSelect(hero: Patient): void {
@@ -67,6 +71,7 @@ display:string="none";
   ngOnInit() {
     console.log(this.patient);  
     console.log(this.patient.medicines);
+    this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').valueChanges();
   }
 
 }
