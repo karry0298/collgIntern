@@ -121,6 +121,7 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onRefresh() {
 
+
                 MyAdapter adapter = new MyAdapter(listOfPeople.this,
                         uploadList,
                         Fimages);
