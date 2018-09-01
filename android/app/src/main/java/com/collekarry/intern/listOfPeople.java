@@ -122,6 +122,7 @@ public class listOfPeople extends AppCompatActivity
             public void onRefresh() {
 
 
+
                 MyAdapter adapter = new MyAdapter(listOfPeople.this,
                         uploadList,
                         Fimages);
