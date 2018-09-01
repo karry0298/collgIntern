@@ -97,6 +97,7 @@ public class AddMedicationFragment extends DialogFragment{
     private OnEntryComplete medListner;
 
     public AddMedicationFragment() {
+
         // Required empty public constructor
     }
 

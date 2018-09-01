@@ -1,10 +1,14 @@
 package com.collekarry.intern;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,12 +56,14 @@ public class listOfPeople extends AppCompatActivity
 
     List<StorageReference> Fimages;
     List<String> dsList;
+    NotificationCompat.Builder notification;
+    private static final int notId = 12321;
 
     private StorageReference mStorageReference;
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menubar, menu);
         return true;
@@ -116,24 +122,21 @@ public class listOfPeople extends AppCompatActivity
         list = (RecyclerView) findViewById(R.id.peopleListView);
 
         srl = findViewById(R.id.swipe_container);
-
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
+                startActivity(new Intent( getApplicationContext() ,listOfPeople.class));
 
-
-                MyAdapter adapter = new MyAdapter(listOfPeople.this,
-                        uploadList,
-                        Fimages);
-
-
-                list.setAdapter(adapter);
-                srl.setRefreshing(false);
             }
         });
 
 
+
+        notification = new NotificationCompat.Builder(getApplicationContext(), "sdfjkdfhkjgdf");
+        notification.setAutoCancel(true);
+
+        displayNotification();
 
 //        aList = new ArrayList<>();
 
@@ -275,6 +278,27 @@ public class listOfPeople extends AppCompatActivity
             }
         });
 
+    }
+
+    private void displayNotification() {
+
+        //Look of notification
+        notification.setSmallIcon(R.drawable.appointments_ic);
+        notification.setTicker("sdfdsvkfjdfb");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentText("skjdfsdgfhjdgfsa");
+        notification.setContentText("adfdafadfadfadfad");
+
+        Intent inten = new Intent(this,listOfPeople.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                                        this,0,inten,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notification.setContentIntent(pendingIntent);
+
+        //generator
+
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(notId , notification.build());
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{

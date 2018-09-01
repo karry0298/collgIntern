@@ -46,7 +46,11 @@ export class DoctorComponent implements OnInit {
   }
   // console.log(filter);
   getUid(): string {
+<<<<<<< HEAD
+    console.log(firebase.auth().currentUser.displayName);
+=======
     //console.log(firebase.auth().currentUser.displayName);
+>>>>>>> master
     return firebase.auth().currentUser.uid;
   }
 
