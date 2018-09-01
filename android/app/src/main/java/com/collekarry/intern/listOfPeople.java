@@ -105,7 +105,7 @@ public class listOfPeople extends AppCompatActivity
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
         nameList.keepSynced(true);
-
+        System.out.println(nameList.toString());
         uploadList = new ArrayList<>();
 
         Fimages = new ArrayList<>();
@@ -157,6 +157,7 @@ public class listOfPeople extends AppCompatActivity
 
 
                     if (ward.getUid() != null && FirebaseAuth.getInstance().getUid() != null) {
+
                         if (FirebaseAuth.getInstance().getUid().equals(ward.getUid())) {
 
                             if (!dsList.contains(value.get("key").toString() )) {
@@ -200,7 +201,7 @@ public class listOfPeople extends AppCompatActivity
 
 //                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
 
-
+                            System.out.println("before setting adapter " + ward.getName());
                             MyAdapter adapter = new MyAdapter(listOfPeople.this,
                                     uploadList,
                                     Fimages);
@@ -254,15 +255,21 @@ public class listOfPeople extends AppCompatActivity
                 uploadList,
                 Fimages);
 
+//        System.out.println(uploadList.toArray());
+
         list = (RecyclerView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
+
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(listOfPeople.this);
+        list.setLayoutManager(lm);
 
         FloatingActionButton fab = findViewById(R.id.ambulance_call_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
-                startActivity(i);
+                System.out.println(uploadList.toArray().length);
+//                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
+//                startActivity(i);
             }
         });
 
