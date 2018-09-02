@@ -8,11 +8,13 @@ import { LoginComponent } from './login/login.component';
 import { DoctorIssuesComponent } from './doctor-issues/doctor-issues.component';
 import { DoctorMedicationsComponent } from './doctor-medications/doctor-medications.component';
 import { AuthGuard } from './auth.service';
+import { NewDoctorRegisterComponent } from './new-doctor-register/new-doctor-register.component';
 
 export const routes: Routes = [
   {
-    path: 'caretaker',
-    component: CaretakerComponent
+    path: 'register',
+    component: NewDoctorRegisterComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'doctor',
