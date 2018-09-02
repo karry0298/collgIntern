@@ -17,7 +17,11 @@ export class DoctorPatientviewComponent implements OnInit {
   check(): void{
   console.log(this.patient);
   }
+<<<<<<< HEAD
+  constructor() {
+=======
   constructor(private data: DoctorUIDService) {
+>>>>>>> master
     console.log
    }
 

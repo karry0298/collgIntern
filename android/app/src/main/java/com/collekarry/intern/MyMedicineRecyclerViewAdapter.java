@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.collekarry.intern.MedicationFragment.OnListFragmentInteractionListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 import org.joda.time.LocalTime;
@@ -69,8 +70,6 @@ public class MyMedicineRecyclerViewAdapter extends RecyclerView.Adapter<MyMedici
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.medClicked(holder.mItem);
                 }
             }

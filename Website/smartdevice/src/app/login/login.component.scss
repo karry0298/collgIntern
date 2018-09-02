@@ -21,6 +21,8 @@
 .table-style{
   background-color: #80D3ED;
   border-radius: 15px;
+<<<<<<< HEAD
+=======
 
 
 }
@@ -51,6 +53,7 @@ th,td{
 span {
   position: relative;
   left:42vw;
+>>>>>>> master
 }
   hr{
     margin:0.5rem;
@@ -75,5 +78,28 @@ span {
       margin:0.5rem;
       border-color: #ccc;
 
+<<<<<<< HEAD
+th,td{
+  vertical-align: bottom;
+  padding: 1vh;
+}
+
+.nopadding{
+  background-color: #80D3ED;
+  border-color: #80D3ED;
+}
+
+.loginBackground{
+  background-image: linear-gradient(-60deg, #186B95, #54C6FF);
+}
+
+.footer{
+  position:fixed;
+  left:0;
+  bottom:0;
+  padding-bottom: 0px;
+  font-size: 13px;
+=======
     }
+>>>>>>> master
 }
