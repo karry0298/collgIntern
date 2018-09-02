@@ -20,6 +20,7 @@ import { router } from './app-routing.module';
 import { GraphComponent } from './graph/graph.component';
 
 import { AngularFireStorageModule } from 'angularfire2/storage';
+import { NewDoctorRegisterComponent } from './new-doctor-register/new-doctor-register.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
     DoctorIssuesComponent,
     DoctorMedicationsComponent,
     GraphComponent,
+    NewDoctorRegisterComponent,
 
   ],
   imports: [
