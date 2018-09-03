@@ -22,12 +22,21 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -52,10 +61,43 @@ public class MainActivity extends AppCompatActivity
 
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() !=  null){
                     Toast.makeText(MainActivity.this, "Logged in as "+ mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this,listOfPeople.class));
+
+                    String uid = firebaseAuth.getUid();
+                    final DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("Users").child("Caretakers")
+                            .child(uid);
+                    System.out.println(uid);
+                    df.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(!dataSnapshot.exists()){
+
+                                Map<String, String> careTaker = new HashMap<>();
+                                careTaker.put("name", firebaseAuth.getCurrentUser().getDisplayName());
+                                careTaker.put("email", firebaseAuth.getCurrentUser().getEmail());
+                                careTaker.put("phone", firebaseAuth.getCurrentUser().getPhoneNumber());
+                                System.out.println(careTaker.toString());
+                                df.setValue(careTaker).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                                    }
+                                });
+                            }
+                            else{
+                                startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                     //signIn();
                 }
                 else
@@ -112,8 +154,41 @@ public class MainActivity extends AppCompatActivity
                 firebaseAuthWithGoogle(account);
                 FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
                     @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                    public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
+                        String uid = firebaseAuth.getUid();
+                        final DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("Users").child("Caretakers")
+                                .child(uid);
+                        System.out.println(uid);
+                        df.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(!dataSnapshot.exists()){
+
+                                    Map<String, String> careTaker = new HashMap<>();
+                                    careTaker.put("name", firebaseAuth.getCurrentUser().getDisplayName());
+                                    careTaker.put("email", firebaseAuth.getCurrentUser().getEmail());
+                                    careTaker.put("phone", firebaseAuth.getCurrentUser().getPhoneNumber());
+                                    System.out.println(careTaker.toString());
+                                    df.setValue(careTaker).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                                        }
+                                    });
+                                }
+                                else{
+                                    startActivity(new Intent(MainActivity.this,listOfPeople.class));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
                     }
                 };
 
