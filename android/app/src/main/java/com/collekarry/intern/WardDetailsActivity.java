@@ -106,7 +106,7 @@ public class WardDetailsActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ward = dataSnapshot.getValue(wardClass.class);
                 if(ward != null){
-                    imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+                    imageRef = mStorageReference.child("Display Pictures").child(ward.getKey() + ".jpg");
 
                     Glide.with(getApplicationContext())
                             .using(new FirebaseImageLoader())
@@ -218,7 +218,7 @@ public class WardDetailsActivity extends AppCompatActivity
                             final ProgressDialog pd = ProgressDialog.show(WardDetailsActivity.this, "Loading...","Please wait.", true);
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-                            databaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                            databaseReference.child("Users").child("Patients").child(ward.getKey()).removeValue(new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                     pd.cancel();
@@ -279,7 +279,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-        ref.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+        ref.child("Users").child("Patients").child(ward.getKey()).setValue(ward)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -302,7 +302,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-        ref.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+        ref.child("Users").child("Patients").child(ward.getKey()).setValue(ward)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

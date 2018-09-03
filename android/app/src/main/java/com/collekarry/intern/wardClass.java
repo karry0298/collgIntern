@@ -26,19 +26,11 @@ public class wardClass implements Serializable
     private int age;
     private String imp;
     private String gender;
-    private String uid;
+
     private List<Medicine> medicines;
     private List<History> histories;
-    private long docID;
 
 
-    public long getDocID() {
-        return docID;
-    }
-
-    public void setDocID(long docID) {
-        this.docID = docID;
-    }
 
     public wardClass() { }
 
@@ -47,7 +39,6 @@ public class wardClass implements Serializable
         this.name = name;
         this.age = age;
         this.gender = gender;
-        this.uid = uid;
         this.imp = imp;
         this.medicines = new ArrayList<>();
         this.histories = new ArrayList<>();
@@ -74,14 +65,6 @@ public class wardClass implements Serializable
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getName() {
@@ -132,4 +115,5 @@ public class wardClass implements Serializable
     public void setImp() {
         this.imp = imp;
     }
+
 }

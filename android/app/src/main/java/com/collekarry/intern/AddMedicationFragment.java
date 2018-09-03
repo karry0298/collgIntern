@@ -381,7 +381,7 @@ public class AddMedicationFragment extends DialogFragment{
 
                         ward.addMedicine(newMed);
 
-                        mDatabaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+                        mDatabaseReference.child("Users").child("Patients").child(ward.getKey()).setValue(ward)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

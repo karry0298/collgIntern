@@ -92,7 +92,7 @@ public class AddHistoryFragment extends DialogFragment {
                     if(intention.equals("direct_entry")){
                         ward.addHistory(history);
 
-                        mDatabaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).setValue(ward)
+                        mDatabaseReference.child("Users").child("Patients").child(ward.getKey()).setValue(ward)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
