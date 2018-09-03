@@ -38,8 +38,12 @@ public class MyNotificationManager
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mCtx,CHANNEL_ID)
                         .setSmallIcon(R.drawable.appointments_ic)
+                        .setBadgeIconType(R.drawable.appointments_ic)
                         .setContentTitle(title)
-                        .setContentText(body);
+                        .setContentText(body)
+                        .setWhen(System.currentTimeMillis())
+                        .setAutoCancel(true);
+
 
 
         /*

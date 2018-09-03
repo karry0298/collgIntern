@@ -198,7 +198,7 @@ public class listOfPeople extends AppCompatActivity
         Log.i("data",currentDateTimeString);
 
 
-//            displayNotification();
+//       displayNotification();
 //        aList = new ArrayList<>();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -366,7 +366,6 @@ public class listOfPeople extends AppCompatActivity
             NotificationManager notificationManager = (NotificationManager)
                                                     getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
 
-
             CharSequence name = "Chnnel Name";
             String description = "Channel Descp";
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -391,6 +390,20 @@ public class listOfPeople extends AppCompatActivity
 
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(12312, mBuilder.build());
+
+//        Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 123, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(),"id_product")
+//                .setSmallIcon(R.drawable.appointments_ic) //your app icon
+//                .setBadgeIconType(R.drawable.appointments_ic) //your app icon
+//                .setChannelId(cId)
+//                .setContentTitle(extras.get("nt").toString())
+//                .setAutoCancel(true).setContentIntent(pendingIntent)
+//                .setNumber(1)
+//                .setColor(255)
+//                .setContentText(extras.get("nm").toString())
+//                .setWhen(System.currentTimeMillis());
+//        notificationManager.notify(1, notificationBuilder.build());
 
     }
     boolean doubleBackToExitPressedOnce;
