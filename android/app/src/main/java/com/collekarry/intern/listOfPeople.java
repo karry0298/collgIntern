@@ -1,14 +1,18 @@
 package com.collekarry.intern;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,10 +45,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import static com.collekarry.intern.MyNotificationManager.CHANNEL_DESCRIPTION;
+import static com.collekarry.intern.MyNotificationManager.CHANNEL_ID;
+import static com.collekarry.intern.MyNotificationManager.CHANNEL_NAME;
 
 
 public class listOfPeople extends AppCompatActivity
@@ -111,7 +122,7 @@ public class listOfPeople extends AppCompatActivity
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
         nameList.keepSynced(true);
-        System.out.println(nameList.toString());
+
         uploadList = new ArrayList<>();
 
         Fimages = new ArrayList<>();
@@ -124,21 +135,40 @@ public class listOfPeople extends AppCompatActivity
         srl = findViewById(R.id.swipe_container);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {
-
+            public void onRefresh()
+            {
                 startActivity(new Intent( getApplicationContext() ,listOfPeople.class));
 
             }
         });
 
 
+        Date d=new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("hh:mm");
+        String currentDateTimeString = sdf.format(d);
+        Log.i("data",currentDateTimeString);
 
-        notification = new NotificationCompat.Builder(getApplicationContext(), "sdfjkdfhkjgdf");
-        notification.setAutoCancel(true);
 
-        displayNotification();
-
+//            displayNotification();
 //        aList = new ArrayList<>();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            mChannel.setDescription(CHANNEL_DESCRIPTION);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+
+        /*
+         * Displaying a notification locally
+         */
+        MyNotificationManager.getInstance(this).displayNotification("Greetings", "Hello how are you?");
 
 
 
@@ -162,7 +192,6 @@ public class listOfPeople extends AppCompatActivity
 
 
                     if (ward.getUid() != null && FirebaseAuth.getInstance().getUid() != null) {
-
                         if (FirebaseAuth.getInstance().getUid().equals(ward.getUid())) {
 
                             if (!dsList.contains(value.get("key").toString() )) {
@@ -206,7 +235,7 @@ public class listOfPeople extends AppCompatActivity
 
 //                        Toast.makeText(listOfPeople.this, value.get("name") + " added", Toast.LENGTH_SHORT).show();
 
-                            System.out.println("before setting adapter " + ward.getName());
+
                             MyAdapter adapter = new MyAdapter(listOfPeople.this,
                                     uploadList,
                                     Fimages);
@@ -260,8 +289,6 @@ public class listOfPeople extends AppCompatActivity
                 uploadList,
                 Fimages);
 
-//        System.out.println(uploadList.toArray());
-
         list = (RecyclerView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
 
@@ -272,7 +299,6 @@ public class listOfPeople extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(uploadList.toArray().length);
                 Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
                 startActivity(i);
             }
@@ -280,25 +306,41 @@ public class listOfPeople extends AppCompatActivity
 
     }
 
-    private void displayNotification() {
+    public void displayNotification()
+    {
+        String cId = "abcabc";
 
-        //Look of notification
-        notification.setSmallIcon(R.drawable.appointments_ic);
-        notification.setTicker("sdfdsvkfjdfb");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentText("skjdfsdgfhjdgfsa");
-        notification.setContentText("adfdafadfadfadfad");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-        Intent inten = new Intent(this,listOfPeople.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                                        this,0,inten,PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationManager notificationManager = (NotificationManager)
+                                                    getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
 
-        notification.setContentIntent(pendingIntent);
 
-        //generator
+            CharSequence name = "Chnnel Name";
+            String description = "Channel Descp";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(cId, name, importance);
+            channel.setDescription(description);
+            channel.enableLights(true);
+            channel.setLightColor(Color.WHITE);
+            channel.enableVibration(false);
 
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(notId , notification.build());
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, cId)
+                .setSmallIcon(R.drawable.appointments_ic)
+                .setContentTitle("title")
+                .setContentText("kdfhjkgasfbsdjfbdgbjhbsg")
+                .setLights(Color.WHITE,500,500)
+                .setColor(Color.RED)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(12312, mBuilder.build());
+
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
