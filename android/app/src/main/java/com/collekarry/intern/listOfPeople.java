@@ -273,8 +273,8 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 System.out.println(uploadList.toArray().length);
-//                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
-//                startActivity(i);
+                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
+                startActivity(i);
             }
         });
 
