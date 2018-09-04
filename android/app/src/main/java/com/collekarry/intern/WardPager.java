@@ -39,20 +39,6 @@ public class WardPager extends FragmentPagerAdapter {
         return 3;
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0:
-                return "Heart rate";
-            case 1:
-                return "Medication";
-            case 2:
-                return "History";
-            default :
-                return "";
-        }
-    }
 
 
 

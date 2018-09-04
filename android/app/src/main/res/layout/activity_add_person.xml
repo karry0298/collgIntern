@@ -205,10 +205,11 @@
             >
 
         </android.support.v7.widget.RecyclerView>
+
         <Button
             android:id="@+id/submitButton"
             android:layout_width="200dp"
-            android:layout_height="0dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="1"
@@ -218,8 +219,7 @@
             android:onClick="submitButtonClicked"
             android:text="Submit"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

@@ -97,6 +97,7 @@ public class AddMedicationFragment extends DialogFragment{
     private OnEntryComplete medListner;
 
     public AddMedicationFragment() {
+
         // Required empty public constructor
     }
 
@@ -141,7 +142,9 @@ public class AddMedicationFragment extends DialogFragment{
 //                AlertDialog alert = alertBuilder.create();
 //                alert.show();
 //            } else {
-            requestPermissions(new String[]{android.Manifest.permission.WRITE_CALENDAR, android.Manifest.permission.READ_CALENDAR},
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_CALENDAR},
+                    66);
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_CALENDAR},
                     66);
 //            }
         }
@@ -352,14 +355,6 @@ public class AddMedicationFragment extends DialogFragment{
                     dateTextView2.setError("Please select a date.");
                 }
                 else{
-                    Date date = new Date();
-                    Date date2 = new Date();
-                    try {
-                        date = new SimpleDateFormat("dd/MM/yyyy").parse(dateText);
-                        date2 = new SimpleDateFormat("dd/MM/yyyy").parse(dateText2);
-                    }catch (ParseException e){
-                        Toast.makeText(getContext(), "Invalid Date format.", Toast.LENGTH_SHORT);
-                    }
 
                     List<String> timings = new ArrayList<>();
 
@@ -367,9 +362,11 @@ public class AddMedicationFragment extends DialogFragment{
                         View t = consumptionTimingLayout.getChildAt(i);
                         TextView tv = t.findViewWithTag("time");
                         timings.add(tv.getText().toString());
-                    }
 
-                    Medicine newMed = new Medicine(name,manufacturer,count,date,date2,timings,prescriptionBy);
+                    }
+                    System.out.println(timings);
+                    Medicine newMed = new Medicine(name,manufacturer,count,dateText
+                            ,dateText2 ,timings,prescriptionBy);
 
                     if(intention.equals("direct_entry")){
 
@@ -379,7 +376,7 @@ public class AddMedicationFragment extends DialogFragment{
                         }
 
                         long eventID = newMed.setReminder(getActivity(), newMed);
-
+                        System.out.println(ward);
                         newMed.setDueEventID(eventID);
 
                         ward.addMedicine(newMed);

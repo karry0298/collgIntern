@@ -1,6 +1,8 @@
 package com.collekarry.intern;
 
+import android.app.ProgressDialog;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -102,29 +105,30 @@ public class WardDetailsActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ward = dataSnapshot.getValue(wardClass.class);
+                if(ward != null){
+                    imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
 
-                imageRef = mStorageReference.child(ward.getUid() + "/displayPictures/" + ward.getKey() + ".jpg");
+                    Glide.with(getApplicationContext())
+                            .using(new FirebaseImageLoader())
+                            .load(imageRef)
+                            .placeholder(R.drawable.default_dp)
+                            .centerCrop()
+                            .into(imageView);
 
-                Glide.with(getApplicationContext())
-                        .using(new FirebaseImageLoader())
-                        .load(imageRef)
-                        .placeholder(R.drawable.default_dp)
-                        .centerCrop()
-                        .into(imageView);
-
-                mCollapsingToolbarLayout.setTitle(ward.getName());
+                    mCollapsingToolbarLayout.setTitle(ward.getName());
 //                Log.i("xyz", ward.getImp());
 
-                adapter = new WardPager(getSupportFragmentManager(), ward);
+                    adapter = new WardPager(getSupportFragmentManager(), ward);
 //                adapter.notifyDataSetChanged();
-                viewPager.setAdapter(adapter);
+                    viewPager.setAdapter(adapter);
 
-                tabLayout.setupWithViewPager(viewPager);
+                    tabLayout.setupWithViewPager(viewPager);
 
-                tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
-                tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
-                tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
-                tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                    tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
+                    tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
+                    tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
+                    tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                }
             }
 
             @Override
@@ -199,6 +203,37 @@ public class WardDetailsActivity extends AppCompatActivity
         }
         else if(id == R.id.action_add_history){
             AddHistoryFragment.newInstance(ward,"direct_entry").show(getSupportFragmentManager(), "add_history");
+        }
+        else if(id == R.id.action_delete_ward){
+
+
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            alertDialogBuilder.setMessage("Do you really want to delete " + ward.getName() + " ?")
+                    .setTitle("Delete Ward")
+                    .setCancelable(true)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final ProgressDialog pd = ProgressDialog.show(WardDetailsActivity.this, "Loading...","Please wait.", true);
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                            databaseReference.child("wards").child(ward.getUid()).child(ward.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    pd.cancel();
+                                    startActivity(new Intent(WardDetailsActivity.this, listOfPeople.class));
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .show();
         }
 
         return false;

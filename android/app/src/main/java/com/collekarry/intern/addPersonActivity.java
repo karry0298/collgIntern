@@ -3,6 +3,7 @@ package com.collekarry.intern;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,6 +63,9 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
     private String userChosenTask;
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
+    int baka=1;
+    String name="",gender="";
+    int age =-99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +92,18 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
         medRecyclerView.setHasFixedSize(true);
 
         historyRecyclerView = findViewById(R.id.history_recycler_view);
+
+        submitButton.setClickable(true);
     }
 
 
-    public void submitButtonClicked(View v){
-        String name = nameView.getText().toString().trim();
-        int age = ageView.getText().toString().equals("") ? 0 : Integer.valueOf(ageView.getText().toString());
-        String gender;
+
+    public void submitButtonClicked(View v)
+    {
+        name = nameView.getText().toString().trim();
+        age = ageView.getText().toString().equals("") ? 0 : Integer.valueOf(ageView.getText().toString());
+
+        baka =0;
 
         if(!name.matches("^[a-zA-Z\\s]{3,20}$")){
             nameView.setError("Enter a valid name");
@@ -134,12 +143,13 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 //            }
 //            ward.setMedicines(tempMed);
 
+
+        submitButton.setClickable(false);
+
             mDatabase.child("wards").child(uid).child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-
-                            Toast.makeText(addPersonActivity.this, "key: "+key+" added", Toast.LENGTH_SHORT).show();
 
 
                         }
@@ -150,6 +160,13 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                             Toast.makeText(addPersonActivity.this, "Failed successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
+
+            ProgressDialog dialog = ProgressDialog.show(addPersonActivity.this, "",
+                    "Loading. Please wait...", true);
+
+
 
             StorageReference fileRef = mStorageRef.child( uid + "/displayPictures/" + key +".jpg");
 
@@ -189,6 +206,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 //            childUpdates.put("/wards/" + key, wardValues);
 //
 //            mDatabase.updateChildren(childUpdates);
+
 
 
 
@@ -394,6 +412,17 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
     public void onEntryComplete() {
 
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(baka != 0 || age == -99 || gender.equals("") || name.equals(""))
+        {
+            startActivity(new Intent(this,listOfPeople.class));
+        }
+    }
+
+
 
     @Override
     public void onEntryComplete(History history) {

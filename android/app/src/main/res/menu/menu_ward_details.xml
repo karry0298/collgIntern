@@ -12,4 +12,8 @@
         android:orderInCategory="100"
         android:title="@string/add_history"
         />
+    <item
+        android:id="@+id/action_delete_ward"
+        android:orderInCategory="100"
+        android:title="@string/delete_ward" />
 </menu>

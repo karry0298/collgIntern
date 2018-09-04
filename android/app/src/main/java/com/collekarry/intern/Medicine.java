@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
@@ -17,17 +18,18 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 public class Medicine implements Serializable{
 
     private String name;
     private String brandName;
-    private Date dateStarted;
-    private Date dateStopped;
+    private String dateStarted;
+    private String dateStopped;
     private int count;
     private long dueEventID;
 
@@ -47,7 +49,7 @@ public class Medicine implements Serializable{
 
         for(int i = 0; i < consumptionTimings.size(); i++){
 
-            LocalTime a = LocalTime.parse(consumptionTimings.get(i), DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            LocalTime a = LocalTime.parse(consumptionTimings.get(i).replace(".","") , DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
 
             if( a.isBefore(x) && (a.isAfter(t) || a.isEqual(t))  ){
                 x = a;
@@ -75,7 +77,10 @@ public class Medicine implements Serializable{
         LocalTime tomoTime = new LocalTime(23,59);
 
         for(int i = 0; i < consumptionTimings.size(); i++){
-            LocalTime a = LocalTime.parse(consumptionTimings.get(i), DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            Log.e("Edwin", consumptionTimings.get(i).replace(".",""));
+            LocalTime a = LocalTime.parse(consumptionTimings.get(i).replace(".","") ,
+                    DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH));
+            Log.e("Edwin_END", " ---");
             if( a.isBefore(x) && (a.isAfter(t) || a.isEqual(t))  ){
                 x = a;
             }
@@ -94,8 +99,14 @@ public class Medicine implements Serializable{
         }
     }
 
-    public DateTime getDueDate(){
-        DateTime d = new DateTime(dateStarted).withTime(23,59,59,999);
+    public DateTime getDueDate()  {
+        System.out.println();
+        DateTime d = null;
+        try {
+            d = new DateTime(new SimpleDateFormat("dd/mm/yyyy").parse(dateStarted) ).withTime(23,59,59,999);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         int pillsPerDay = consumptionTimings.size();
         int days = Integer.valueOf(count/pillsPerDay) - 3;
 
@@ -137,7 +148,7 @@ public class Medicine implements Serializable{
     public Medicine() {
     }
 
-    public Medicine(String name, String brandName, int count, Date dateStarted, Date dateStopped, List<String> consumptionTimings, String prescriptionBy) {
+    public Medicine(String name, String brandName, int count, String dateStarted, String dateStopped, List<String> consumptionTimings, String prescriptionBy) {
         this.name = name;
         this.brandName = brandName;
         this.count = count;
@@ -169,17 +180,17 @@ public class Medicine implements Serializable{
         this.count = count;
     }
 
-    public Date getDateStarted() {
+    public String getDateStarted() {
         return dateStarted;
     }
-    public void setDateStarted(Date dateStarted) {
+    public void setDateStarted(String dateStarted) {
         this.dateStarted = dateStarted;
     }
 
-    public Date getDateStopped() {
+    public String getDateStopped() {
         return dateStopped;
     }
-    public void setDateStopped(Date dateStopped) {
+    public void setDateStopped(String dateStopped) {
         this.dateStopped = dateStopped;
     }
 
@@ -204,3 +215,4 @@ public class Medicine implements Serializable{
         this.dueEventID = dueEventID;
     }
 }
+

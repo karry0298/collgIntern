@@ -54,14 +54,11 @@ public class wardClass implements Serializable
     }
 
     public void addMedicine(Medicine e){
-        final boolean[] ret = new boolean[1];
-
         if(medicines == null){
             medicines = new ArrayList<>();
         }
-
-        medicines.add(e);
-
+        this.medicines.add(e);
+        System.out.println(e.getName());
     }
 
     public List<Medicine> getMedicines() {

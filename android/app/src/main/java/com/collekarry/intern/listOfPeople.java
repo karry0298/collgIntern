@@ -1,11 +1,24 @@
 package com.collekarry.intern;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,32 +45,45 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import static com.collekarry.intern.MyNotificationManager.CHANNEL_DESCRIPTION;
+import static com.collekarry.intern.MyNotificationManager.CHANNEL_ID;
+import static com.collekarry.intern.MyNotificationManager.CHANNEL_NAME;
 
 
 public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList;
-    ListView list;
+    RecyclerView list;
     List<wardClass> uploadList;
+    SwipeRefreshLayout srl;
 
     List<StorageReference> Fimages;
     List<String> dsList;
+    NotificationCompat.Builder notification;
+    private static final int notId = 12321;
 
     private StorageReference mStorageReference;
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menubar, menu);
         return true;
     }
 
 
+    public void addWard(View v){
+        startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -87,6 +113,8 @@ public class listOfPeople extends AppCompatActivity
         setContentView(R.layout.activity_list_of_people);
 //        String base = "";
 //        Log.i("name:","");
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setElevation(0);
 
         if(FirebaseAuth.getInstance().getUid() == null){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -102,9 +130,44 @@ public class listOfPeople extends AppCompatActivity
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
+        list = (RecyclerView) findViewById(R.id.peopleListView);
+
+        srl = findViewById(R.id.swipe_container);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh()
+            {
+                startActivity(new Intent( getApplicationContext() ,listOfPeople.class));
+            }
+        });
 
 
+        Date d=new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("hh:mm");
+        String currentDateTimeString = sdf.format(d);
+        Log.i("data",currentDateTimeString);
+
+
+//       displayNotification();
 //        aList = new ArrayList<>();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            mChannel.setDescription(CHANNEL_DESCRIPTION);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+
+        /*
+         * Displaying a notification locally
+         */
+        MyNotificationManager.getInstance(this).displayNotification("Greetings", "Hello how are you?");
 
 
 
@@ -176,8 +239,11 @@ public class listOfPeople extends AppCompatActivity
                                     uploadList,
                                     Fimages);
 
-                            list = (ListView) findViewById(R.id.peopleListView);
+
                             list.setAdapter(adapter);
+
+                            RecyclerView.LayoutManager lm = new LinearLayoutManager(listOfPeople.this);
+                            list.setLayoutManager(lm);
                         }
                     }
 
@@ -222,71 +288,139 @@ public class listOfPeople extends AppCompatActivity
                 uploadList,
                 Fimages);
 
-        list = (ListView) findViewById(R.id.peopleListView);
+        list = (RecyclerView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        FloatingActionButton fab = findViewById(R.id.ambulance_call_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
-                intent.putExtra("key", uploadList.get(position).getKey());
-
-                startActivity(intent);
+            public void onClick(View v) {
+                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
+                startActivity(i);
             }
         });
+
     }
 
-    class MyAdapter extends ArrayAdapter<String>{
-        private final Context context;
+    public void displayNotification()
+    {
+        String cId = "abcabc";
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationManager notificationManager = (NotificationManager)
+                                                    getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+
+            CharSequence name = "Chnnel Name";
+            String description = "Channel Descp";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(cId, name, importance);
+            channel.setDescription(description);
+            channel.enableLights(true);
+            channel.setLightColor(Color.WHITE);
+            channel.enableVibration(false);
+
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, cId)
+                .setSmallIcon(R.drawable.appointments_ic)
+                .setContentTitle("title")
+                .setContentText("kdfhjkgasfbsdjfbdgbjhbsg")
+                .setLights(Color.WHITE,500,500)
+                .setColor(Color.RED)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(12312, mBuilder.build());
+
+//        Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 123, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(),"id_product")
+//                .setSmallIcon(R.drawable.appointments_ic) //your app icon
+//                .setBadgeIconType(R.drawable.appointments_ic) //your app icon
+//                .setChannelId(cId)
+//                .setContentTitle(extras.get("nt").toString())
+//                .setAutoCancel(true).setContentIntent(pendingIntent)
+//                .setNumber(1)
+//                .setColor(255)
+//                .setContentText(extras.get("nm").toString())
+//                .setWhen(System.currentTimeMillis());
+//        notificationManager.notify(1, notificationBuilder.build());
+
+    }
+
+    class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
+        private final Context context;
         private final List<wardClass> listElemets;
         private final List<StorageReference> imageReferences;
 
 
         public MyAdapter(@NonNull Context context, List<wardClass> listElements, List<StorageReference> imageReferences) {
-            super(context, R.layout.people_listview_layout);
-
             this.listElemets = listElements;
             this.imageReferences = imageReferences;
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public int getCount() {
-            return listElemets.size();
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.people_listview_layout, parent, false);
+            ViewHolder vh = new ViewHolder(row);
+            return vh;
         }
 
         @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-
-            LayoutInflater lf = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View rowView = lf.inflate(R.layout.people_listview_layout, null, true);
-
-
-            ImageView iv1 = (ImageView) rowView.findViewById(R.id.displayPicture);
-            TextView name = (TextView) rowView.findViewById(R.id.name);
-            TextView age = (TextView) rowView.findViewById(R.id.age);
-
-//            System.out.println(images);
+        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
             Glide.with(listOfPeople.this)
                     .using(new FirebaseImageLoader())
-                    .load(imageReferences.get(i))
+                    .load(imageReferences.get(position))
                     .centerCrop()
-                    .into(iv1);
+                    .into(holder.iv1);
 
-            wardClass ward = listElemets.get(i);
-//            iv1.setImageResource(images[i]);
-            name.setText(ward.getName().length()<=25 ? ward.getName() : ward.getName().substring(0, 25)+ "..." );
-            age.setText( String.valueOf(ward.getAge())  );
+            holder.name.setText(listElemets.get(position).getName());
+            holder.age.setText(String.valueOf(listElemets.get(position).getAge()));
+            holder.gender.setText(listElemets.get(position).getGender());
+
+            holder.row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
+                    intent.putExtra("key", uploadList.get(position).getKey());
+
+                    startActivity(intent);
+                }
+            });
+        }
 
 
+        @Override
+        public int getItemCount() {
+            if (listElemets == null){
+                return 0;
+            }
+            else{
+                return listElemets.size();
+            }
+        }
 
-            return rowView;
+        public class ViewHolder extends RecyclerView.ViewHolder{
+            ImageView iv1 ;
+            View row;
+            TextView name ;
+            TextView age ;
+            TextView gender;
+
+            public ViewHolder(View rowView) {
+                super(rowView);
+                row = rowView;
+                iv1 = (ImageView) rowView.findViewById(R.id.displayPicture);
+                name = (TextView) rowView.findViewById(R.id.name);
+                age = (TextView) rowView.findViewById(R.id.age);
+                gender = (TextView) rowView.findViewById(R.id.gender);
+            }
         }
     }
 }
