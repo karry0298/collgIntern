@@ -1,6 +1,6 @@
 
 <div *ngIf="patient">
-  <div class="" style="height:20vh; background-color:wheat;">
+  <div class="" style="height:20vh; background-color:white">
       <div class="container">
         <div class="row">
           <div class="col-6">
@@ -43,5 +43,15 @@
 </div>
 
 <div *ngIf="!patient">
-<p style="align:center" (click)="check();">click on the name</p>
+<div align="center" (click)="check();">
+
+  <div>
+    Welcome
+  </div>
+  <div>
+    {{this.doctorDetails}}
+  </div>
+
+
+</div>
 </div>

@@ -28,6 +28,7 @@ display:string="none";
 
   openModal(): void{
     this.display="block";
+    console.log(this.display);
   }
   closeModal(): void{
     this.display="none";
@@ -46,9 +47,13 @@ display:string="none";
         this.meds[i]="";
       }
     }
-
     this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
+    // var newPostKey = firebase.database().ref().child('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push().key;
+    // var updates = {};
+    // updates[ '/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key + newPostKey] = this.medicine;
+    // firebase.database().ref().update(updates);
 
+    console.log(firebase.auth().currentUser.uid+" "+this.patient.key);
   var ref = this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
   
 

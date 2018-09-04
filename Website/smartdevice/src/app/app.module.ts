@@ -19,6 +19,8 @@ import { AuthGuard } from './auth.service';
 import { router } from './app-routing.module';
 import { GraphComponent } from './graph/graph.component';
 
+import { AngularFireStorageModule } from 'angularfire2/storage';
+
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { GraphComponent } from './graph/graph.component';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    AngularFireStorageModule,
     AngularFireAuthModule,
     HttpModule,
     router,
