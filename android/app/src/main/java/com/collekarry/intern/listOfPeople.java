@@ -64,6 +64,7 @@ public class listOfPeople extends AppCompatActivity
     RecyclerView list;
     List<wardClass> uploadList;
     SwipeRefreshLayout srl;
+    MyAdapter adapter;
 
     List<StorageReference> Fimages;
     List<String> dsList;
@@ -124,7 +125,7 @@ public class listOfPeople extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        final List<DatabaseReference> wardList = new ArrayList<>();
+        final List<wardClass> wardList = new ArrayList<>();
         final List<StorageReference> dpList = new ArrayList<>();
 
         keyReference = mDatabaseReference.child("LinksCaretakersPatients");
@@ -132,16 +133,30 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 wardList.clear();
+                String temp_uid = FirebaseAuth.getInstance().getUid();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    String temp_uid = FirebaseAuth.getInstance().getUid();
+
                     if(ds.hasChild(temp_uid)){
                         String PKey = ds.child(temp_uid).getValue(String.class);
                         DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey);
-                        StorageReference patientImageRef = mStorageReference.child("Display Pictures").child(PKey + ".jpg");
-                        if(!wardList.contains(PKey)){
-                            wardList.add(patientRef);
-                            dpList.add(patientImageRef);
-                        }
+                        final StorageReference patientImageRef = mStorageReference.child("Display Pictures").child(PKey + ".jpg");
+                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                wardClass w = dataSnapshot.getValue(wardClass.class);
+                                if(!wardList.contains(w)){
+                                    wardList.add(w);
+                                    dpList.add(patientImageRef);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 }
             }
@@ -150,6 +165,7 @@ public class listOfPeople extends AppCompatActivity
                 Log.e("db error", databaseError.getMessage());
             }
         });
+
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
         nameList.keepSynced(true);
@@ -169,7 +185,10 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onRefresh()
             {
-                startActivity(new Intent( getApplicationContext() ,listOfPeople.class));
+                MyAdapter myAdapter =  new MyAdapter(getApplicationContext(), wardList, dpList);
+                list.setAdapter(myAdapter);
+
+                srl.setRefreshing(false);
 
             }
         });
@@ -317,15 +336,17 @@ public class listOfPeople extends AppCompatActivity
 
 //        MyAdapter adapter = new MyAdapter(this, names,ages, images);
 
-        MyAdapter adapter = new MyAdapter(this,
+//        list = (RecyclerView) findViewById(R.id.peopleListView);
+
+        adapter = new MyAdapter(this,
                 wardList,
                 dpList);
 
-        list = (RecyclerView) findViewById(R.id.peopleListView);
         list.setAdapter(adapter);
 
         RecyclerView.LayoutManager lm = new LinearLayoutManager(listOfPeople.this);
         list.setLayoutManager(lm);
+        adapter.notifyDataSetChanged();
 
         FloatingActionButton fab = findViewById(R.id.ambulance_call_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -377,14 +398,14 @@ public class listOfPeople extends AppCompatActivity
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         private final Context context;
-        private final List<DatabaseReference> listElemets;
+        private final List<wardClass> listElemets;
         private final List<StorageReference> imageReferences;
 
-
-        public MyAdapter(@NonNull Context context, List<DatabaseReference> listElements, List<StorageReference> imageReferences) {
+        public MyAdapter(@NonNull Context context, List<wardClass> listElements, List<StorageReference> imageReferences) {
             this.listElemets = listElements;
             this.imageReferences = imageReferences;
             this.context = context;
+
         }
 
         @NonNull
@@ -403,28 +424,18 @@ public class listOfPeople extends AppCompatActivity
                     .centerCrop()
                     .into(holder.iv1);
 
-            final wardClass[] currentWard = {new wardClass()};
-            listElemets.get(position).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    currentWard[0] = dataSnapshot.getValue(wardClass.class);
-                }
+//            final wardClass[] currentWard = {new wardClass()};
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-
-            holder.name.setText(currentWard[0].getName());
-            holder.age.setText(String.valueOf(currentWard[0].getAge()));
-            holder.gender.setText(currentWard[0].getGender());
+            holder.name.setText(listElemets.get(position).getName());
+            holder.age.setText(String.valueOf(listElemets.get(position).getAge()));
+            holder.gender.setText(listElemets.get(position).getGender());
 
             holder.row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), WardDetailsActivity.class);
-                    intent.putExtra("key", uploadList.get(position).getKey());
+                    intent.putExtra("key", listElemets.get(position).getKey());
                     startActivity(intent);
                 }
             });

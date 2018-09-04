@@ -119,12 +119,12 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                 gender = "Male";
             }
 
-            String uid = FirebaseAuth.getInstance().getUid();
+            final String uid = FirebaseAuth.getInstance().getUid();
 
             final String key = mDatabase.child("wards").child(uid).push().getKey();
             String imp = "false";
 
-            wardClass ward = new wardClass(key,name,age,gender,uid,imp);
+            final wardClass ward = new wardClass(key,name,age,gender,uid,imp);
 
             for(Medicine m: meds){
                 m.setDueEventID(m.setReminder(getApplicationContext(), m));
@@ -146,11 +146,43 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
         submitButton.setClickable(false);
 
-            mDatabase.child("wards").child(uid).child(key).setValue(ward)
+            mDatabase.child("Users").child("Patients").child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            final DatabaseReference CPLinkRef = mDatabase.child("LinksCaretakersPatients");
 
+                            CPLinkRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Map<String, String> s = new HashMap<>();
+                                    s.put(uid, ward.getKey());
+                                    CPLinkRef.push().setValue(s);
+//                                    GenericTypeIndicator<Map<Integer,Map<String, String>> >t =
+//                                            new GenericTypeIndicator<Map<Integer,Map<String, String>>>() {};
+//                                    Map<Integer,Map<String,String>> links = dataSnapshot.getValue(t);
+//                                    links.keySet().
+//
+//                                    if(linkArray == null){
+//                                        Map<String,String> temp = new HashMap<>();
+//                                        temp.put(ward.getKey(), uid);
+//                                        System.out.println(temp.toString());
+//                                        CPLinkRef.child("0").setValue(temp);
+//                                    }
+//                                    else{
+//                                        Map<String,String> newLink[] = Arrays.copyOf(linkArray, linkArray.length+1);
+//                                        newLink[linkArray.length] = new HashMap<>();
+//                                        newLink[linkArray.length].put(ward.getKey(), uid);
+//                                        CPLinkRef.setValue(newLink);
+//                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
 
                         }
                     })
@@ -168,7 +200,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
 
 
-            StorageReference fileRef = mStorageRef.child( uid + "/displayPictures/" + key +".jpg");
+            StorageReference fileRef = mStorageRef.child("Display Pictures").child(key + ".jpg");
 
             Drawable img;
             System.out.println("\n\n\n tadada: " + imageView.getTag() + "\n\n\n");

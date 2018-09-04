@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity
                     final DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("Users").child("Caretakers")
                             .child(uid);
                     System.out.println(uid);
-                    df.addValueEventListener(new ValueEventListener() {
+                    df.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(!dataSnapshot.exists()){
+                            if( !dataSnapshot.hasChildren() ){
 
                                 Map<String, String> careTaker = new HashMap<>();
                                 careTaker.put("name", firebaseAuth.getCurrentUser().getDisplayName());
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity
                         final DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("Users").child("Caretakers")
                                 .child(uid);
                         System.out.println(uid);
-                        df.addValueEventListener(new ValueEventListener() {
+                        df.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(!dataSnapshot.exists()){

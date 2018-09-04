@@ -61,7 +61,7 @@ public class WardDetailsActivity extends AppCompatActivity
 
     private StorageReference mStorageReference,imageRef;
     private DatabaseReference mDatabaseReference;
-    private DatabaseReference stateChange;
+
 
 
 //    public void setWard(wardClass ward) {
@@ -92,11 +92,9 @@ public class WardDetailsActivity extends AppCompatActivity
         }
         key = intent.getStringExtra("key");
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("wards")
-                .child(FirebaseAuth.getInstance().getUid()).child(key);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Patients").child(key);
         mDatabaseReference.keepSynced(true);
-
-        stateChange = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid()).child(key);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
@@ -171,7 +169,7 @@ public class WardDetailsActivity extends AppCompatActivity
                 String change="true";
                 Log.i("xxxyz", ward.getImp());
                 Toast.makeText(WardDetailsActivity.this, "SOS sent to docSide bhiyaJi" , Toast.LENGTH_SHORT).show();
-                stateChange.child("imp").setValue(change);
+                mDatabaseReference.child("imp").setValue(change);
             }
         });
     }
@@ -217,14 +215,34 @@ public class WardDetailsActivity extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int which) {
                             final ProgressDialog pd = ProgressDialog.show(WardDetailsActivity.this, "Loading...","Please wait.", true);
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-                            databaseReference.child("Users").child("Patients").child(ward.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                            databaseReference.child("LinksCaretakersPatients").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    pd.cancel();
-                                    startActivity(new Intent(WardDetailsActivity.this, listOfPeople.class));
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot d : dataSnapshot.getChildren()){
+                                        String uid = FirebaseAuth.getInstance().getUid();
+                                        if(d.hasChild(uid) && d.child(uid).getValue(String.class).equals(ward.getKey())){
+                                            d.getRef().removeValue(new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                    databaseReference.child("Users").child("Patients").child(ward.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                                                        @Override
+                                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                            pd.cancel();
+                                                            startActivity(new Intent(WardDetailsActivity.this, listOfPeople.class));
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
                                 }
                             });
+
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
