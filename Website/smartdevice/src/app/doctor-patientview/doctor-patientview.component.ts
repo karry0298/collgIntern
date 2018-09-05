@@ -21,9 +21,9 @@ export class DoctorPatientviewComponent implements OnInit {
   constructor() {
 =======
   constructor(private data: DoctorUIDService) {
->>>>>>> master
-    console.log
-   }
+    this.doctorDetails=this.data.currentUser();
+    console.log(this.doctorDetails);
+     }
 
   ngOnInit() {
     this.data.currentMessage.subscribe(doctorDetails => {this.doctorDetails = doctorDetails; ;
