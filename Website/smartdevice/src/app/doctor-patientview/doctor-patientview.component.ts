@@ -20,7 +20,8 @@ export class DoctorPatientviewComponent implements OnInit {
 
 
   constructor(private data: DoctorUIDService) {
-    
+    this.doctorDetails=this.data.currentUser();
+    console.log(this.doctorDetails);
      }
 
   ngOnInit() {

@@ -79,8 +79,8 @@ export class DoctorComponent implements OnInit {
 
     // console.log(db.list('/wards').valueChanges());
 
-this.filtername = "";
-
+    this.filtername = "";
+    this.products=this.data.patientList();
 
 
 
