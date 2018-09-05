@@ -34,7 +34,6 @@ display:string="none";
     this.display="none";
   }
   
-<<<<<<< refs/remotes/origin/Nicholas
   submitMedsForm():any{
     console.log(this.medicine);
     this.display="none";
@@ -61,7 +60,7 @@ display:string="none";
 
 
   } 
-=======
+
   // submitMedsForm(db: AngularFireDatabase,auth:AngularFireAuth):any{
   //   this.medicine.brandName=this.brandName;
   //   this.medicine.dateStarted=this.dateTime;
@@ -71,26 +70,7 @@ display:string="none";
   //     }
   //   }
   //   this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
-  submitMedsForm():any{
-    console.log(this.medicine);
-    this.display="none";
-    this.medicine.brandName=this.brandName;
-    this.medicine.dateStarted=this.dateTime;
-    for(var  i=0;i<4;i++){
-      if(this.meds[i]!=null){
-        console.log(this.meds[i]);
-        console.log(this.medicine.consumptionTimings);
-        this.medicine.consumptionTimings.push(this.meds[i]);
-      }
-    }
-    this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
 
-  // var ref = db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
-  // } 
->>>>>>> more part done
-  var ref = this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
-
-  } 
   onSelect(hero: Patient): void {
     console.log(hero.medicines);
 

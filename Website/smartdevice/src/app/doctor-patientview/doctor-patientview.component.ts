@@ -17,16 +17,14 @@ export class DoctorPatientviewComponent implements OnInit {
   check(): void{
   console.log(this.patient);
   }
-<<<<<<< HEAD
-  constructor() {
-=======
+
+
   constructor(private data: DoctorUIDService) {
     
      }
 
   ngOnInit() {
-    // this.data.currentMessage.subscribe(doctorDetails => {this.doctorDetails = doctorDetails; ;
-})
+
   }
 
 
