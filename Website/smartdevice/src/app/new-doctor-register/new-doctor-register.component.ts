@@ -16,6 +16,7 @@ export class NewDoctorRegisterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

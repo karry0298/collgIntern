@@ -72,12 +72,14 @@ export class DoctorComponent implements OnInit {
 
 
   constructor(private afStorage: AngularFireStorage, db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router, private data: DoctorUIDService) {
+    data.init();
     this.user = this.getUid();
 
     // console.log(db.list('/wards').valueChanges());
 
     this.filtername = "";
-    this.products=this.data.patientList();
+    this.products=data.patientList();
+    console.log(data.patientList());
 
     db.list('/wards')
       .valueChanges()
