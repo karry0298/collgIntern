@@ -8,27 +8,34 @@ import { AngularFireAuth } from 'angularfire2/auth';
   providedIn: 'root'
 })
 export class DoctorUIDService {
+  constructor(private db: AngularFireDatabase, auth:AngularFireAuth) { 
+
+
+  }
   products: any[];
   
   currentUser():any{
     console.log(firebase.auth().currentUser.uid);
     return firebase.auth().currentUser.displayName;
   }
-  patientList():any[]{
-    return this.products;
+  init(){
+    this.db.list('/LinksDoctorsPatients')
+    .valueChanges()
+    .subscribe(product => {
+      this.products = product;
+      console.log(this.products);
+
+
+    });
   }
 
 
 
-    constructor(private db: AngularFireDatabase, auth:AngularFireAuth) { 
-      db.list('/LinksDoctorsPatients')
-      .valueChanges()
-      .subscribe(product => {
-        this.products = product;
-        console.log(this.products);
 
 
-      });
+    patientList():any[]{
+      console.log(this.products);
+      return this.products;
     }
 
 
