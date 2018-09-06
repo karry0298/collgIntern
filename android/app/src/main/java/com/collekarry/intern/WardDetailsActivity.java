@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -58,6 +59,7 @@ public class WardDetailsActivity extends AppCompatActivity
     private ImageView imageView;
     private wardClass ward;
     private String key;
+    private SwipeRefreshLayout refreshLayout;
 
     private StorageReference mStorageReference,imageRef;
     private DatabaseReference mDatabaseReference;
@@ -73,6 +75,10 @@ public class WardDetailsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final ProgressDialog dialog = ProgressDialog.show(WardDetailsActivity.this, "",
+                "Loading. Please wait...", true);
+
         setContentView(R.layout.activity_ward_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +89,7 @@ public class WardDetailsActivity extends AppCompatActivity
         mCoordinatorLayour = findViewById(R.id.coordinator_layout);
         mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         viewPager = findViewById(R.id.pager);
+        refreshLayout = findViewById(R.id.refresh_ward_details);
         tabPosition = 0;
 
         imageView = findViewById(R.id.profilePhoto);
@@ -126,6 +133,7 @@ public class WardDetailsActivity extends AppCompatActivity
                     tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
                     tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
                     tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                    dialog.dismiss();
                 }
             }
 
@@ -144,7 +152,6 @@ public class WardDetailsActivity extends AppCompatActivity
                 setAppBarOffset(heightPx/2);
             }
         });
-
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -172,6 +179,46 @@ public class WardDetailsActivity extends AppCompatActivity
                 mDatabaseReference.child("imp").setValue(change);
             }
         });
+
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                final int tabIndex = tabLayout.getSelectedTabPosition();
+                mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ward = dataSnapshot.getValue(wardClass.class);
+                        if(ward != null){
+
+                            Glide.with(getApplicationContext())
+                                    .using(new FirebaseImageLoader())
+                                    .load(imageRef)
+                                    .placeholder(R.drawable.default_dp)
+                                    .centerCrop()
+                                    .into(imageView);
+
+                            adapter = new WardPager(getSupportFragmentManager(), ward);
+                            viewPager.setAdapter(adapter);
+
+                            tabLayout.setupWithViewPager(viewPager);
+
+                            tabLayout.getTabAt(0).setIcon(R.drawable.heart_rate_ic);
+                            tabLayout.getTabAt(1).setIcon(R.drawable.medicines_ic);
+                            tabLayout.getTabAt(2).setIcon(R.drawable.appointments_ic);
+                            tabLayout.getTabAt(tabIndex).select();
+                            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                            refreshLayout.setRefreshing(false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
     }
 
     private void setAppBarOffset(int offsetPx){
@@ -180,6 +227,10 @@ public class WardDetailsActivity extends AppCompatActivity
         behavior.onNestedPreScroll(mCoordinatorLayour, mAppBarLayout, null, 0, offsetPx, new int[]{0, 0}, 0);
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(WardDetailsActivity.this, listOfPeople.class));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
