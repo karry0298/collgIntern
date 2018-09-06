@@ -1,14 +1,18 @@
   <div align="center" class="cont" >
     <div class="form sign-in">
-      <h2>Welcome name of the doctor</h2>
+      <h2>Welcome, {{this.currentUser.displayName}}</h2>
       <label>
         <span>Phone Number</span>
-        <input type="email" />
+        <input type="tel" [(ngModel)]="phone" />
       </label>
       <label>
-        <span>Designation</span>
-        <input type="password" />
+        <span>Degree</span>
+        <input type="text" [(ngModel)]="degree" />
       </label>
-      <button type="button" class="submit">Register</button>
+      <label>
+        <span>Age</span>
+        <input type="number" [(ngModel)]="age" />
+      </label>
+      <button (click)="registerClicked()" class="submit">Register</button>
     </div>
   </div>

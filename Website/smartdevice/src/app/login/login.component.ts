@@ -35,19 +35,21 @@ export class LoginComponent implements OnInit {
           console.log('already reg');
           break;
         }
-        else{
-          console.log("nope");
-        }
+        // else{
+        //   console.log("nope");
+        // }
       }
-      // if (flag == false)  {
-      //   //console.log("New User");
-      //   this.router.navigate(['/register']);
-      // }
+      if (flag == false)  {
+        console.log("New User");
+        this.router.navigate(['/register']);
+      }
 
     }).catch(
       (err) => {
         this.error = err;
       })
+
+      console.log(firebase.auth().currentUser);
   }
 
   ngOnInit() {
