@@ -13,7 +13,7 @@ import { NewDoctor } from '../newDoctor';
   styleUrls: ['./new-doctor-register.component.scss']
 })
 export class NewDoctorRegisterComponent implements OnInit {
-  constructor(db: AngularFireDatabase) {
+  constructor(db: AngularFireDatabase, private router: Router) {
     this.currentUser = firebase.auth().currentUser;
     console.log(this.currentUser.displayName);
     db.list('/Users/Doctors').valueChanges();
@@ -21,21 +21,21 @@ export class NewDoctorRegisterComponent implements OnInit {
 
   currentUser;
   phone;
-  degree;
   age;
-  newDocter:NewDoctor=new NewDoctor();
+  newDoctor:NewDoctor=new NewDoctor();
 
 
   registerClicked(){
     console.log(this.phone+" "this.degree+" "+this.age);
-    this.newDocter.phone = this.phone;
-    this.newDocter.degree = this.degree;
-    this.newDocter.age = this.age;
-    this.newDocter.email = this.currentUser.email;
-    this.newDocter.name = this.currentUser.displayName;
-    this.newDocter.uid = this.currentUser.uid;
-    //var ref = this.db.list('/Users/Doctors').push(this.newDocter);
-
+    this.newDoctor.phone = this.phone;
+    this.newDoctor.age = this.age;
+    this.newDoctor.email = this.currentUser.email;
+    this.newDoctor.name = this.currentUser.displayName;
+    this.newDoctor.uid = this.currentUser.uid;
+    firebase.database().ref('/Users/Doctors').push(this.newDoctor);
+    this.router.navigate(['/doctor']);
+    //var doctors = firebase.database().ref('/Users/Doctors');
+    //console.log(doctors);
   }
 
   ngOnInit() {
