@@ -183,11 +183,11 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onRefresh()
             {
-                MyAdapter myAdapter =  new MyAdapter(getApplicationContext(), wardList, dpList);
-                list.setAdapter(myAdapter);
-
-                srl.setRefreshing(false);
-
+//                MyAdapter myAdapter =  new MyAdapter(getApplicationContext(), wardList, dpList);
+//                list.setAdapter(myAdapter);
+//
+//                srl.setRefreshing(false);
+            startActivity(new Intent(getApplicationContext() , listOfPeople.class));
             }
         });
 
