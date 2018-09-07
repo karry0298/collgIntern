@@ -1,6 +1,7 @@
 package com.collekarry.intern;
 
 import android.animation.LayoutTransition;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity
             public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() !=  null){
                     Toast.makeText(MainActivity.this, "Logged in as "+ mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
-
+                    ProgressDialog pd = ProgressDialog.show(MainActivity.this, "Loading...","Please wait.", true);
                     String uid = firebaseAuth.getUid();
                     final DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("Users").child("Caretakers")
                             .child(uid);

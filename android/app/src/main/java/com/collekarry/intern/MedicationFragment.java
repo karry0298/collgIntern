@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -57,11 +58,17 @@ public class MedicationFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_medicine_list, container, false);
-
+        LinearLayout ll = view.findViewById(R.id.add_medication);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddMedicationFragment.newInstance(ward,"direct_entry").show(getFragmentManager(), "add_med");
+            }
+        });
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view.findViewById(R.id.list) instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = view.findViewById(R.id.list);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {

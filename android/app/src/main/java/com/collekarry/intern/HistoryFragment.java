@@ -55,11 +55,11 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
-
+        RecyclerView recyclerView = view.findViewById(R.id.history_list);
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view.findViewById(R.id.history_list) instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+//            RecyclerView recyclerView = view.findViewById(R.id.history_list);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {

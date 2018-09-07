@@ -95,11 +95,7 @@ public class listOfPeople extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(id == R.id.action_newname)
-        {
-            startActivity(new Intent(listOfPeople.this, addPersonActivity.class));
-        }
-        else if (id == R.id.action_logout)
+        if (id == R.id.action_logout)
         {
             FirebaseAuth.getInstance().signOut();
 
