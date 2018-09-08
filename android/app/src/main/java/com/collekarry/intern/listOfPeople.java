@@ -63,11 +63,13 @@ import static com.collekarry.intern.MyNotificationManager.CHANNEL_NAME;
 
 public class listOfPeople extends AppCompatActivity
 {
-    DatabaseReference nameList, keyReference;
+    DatabaseReference nameList, keyReference ,timeRef;
     RecyclerView list;
     List<wardClass> uploadList;
     SwipeRefreshLayout srl;
     MyAdapter adapter;
+
+    List<String> timeStor;
 
     List<StorageReference> Fimages;
     List<String> dsList;
@@ -164,6 +166,57 @@ public class listOfPeople extends AppCompatActivity
             }
         });
 
+         timeStor = new ArrayList<>();
+
+        timeRef = mDatabaseReference.child("LinksCaretakersPatients");
+        timeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                wardList.clear();
+                String temp_uid = FirebaseAuth.getInstance().getUid();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+                    if(ds.hasChild(temp_uid))
+                    {
+                        String PKey = ds.child(temp_uid).getValue(String.class);
+                        DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey).child("medicines");
+
+                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot ds : dataSnapshot.getChildren())
+                                {
+                                    DataSnapshot ms = ds.child("consumptionTimings") ;
+                                    for (DataSnapshot prop : ms.getChildren()) {
+                                        String stringValue = prop.getValue(String.class);
+                                        timeStor.add(stringValue);
+                                        System.out.println(" "+timeStor+" timeakzflgd");
+                                        //Log.i("Firebase", stringValue);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+            
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("db error", databaseError.getMessage());
+            }
+        });
+
+
+        System.out.println("finalskfmkladf "+timeStor+" timeakzflgd");
+
+//        for(int wz = 0 ; wz < timeStor.size() ; wz++)
+//            Log.i("free",timeStor.get(wz));
 
         nameList = FirebaseDatabase.getInstance().getReference("wards").child(FirebaseAuth.getInstance().getUid());
         nameList.keepSynced(true);
@@ -373,6 +426,8 @@ public class listOfPeople extends AppCompatActivity
                 startActivity(i);
             }
         });
+
+
 
     }
 
