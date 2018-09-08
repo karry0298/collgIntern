@@ -15,6 +15,7 @@
   <div class="side-panel" style="">
     <p>night:{{ patient.medications.night }}</p>
   </div>
+  
 </div> -->
 
 <div>
@@ -25,9 +26,24 @@
         <div class="col-3"> Timings</div>
         <div class="col-3"></div>
       </div>
+<ng-container *ngIf=patient.medicines >  
+  <ng-container *ngFor="let user of objectKeys(patient.medicines)" > 
+    <!-- [class.selected]="user === selectedPatient"  -->
+    <div class="row"  >
+      <div class="col-3"><p>{{ patient.medicines[user].brandName }} </p></div>
+      <div class="col-3">{{ patient.medicines[user].prescriptionBy}}</div>
+      <div class="col-3">
+      <ng-container *ngFor="let time of patient.medicines[user].consumptionTimings ">
+        {{ time }}<br>
 
-    <ng-container *ngFor="let user of patient.medicines" >
-        <!-- [class.selected]="user === selectedPatient"  -->
+      </ng-container>
+    </div>
+      <div class="col-3"></div>
+      <br>
+    </div>
+</ng-container>
+</ng-container>
+</div>
 
         <div class="row"  >
           <div class="col-3"><p>{{ patient.medicines[user].brandName }} </p></div>
@@ -42,9 +58,6 @@
           <br>
         </div>
    </ng-container>
-
-</div>
-
 
 
 <!-- The Modal -->
@@ -86,9 +99,9 @@
           </div>
       </div>
       <button type="submit" (click)=submitMedsForm() class="btn btn-primary">Submit</button>
-    </form>
-    
-    
+    </form>  
   </div>
 
 </div><!-- /.modal !-->
+
+

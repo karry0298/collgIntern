@@ -21,10 +21,6 @@
 .table-style{
   background-color: #80D3ED;
   border-radius: 15px;
-<<<<<<< HEAD
-=======
-
-
 }
 
 th,td{
@@ -32,9 +28,10 @@ th,td{
   padding: 1vh;
 }
 
-.nopadding{
-  background-color: #80D3ED;
-  border-color: #80D3ED;
+.littlePadding{
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 10px;
 }
 
 .loginBackground{
@@ -53,7 +50,7 @@ th,td{
 span {
   position: relative;
   left:42vw;
->>>>>>> master
+
 }
   hr{
     margin:0.5rem;
@@ -69,7 +66,7 @@ span {
   padding-bottom: 3px;
   padding-left: 4px;
   font-size: 13px;
-
+}
   span {
     position: relative;
     left:42vw;
@@ -77,8 +74,7 @@ span {
     hr{
       margin:0.5rem;
       border-color: #ccc;
-
-<<<<<<< HEAD
+    }
 th,td{
   vertical-align: bottom;
   padding: 1vh;
@@ -99,7 +95,4 @@ th,td{
   bottom:0;
   padding-bottom: 0px;
   font-size: 13px;
-=======
-    }
->>>>>>> master
 }

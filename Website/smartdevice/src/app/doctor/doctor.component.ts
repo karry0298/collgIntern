@@ -51,6 +51,9 @@ export class DoctorComponent implements OnInit {
     //console.log(firebase.auth().currentUser.displayName);
     return firebase.auth().currentUser.displayName;
   }
+  getName():string{
+    return  firebase.auth().currentUser.displayName;
+  }
 
 
   filter(patient: Patient): boolean {
@@ -105,13 +108,10 @@ export class DoctorComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.data.currentMessage.subscribe(message => this.message = message)
-    this.newMessage();
+    // this.data.currentMessage.subscribe(message => this.message = message
 
 }
 
-  newMessage() {
-      this.data.changeMessage(this.getUid())
-    }
+
 
 }

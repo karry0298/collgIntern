@@ -1,4 +1,4 @@
-#Mon Aug 27 21:41:07 IST 2018
+#Sun Aug 05 17:58:42 IST 2018
 path.3=classes.dex
 path.2=classes.dex
 path.1=classes.dex
@@ -7,7 +7,7 @@ renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-base.3=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\46
-base.2=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\48
-base.1=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\47
-base.0=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\49
+base.3=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\29
+base.2=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\32
+base.1=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\31
+base.0=C\:\\Users\\Chell\\Desktop\\projects\\collgIntern\\android2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\30
