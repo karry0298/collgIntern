@@ -18,7 +18,7 @@ import { HttpModule } from '@angular/http';
 import { AuthGuard } from './auth.service';
 import { router } from './app-routing.module';
 import { GraphComponent } from './graph/graph.component';
-
+import { ParticlesModule } from 'angular-particle';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { NewDoctorRegisterComponent } from './new-doctor-register/new-doctor-register.component';
 
@@ -47,6 +47,7 @@ import { NewDoctorRegisterComponent } from './new-doctor-register/new-doctor-reg
     AngularFireAuthModule,
     HttpModule,
     router,
+    ParticlesModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

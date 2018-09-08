@@ -26,7 +26,7 @@ export class NewDoctorRegisterComponent implements OnInit {
 
 
   registerClicked(){
-    console.log(this.phone+" "this.degree+" "+this.age);
+    console.log(this.phone+" "+this.age);
     this.newDoctor.phone = this.phone;
     this.newDoctor.age = this.age;
     this.newDoctor.email = this.currentUser.email;
@@ -39,7 +39,7 @@ export class NewDoctorRegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }
