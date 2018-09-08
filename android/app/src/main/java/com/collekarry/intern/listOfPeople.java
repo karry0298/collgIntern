@@ -1,5 +1,6 @@
 package com.collekarry.intern;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -154,7 +155,6 @@ public class listOfPeople extends AppCompatActivity
 
                             }
                         });
-
                     }
                 }
             }
@@ -191,33 +191,52 @@ public class listOfPeople extends AppCompatActivity
             }
         });
 
-
-        Date d=new Date();
-        SimpleDateFormat sdf=new SimpleDateFormat("hh:mm");
-        String currentDateTimeString = sdf.format(d);
-        Log.i("data",currentDateTimeString);
-
-
+        
 //       displayNotification();
 //        aList = new ArrayList<>();
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
-            mChannel.setDescription(CHANNEL_DESCRIPTION);
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            mNotificationManager.createNotificationChannel(mChannel);
-        }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            NotificationManager mNotificationManager =
+//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            int importance = NotificationManager.IMPORTANCE_HIGH;
+//            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+//            mChannel.setDescription(CHANNEL_DESCRIPTION);
+//            mChannel.enableLights(true);
+//            mChannel.setLightColor(Color.RED);
+//            mChannel.enableVibration(true);
+//            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+//            mNotificationManager.createNotificationChannel(mChannel);
+//        }
+//
+//        /*
+//         * Displaying a notification locally
+//         */
+//        MyNotificationManager.getInstance(this).displayNotification("Greetings", "Hello how are you?");
 
-        /*
-         * Displaying a notification locally
-         */
-        MyNotificationManager.getInstance(this).displayNotification("Greetings", "Hello how are you?");
+
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//
+//        Intent notificationIntent = new Intent(this, AlarmReceiver.class);
+//        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.SECOND, 5);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+
+//
+//        AlarmManager[] alarmManager=new AlarmManager[24];
+//        ArrayList intentArray = new ArrayList<PendingIntent>();
+//        for(int f=0;f<arr2.length;f++){
+//            Intent intent = new Intent(this, AlarmReceiver.class);
+//            PendingIntent pi = PendingIntent.getBroadcast(this, f, intent, 0);
+//
+//            alarmManager[f] = (AlarmManager) getSystemService(ALARM_SERVICE);
+//            alarmManager[f].set(AlarmManager.RTC_WAKEUP,arr2[f] ,pi);
+//
+//
+//
+//            intentArray.add(pi);
+//        }
 
 
 
@@ -391,19 +410,6 @@ public class listOfPeople extends AppCompatActivity
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(12312, mBuilder.build());
 
-//        Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 123, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(),"id_product")
-//                .setSmallIcon(R.drawable.appointments_ic) //your app icon
-//                .setBadgeIconType(R.drawable.appointments_ic) //your app icon
-//                .setChannelId(cId)
-//                .setContentTitle(extras.get("nt").toString())
-//                .setAutoCancel(true).setContentIntent(pendingIntent)
-//                .setNumber(1)
-//                .setColor(255)
-//                .setContentText(extras.get("nm").toString())
-//                .setWhen(System.currentTimeMillis());
-//        notificationManager.notify(1, notificationBuilder.build());
 
     }
     boolean doubleBackToExitPressedOnce;
