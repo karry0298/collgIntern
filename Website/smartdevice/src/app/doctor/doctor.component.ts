@@ -84,14 +84,14 @@ export class DoctorComponent implements OnInit {
     this.products=data.patientList();
     console.log(data.patientList());
 
-    db.list('/wards')
-      .valueChanges()
-      .subscribe(product => {
-        this.products = product;
-        console.log(this.products);
-        console.log(this);
+    // db.list('/wards')
+    //   .valueChanges()
+    //   .subscribe(product => {
+    //     this.products = product;
+    //     console.log(this.products);
+    //     console.log(this);
 
-      });
+    //   });
 
     //     const size$ = new Subject<string>();
     //   const queryObservable = size$.pipe(
