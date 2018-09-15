@@ -58,11 +58,13 @@ export class DoctorComponent implements OnInit {
    var patientKeys:any=Object.keys(this.patients);
    for(var i=0;i<this.patients.length;i++){
     for(var j=0;j<this.finalPatientList.length;j++){
+      console.log(this.patients[i].key+"  "+this.finalPatientList[j]);
       if(this.patients[i].key==this.finalPatientList[j]){
           this.displayPatientData.push(this.patients[i]);
       }
     }
    }
+   console.log(this.displayPatientData);
   }
 
   onSelect(hero: Patient): void {
