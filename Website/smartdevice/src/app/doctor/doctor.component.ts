@@ -31,7 +31,7 @@ export class DoctorComponent implements OnInit {
   filtername: string = "";
   show: boolean = true;
   user: any;
-
+  displayPatientData:Patient[]=[];
   message:string;
 
   
@@ -51,12 +51,19 @@ export class DoctorComponent implements OnInit {
     }
 
     // for(var i=0;this.finalPatientList.length;i++){
-    //   console.log(this.finalPatientList[i]);
+      console.log(this.finalPatientList);
     // }
   }
-  // mapPatientData():void{
-    
-  // }
+  mapPatientData():void{
+   var patientKeys:any=Object.keys(this.patients);
+   for(var i=0;i<this.patients.length;i++){
+    for(var j=0;j<this.finalPatientList.length;j++){
+      if(this.patients[i].key==this.finalPatientList[j]){
+          this.displayPatientData.push(this.patients[i]);
+      }
+    }
+   }
+  }
 
   onSelect(hero: Patient): void {
 
@@ -115,7 +122,7 @@ export class DoctorComponent implements OnInit {
     this.data.initPatients().subscribe((product1:any[]) => {
       patientsList = product1;
       this.patients=patientsList;
-
+      this.mapPatientData();
       console.log(this.patients);
 
   });
