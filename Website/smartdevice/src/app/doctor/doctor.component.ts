@@ -21,8 +21,10 @@ import { AngularFireStorage } from 'angularfire2/storage';
   styleUrls: ['./doctor.component.scss']
 })
 export class DoctorComponent implements OnInit {
-  patients: any[];
-  finalPatientList:any[];
+  doctorpatients: any[];
+  patients:any[];
+  finalPatientList:any[]=[];
+  patientDisplayData:any[];
   objectKeys = Object.keys;
   name: any;
   selectedPatient: Patient;
@@ -32,19 +34,29 @@ export class DoctorComponent implements OnInit {
 
   message:string;
 
+  
   showPatientData():void{
-    
-    for(var i=0;i<this.patients.length;i++){
-      this.finalPatientList=[];
-      if(Object.values(this.patients[i])[0]==this.data.currentUserId())
+    this.finalPatientList=[];
+    for(var i=0;i<this.doctorpatients.length;i++){
+
+      if(Object.values(this.doctorpatients[i])[0]==this.data.currentUserId())
         {
-        console.log(Object.values(this.patients[i])[0]);//SHUBHAM ACCESS PATIENTS LIST FROM DB AND MAP IT WITH THE these vales and try and output it.
-         this.finalPatientList.push(Object.values(this.patients[i])[0]);//why is this unde
+        // console.log(Object.keys(this.doctorpatients[i])[0]);
+         this.finalPatientList.push(Object.keys(this.doctorpatients[i])[0]);
+
+        //  console.log(this.finalPatientList);
         }
        
 
     }
+
+    // for(var i=0;this.finalPatientList.length;i++){
+    //   console.log(this.finalPatientList[i]);
+    // }
   }
+  // mapPatientData():void{
+    
+  // }
 
   onSelect(hero: Patient): void {
 
@@ -80,16 +92,16 @@ export class DoctorComponent implements OnInit {
     return false;
   }
 
-  getPatients():void{
+  getDoctorPatients():void{
     var patientsList:any[];
     this.data.init().subscribe((product1:any[]) => {
         patientsList = product1;
-        this.patients=patientsList;
+        this.doctorpatients=patientsList;
 
-        console.log(this.patients);
+        console.log(this.doctorpatients);
         this.showPatientData();
     });
-      console.log(this.patients);
+      console.log(this.doctorpatients);
   }
 
   // ,{
@@ -98,11 +110,23 @@ export class DoctorComponent implements OnInit {
   //     equalTo: 'fish'
   //   }
   // }
+  getPatients():void{
+    var patientsList:any[];
+    this.data.initPatients().subscribe((product1:any[]) => {
+      patientsList = product1;
+      this.patients=patientsList;
 
+      console.log(this.patients);
+
+  });
+
+    
+  }
 
   constructor(private afStorage: AngularFireStorage, db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router, private data: DoctorUIDService) {
     // data.init();
-    data.initPatients();
+
+
     this.user = this.getUid();
 
     // console.log(db.list('/wards').valueChanges());
@@ -135,6 +159,7 @@ export class DoctorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getDoctorPatients();
     this.getPatients();
     // this.data.currentMessage.subscribe(message => this.message = message
 

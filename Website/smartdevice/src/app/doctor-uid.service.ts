@@ -35,8 +35,8 @@ export class DoctorUIDService {
     // });
     // console.log(this.products);
   }
-  initPatients():void{
-    this.db.list('/Users/Patients')
+  initPatients():Observable<any[]>{
+   return  this.db.list('/Users/Patients')
     .valueChanges();
     // .subscribe((product1:any[]) => {
     //   this.currentPatient = product1;
