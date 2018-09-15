@@ -22,21 +22,19 @@
   <div class="row">
     <div class="box col-lg-3 sidebar col-3">
       <ul style="overflow-x: hidden; overflow-y:scroll">
-          <ng-container *ngFor="let manager of products"  >
-
-             <div *ngFor="let key of objectKeys(manager)">
-                  <!-- {{filter(manager[key])}} -->
+          <ng-container *ngFor="let manager of patients"  >
+            <p> {{manager.paitientId1}}</p>
+             <!-- <div *ngFor="let key of objectKeys(manager)">
+               
               
                <div *ngIf=filter(manager[key])>
                   <li   (click)="onSelect( manager[key]);" >
                       <p>              {{ manager[key].name}}</p>
                   </li>
-               </div>
-
-              
+               </div>          
 
 
-             </div>
+             </div> -->
               <!-- <ng-container *ngFor="let patient of manager" >
                   <li   (click)="onSelect(user);" >
                       <p>{{ user.name }}</p>

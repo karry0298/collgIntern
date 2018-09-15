@@ -67,11 +67,13 @@ export class DoctorComponent implements OnInit {
   }
 
   getPatients():void{
+    var patientsList:any[];
     this.data.init().subscribe((product1:any[]) => {
-        this.patients = product1;
-
+        patientsList = product1;
+        this.patients=patientsList;
+        console.log(this.patients);
     });
-    console.log(this.patients);
+      console.log(this.patients);
   }
 
   // ,{
