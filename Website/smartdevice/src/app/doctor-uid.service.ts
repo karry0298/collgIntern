@@ -14,41 +14,44 @@ export class DoctorUIDService {
   }
 
 
-
-  products:Observable< any[]>;
-  currentPatient:Observable<any[]>;
+  
+  products:any[];
+  currentPatient:any[]
   currentUser():any{
     console.log(firebase.auth().currentUser.uid);
     return firebase.auth().currentUser.displayName;
   }
-  init():void{
-    this.db.list('/LinksDoctorsPatients')
-    .valueChanges()
-    .subscribe(product => {
-      this.products. = product;
-      console.log(this.products);
-
-
-    });
-    console.log(this.products);
+  init():Observable<any[]>{
+    console.log(this.db.list('/LinksDoctorsPatients')
+    .valueChanges());
+   return  this.db.list('/LinksDoctorsPatients')
+    .valueChanges();
+    // .subscribe((product:any[]) => {
+    //   this.products = product;
+    //   console.log(this.products);
+    // });
+    // console.log(this.products);
   }
   initPatients():void{
     this.db.list('/Users/Patients')
-    .valueChanges()
-    .subscribe(product => {
-      this.currentPatient. = product;
-      console.log(this.currentPatient);
+    .valueChanges();
+    // .subscribe((product1:any[]) => {
+    //   this.currentPatient = product1;
+    //   console.log(this.currentPatient);
 
 
-    });
-    console.log(this.currentPatient);    
+    // });
+    // console.log(this.currentPatient);    
   }
 
 
-
-
-
     patientList():any[]{
+      console.log(this.currentPatient);
+      return this.currentPatient;
+    }
+
+
+    patientDoctorList():any[]{
       console.log(this.products);
       return this.products;
     }

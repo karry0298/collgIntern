@@ -21,7 +21,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
   styleUrls: ['./doctor.component.scss']
 })
 export class DoctorComponent implements OnInit {
-  products: any[];
+  patients: any[];
   objectKeys = Object.keys;
   name: any;
   selectedPatient: Patient;
@@ -66,6 +66,14 @@ export class DoctorComponent implements OnInit {
     return false;
   }
 
+  getPatients():void{
+    this.data.init().subscribe((product1:any[]) => {
+        this.patients = product1;
+
+    });
+    console.log(this.patients);
+  }
+
   // ,{
   //   query: {
   //     orderByChild: 'uid',
@@ -75,14 +83,15 @@ export class DoctorComponent implements OnInit {
 
 
   constructor(private afStorage: AngularFireStorage, db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router, private data: DoctorUIDService) {
-    data.init();
+    // data.init();
+    data.initPatients();
     this.user = this.getUid();
 
     // console.log(db.list('/wards').valueChanges());
 
     this.filtername = "";
-    this.products=data.patientList();
-    console.log(data.patientList());
+    // this.products=data.patientDoctorList();
+    console.log(data.patientDoctorList());
 
     // db.list('/wards')
     //   .valueChanges()
@@ -108,6 +117,7 @@ export class DoctorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getPatients();
     // this.data.currentMessage.subscribe(message => this.message = message
 
 }
