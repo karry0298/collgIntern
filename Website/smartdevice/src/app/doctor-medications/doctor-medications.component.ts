@@ -18,13 +18,13 @@ export class DoctorMedicationsComponent implements OnInit {
   brandName:String="";
   objectKeys = Object.keys;
   auth:AngularFireAuth;
-  
+
   dateTime:Date;
   // str1:String="";str2:String="";str3:String="";str4:String="";
   meds=[];
-  
 
-display:string="none";
+
+display:String="none";
 
   openModal(): void{
     this.display="block";
@@ -33,7 +33,7 @@ display:string="none";
   closeModal(): void{
     this.display="none";
   }
-  
+
   submitMedsForm():any{
     console.log(this.medicine);
     this.display="none";
@@ -56,11 +56,11 @@ display:string="none";
 
     console.log(firebase.auth().currentUser.uid+" "+this.patient.key);
   var ref = this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
-  
 
 
 
-  } 
+
+  }
 
   // submitMedsForm(db: AngularFireDatabase,auth:AngularFireAuth):any{
   //   this.medicine.brandName=this.brandName;
