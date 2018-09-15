@@ -22,6 +22,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 })
 export class DoctorComponent implements OnInit {
   patients: any[];
+  finalPatientList:any[];
   objectKeys = Object.keys;
   name: any;
   selectedPatient: Patient;
@@ -31,6 +32,19 @@ export class DoctorComponent implements OnInit {
 
   message:string;
 
+  showPatientData():void{
+    
+    for(var i=0;i<this.patients.length;i++){
+      this.finalPatientList=[];
+      if(Object.values(this.patients[i])[0]==this.data.currentUserId())
+        {
+        console.log(Object.values(this.patients[i])[0]);//SHUBHAM ACCESS PATIENTS LIST FROM DB AND MAP IT WITH THE these vales and try and output it.
+         this.finalPatientList.push(Object.values(this.patients[i])[0]);//why is this unde
+        }
+       
+
+    }
+  }
 
   onSelect(hero: Patient): void {
 
@@ -71,7 +85,9 @@ export class DoctorComponent implements OnInit {
     this.data.init().subscribe((product1:any[]) => {
         patientsList = product1;
         this.patients=patientsList;
+
         console.log(this.patients);
+        this.showPatientData();
     });
       console.log(this.patients);
   }

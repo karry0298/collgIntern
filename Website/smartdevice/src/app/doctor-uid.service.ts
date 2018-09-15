@@ -17,13 +17,16 @@ export class DoctorUIDService {
   
   products:any[];
   currentPatient:any[]
+  currentUserId():any{
+    return firebase.auth().currentUser.uid;
+  }
   currentUser():any{
     console.log(firebase.auth().currentUser.uid);
     return firebase.auth().currentUser.displayName;
   }
   init():Observable<any[]>{
-    console.log(this.db.list('/LinksDoctorsPatients')
-    .valueChanges());
+    // console.log(this.db.list('/LinksDoctorsPatients')
+    // .valueChanges());
    return  this.db.list('/LinksDoctorsPatients')
     .valueChanges();
     // .subscribe((product:any[]) => {
