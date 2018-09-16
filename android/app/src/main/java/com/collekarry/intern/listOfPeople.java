@@ -48,8 +48,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -215,6 +217,37 @@ public class listOfPeople extends AppCompatActivity
         for(wardClass x: wardList){
             for(Medicine m : x.getMedicines()){
                 timeStor.addAll(m.getConsumptionTimings());
+
+                try {
+                    Date ds = new SimpleDateFormat("dd/mm/yyyy").parse(m.getDateStopped());
+                    if(ds.before(new Date())){
+                        History h = new History(m.getName() + " stopped",
+                                "Date started : "+ m.getDateStarted()
+                                        + "\n Date Stopped : " + m.getDateStopped()
+                                        + "\n Manufacturer : " + m.getBrandName()
+                                        + "\n Consumption timings : " + Arrays.toString(m.getConsumptionTimings().toArray())
+                                        + "\n Prescribed by : " + m.getPrescriptionBy()
+                        ,new Date());
+
+                        List<Medicine> tm = x.getMedicines();
+                        tm.remove(m);
+                        x.setMedicines(tm);
+
+                        List<History> th = x.getHistories();
+                        th.add(h);
+                        x.setHistories(th);
+
+                        mDatabaseReference.child("Patients").child(x.getKey()).setValue(x).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Med to History successful", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
 
