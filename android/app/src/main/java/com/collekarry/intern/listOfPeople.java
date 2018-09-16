@@ -48,8 +48,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -168,41 +170,84 @@ public class listOfPeople extends AppCompatActivity
 
          timeStor = new ArrayList<>();
 
-        timeRef = mDatabaseReference.child("LinksCaretakersPatients");
-        timeRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                wardList.clear();
-                String temp_uid = FirebaseAuth.getInstance().getUid();
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
+//        timeRef = mDatabaseReference.child("LinksCaretakersPatients");
+//        timeRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                wardList.clear();
+//                String temp_uid = FirebaseAuth.getInstance().getUid();
+//                for(DataSnapshot ds : dataSnapshot.getChildren()){
+//
+//                    if(ds.hasChild(temp_uid))
+//                    {
+//                        String PKey = ds.child(temp_uid).getValue(String.class);
+//                        DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey).child("medicines");
+//
+//                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                for (DataSnapshot ds : dataSnapshot.getChildren())
+//                                {
+//                                    DataSnapshot ms = ds.child("consumptionTimings") ;
+//                                    for (DataSnapshot prop : ms.getChildren()) {
+//                                        String stringValue = prop.getValue(String.class);
+//                                        timeStor.add(stringValue);
+//                                        System.out.println(" "+timeStor+" timeakzflgd");
+//                                        //Log.i("Firebase", stringValue);
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e("db error", databaseError.getMessage());
+//            }
+//        });
+        timeStor.clear();
+        for(wardClass x: wardList){
+            for(Medicine m : x.getMedicines()){
+                timeStor.addAll(m.getConsumptionTimings());
 
-                    if(ds.hasChild(temp_uid))
-                    {
-                        String PKey = ds.child(temp_uid).getValue(String.class);
-                        DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey).child("medicines");
+                try {
+                    Date ds = new SimpleDateFormat("dd/mm/yyyy").parse(m.getDateStopped());
+                    if(ds.before(new Date())){
+                        History h = new History(m.getName() + " stopped",
+                                "Date started : "+ m.getDateStarted()
+                                        + "\n Date Stopped : " + m.getDateStopped()
+                                        + "\n Manufacturer : " + m.getBrandName()
+                                        + "\n Consumption timings : " + Arrays.toString(m.getConsumptionTimings().toArray())
+                                        + "\n Prescribed by : " + m.getPrescriptionBy()
+                        ,new Date());
 
-                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        List<Medicine> tm = x.getMedicines();
+                        tm.remove(m);
+                        x.setMedicines(tm);
+
+                        List<History> th = x.getHistories();
+                        th.add(h);
+                        x.setHistories(th);
+
+                        mDatabaseReference.child("Patients").child(x.getKey()).setValue(x).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren())
-                                {
-                                    DataSnapshot ms = ds.child("consumptionTimings") ;
-                                    for (DataSnapshot prop : ms.getChildren()) {
-                                        String stringValue = prop.getValue(String.class);
-                                        timeStor.add(stringValue);
-                                        System.out.println(" "+timeStor+" timeakzflgd");
-                                        //Log.i("Firebase", stringValue);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Med to History successful", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+
             }
             
 

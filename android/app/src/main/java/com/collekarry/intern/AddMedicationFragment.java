@@ -375,7 +375,7 @@ public class AddMedicationFragment extends DialogFragment{
                             requestPermissions();
                         }
 
-                        long eventID = newMed.setReminder(getActivity(), newMed);
+                        long eventID = newMed.setReminder(getActivity(), newMed, ward.getName());
                         System.out.println(ward);
                         newMed.setDueEventID(eventID);
 

@@ -113,7 +113,7 @@ public class Medicine implements Serializable{
         return d.plusDays(days);
     }
 
-    public long setReminder(Context context, Medicine newMed){
+    public long setReminder(Context context, Medicine newMed, String wardName){
         DateTime due = newMed.getDueDate();
         long startMillis = due.getMillis();
         DateTime dueEnd = due.plusDays(3);
@@ -124,7 +124,7 @@ public class Medicine implements Serializable{
 
         eventValues.put(CalendarContract.Events.CALENDAR_ID, 1);
         eventValues.put(CalendarContract.Events.TITLE, "Buy Medicine");
-        eventValues.put(CalendarContract.Events.DESCRIPTION, newMed.getName() + "["+ newMed.getBrandName() + "]"  + " almost over");
+        eventValues.put(CalendarContract.Events.DESCRIPTION, wardName + " : " + newMed.getName() + " ["+ newMed.getBrandName() + "] "  + " almost over");
         eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, due.getZone().toTimeZone().getDisplayName());
         eventValues.put(CalendarContract.Events.DTSTART, startMillis);
         eventValues.put(CalendarContract.Events.DTEND, endMillis);

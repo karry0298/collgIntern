@@ -225,7 +225,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
             final wardClass ward = new wardClass(key,name,age,gender,uid,imp);
 
             for(Medicine m: meds){
-                m.setDueEventID(m.setReminder(getApplicationContext(), m));
+                m.setDueEventID(m.setReminder(getApplicationContext(), m,name));
             }
 
             ward.setMedicines(meds);
