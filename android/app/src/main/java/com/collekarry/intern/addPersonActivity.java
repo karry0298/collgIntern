@@ -22,9 +22,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -43,7 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class addPersonActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete, AddHistoryFragment.OnEntryCompleteListener{
+public class addPersonActivity extends AppCompatActivity implements AddMedicationFragment.OnEntryComplete, AddHistoryFragment.OnEntryCompleteListener,AdapterView.OnItemSelectedListener{
 
     private Button submitButton ;
     private EditText nameView;
@@ -51,8 +57,11 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
     private Switch genderView;
     private List<Medicine> meds;
     private List<History> histories;
+    private Spinner docSpin;
 
-    private DatabaseReference mDatabase;
+    private String patkey;
+
+    private DatabaseReference mDatabase,docRefBase;
     private StorageReference mStorageRef;
     private com.mikhaellopez.circularimageview.CircularImageView imageView;
     private RecyclerView medRecyclerView;
@@ -60,12 +69,21 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
     private RecyclerView.Adapter mAdapter, mAdapterB;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private List<String> docterDet;
+    private List<String> docKeys;
+    private List<String> docUps;
+
     private String userChosenTask;
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     int baka=1;
     String name="",gender="";
     int age =-99;
+    int flag;
+
+    int pos[] = new int[100];
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +94,8 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
+        flag=1;
+
         nameView = findViewById(R.id.nameInput);
         ageView = findViewById(R.id.ageInput);
         genderView = findViewById(R.id.genderSwitch);
@@ -83,6 +103,10 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
         imageView = findViewById(R.id.imageButton);
         meds = new ArrayList<>();
         histories = new ArrayList<>();
+        docterDet = new ArrayList<>() ;
+        docSpin = (Spinner) findViewById(R.id.docSpin);
+        docKeys = new ArrayList<>();
+        docUps = new ArrayList<>();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -93,7 +117,81 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
         historyRecyclerView = findViewById(R.id.history_recycler_view);
 
+      //  docSpin.setOnItemSelectedListener(this);
         submitButton.setClickable(true);
+
+
+        docRefBase = FirebaseDatabase.getInstance().getReference();
+
+
+        docRefBase = docRefBase.child("Users").child("Docters");
+        docRefBase.addValueEventListener(new ValueEventListener() {
+                  @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    for(DataSnapshot ds : dataSnapshot.getChildren())
+                    {
+                            String PKey = ds.child("name").getValue(String.class);
+                            docterDet.add(PKey);
+                            PKey = ds.child("key").getValue(String.class);
+                            docKeys.add(PKey);
+                    }
+
+
+                    ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(addPersonActivity.this, android.R.layout.simple_spinner_item, docterDet);
+                    areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    docSpin.setAdapter(areasAdapter);
+
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e("db error", databaseError.getMessage());
+                }
+        });
+
+
+//        docSpin.setOnTouchListener(Spinner_OnTouch);
+  //      docSpin.setOnItemSelectedListener(ItemSelectedListener);
+
+        docSpin.setOnItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (flag != 1)
+        {
+//            String abc = (String) parent.getItemAtPosition(position);
+//            //abc = docKeys.get(position) ;
+//            abc = Integer.toString(position);
+//            Toast.makeText(this, abc, Toast.LENGTH_SHORT).show();
+//            Log.i("abcbca", abc);
+
+            if(docUps.size() == 0)
+            {
+                String abc = (String) docKeys.get(position);
+                docUps.add(abc);
+                pos[position] = 1;
+                Toast.makeText(this, parent.getItemAtPosition(position)+" was added!!!", Toast.LENGTH_SHORT).show();
+            }
+            else if(pos[position] == 0)
+            {
+                String abc = (String) docKeys.get(position);
+                docUps.add(abc);
+                pos[position] = 1;
+                Toast.makeText(this, parent.getItemAtPosition(position)+" was added!!!", Toast.LENGTH_SHORT).show();
+            }
+            else
+                Toast.makeText(this, "cannot add 2 same docs", Toast.LENGTH_SHORT).show();
+
+        } else
+            flag = 12494;
+
+        System.out.println(docUps);
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 
@@ -146,6 +244,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
         submitButton.setClickable(false);
 
+
             mDatabase.child("Users").child("Patients").child(key).setValue(ward)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -158,24 +257,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                                     Map<String, String> s = new HashMap<>();
                                     s.put(uid, ward.getKey());
                                     CPLinkRef.push().setValue(s);
-//                                    GenericTypeIndicator<Map<Integer,Map<String, String>> >t =
-//                                            new GenericTypeIndicator<Map<Integer,Map<String, String>>>() {};
-//                                    Map<Integer,Map<String,String>> links = dataSnapshot.getValue(t);
-//                                    links.keySet().
 //
-//                                    if(linkArray == null){
-//                                        Map<String,String> temp = new HashMap<>();
-//                                        temp.put(ward.getKey(), uid);
-//                                        System.out.println(temp.toString());
-//                                        CPLinkRef.child("0").setValue(temp);
-//                                    }
-//                                    else{
-//                                        Map<String,String> newLink[] = Arrays.copyOf(linkArray, linkArray.length+1);
-//                                        newLink[linkArray.length] = new HashMap<>();
-//                                        newLink[linkArray.length].put(ward.getKey(), uid);
-//                                        CPLinkRef.setValue(newLink);
-//                                    }
-
                                 }
 
                                 @Override
@@ -183,6 +265,28 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
                                 }
                             });
+
+                            for(int z=0 ; z<docUps.size() ; z++)
+                            {
+                                final DatabaseReference DPLinkRef = mDatabase.child("LinksDocterPatients");
+
+                                final int finalZ = z;
+                                DPLinkRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Map<String, String> s = new HashMap<>();
+                                        s.put( ward.getKey() , docUps.get(finalZ));
+                                        DPLinkRef.push().setValue(s);
+//
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
 
                         }
                     })
@@ -192,6 +296,31 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                             Toast.makeText(addPersonActivity.this, "Failed successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
+//        for(int z=0 ; z<docUps.size() ; z++)
+//        {
+//            mDatabase.child("LinksDocterPatient").child(key).child(patkey).setValue(docUps.get(z))
+//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(addPersonActivity.this, "Failed successfully", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//        }
+
+
+
+
+
+
+
 
 
 
@@ -238,9 +367,6 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 //            childUpdates.put("/wards/" + key, wardValues);
 //
 //            mDatabase.updateChildren(childUpdates);
-
-
-
 
         }
     }
@@ -334,11 +460,10 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                     ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
 
-
-
                 return false;
             }
-            else{
+            else
+            {
                 return true;
             }
 
@@ -468,4 +593,5 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
         mAdapterB.notifyDataSetChanged();
     }
+
 }

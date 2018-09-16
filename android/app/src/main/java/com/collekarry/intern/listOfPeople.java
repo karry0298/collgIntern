@@ -168,55 +168,52 @@ public class listOfPeople extends AppCompatActivity
 
          timeStor = new ArrayList<>();
 
-//        timeRef = mDatabaseReference.child("LinksCaretakersPatients");
-//        timeRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                wardList.clear();
-//                String temp_uid = FirebaseAuth.getInstance().getUid();
-//                for(DataSnapshot ds : dataSnapshot.getChildren()){
-//
-//                    if(ds.hasChild(temp_uid))
-//                    {
-//                        String PKey = ds.child(temp_uid).getValue(String.class);
-//                        DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey).child("medicines");
-//
-//                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                for (DataSnapshot ds : dataSnapshot.getChildren())
-//                                {
-//                                    DataSnapshot ms = ds.child("consumptionTimings") ;
-//                                    for (DataSnapshot prop : ms.getChildren()) {
-//                                        String stringValue = prop.getValue(String.class);
-//                                        timeStor.add(stringValue);
-//                                        System.out.println(" "+timeStor+" timeakzflgd");
-//                                        //Log.i("Firebase", stringValue);
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//                    }
-//                }
-//            }
-//
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.e("db error", databaseError.getMessage());
-//            }
-//        });
-        timeStor.clear();
-        for(wardClass x: wardList){
-            for(Medicine m : x.getMedicines()){
-                timeStor.addAll(m.getConsumptionTimings());
+        timeRef = mDatabaseReference.child("LinksCaretakersPatients");
+        timeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                wardList.clear();
+                String temp_uid = FirebaseAuth.getInstance().getUid();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+                    if(ds.hasChild(temp_uid))
+                    {
+                        String PKey = ds.child(temp_uid).getValue(String.class);
+                        DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey).child("medicines");
+
+                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot ds : dataSnapshot.getChildren())
+                                {
+                                    DataSnapshot ms = ds.child("consumptionTimings") ;
+                                    for (DataSnapshot prop : ms.getChildren()) {
+                                        String stringValue = prop.getValue(String.class);
+                                        timeStor.add(stringValue);
+                                        System.out.println(" "+timeStor+" timeakzflgd");
+                                        //Log.i("Firebase", stringValue);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
             }
-        }
+            
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("db error", databaseError.getMessage());
+            }
+        });
+
+
+
 
         System.out.println("finalskfmkladf "+timeStor+" timeakzflgd");
 
