@@ -23,7 +23,9 @@
     <div class="box col-lg-3 sidebar col-3">
       <ul style="overflow-x: hidden; overflow-y:scroll">
           <ng-container *ngFor="let manager of displayPatientData"  >
-            <p> {{manager.name}}</p>
+            <li   (click)="onSelect(manager);" >
+              <p>{{ manager.name }}</p>
+          </li>
              <!-- <div *ngFor="let key of objectKeys(manager)">
                
               
@@ -36,9 +38,7 @@
 
              </div> -->
               <!-- <ng-container *ngFor="let patient of manager" >
-                  <li   (click)="onSelect(user);" >
-                      <p>{{ user.name }}</p>
-                  </li>
+
               </ng-container> -->
 
           </ng-container>

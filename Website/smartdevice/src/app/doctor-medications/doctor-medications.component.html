@@ -15,7 +15,6 @@
   <div class="side-panel" style="">
     <p>night:{{ patient.medications.night }}</p>
   </div>
-
 </div> -->
 
 <div>
@@ -26,37 +25,27 @@
         <div class="col-3"> Timings</div>
         <div class="col-3"></div>
       </div>
-<ng-container *ngIf=patient.medicines >
-  <ng-container *ngFor="let user of objectKeys(patient.medicines)" >
-    <!-- [class.selected]="user === selectedPatient"  -->
-    <div class="row"  >
-      <div class="col-3"><p>{{ patient.medicines[user].brandName }} </p></div>
-      <div class="col-3">{{ patient.medicines[user].prescriptionBy}}</div>
-      <div class="col-3">
-      <ng-container *ngFor="let time of patient.medicines[user].consumptionTimings ">
-        {{ time }}<br>
 
-      </ng-container>
-    </div>
-      <div class="col-3"></div>
-      <br>
-    </div>
-</ng-container>
-</ng-container>
-</div>
+    <ng-container  >
+      <!-- *ngFor="let user of patient.medicines"  -->
+        <!-- [class.selected]="user === selectedPatient"  -->
 
         <div class="row"  >
-          <div class="col-3"><p>{{ patient.medicines[user].brandName }} </p></div>
-          <div class="col-3">{{ patient.medicines[user].prescriptionBy}}</div>
+          <div class="col-3"><p>{{ patient.medicines.brandName }} </p></div>
+          <div class="col-3">{{ patient.medicines.medName}}</div>
           <div class="col-3">
-          <ng-container *ngFor="let time of patient.medicines[user].consumptionTimings ">
+          <!-- <ng-container *ngFor="let time of user.consumptionTimings ">
             {{ time }}<br>
 
-          </ng-container>
+          </ng-container> -->
         </div>
           <div class="col-3"></div>
           <br>
         </div>
+   </ng-container>
+
+</div>
+
 
 
 <!-- The Modal -->
@@ -75,7 +64,7 @@
             <label style="text-align:right;font-size: 1.5rem;" >Start Date</label>
           </div>
           <div class=" form-group col-4">
-              <input type="date" class="form-control" [(ngModel)]="dateTime" name="dateTime1" value="" id="startDate" placeholder="Start Date">
+              <input type="date" class="form-control" [(ngModel)]="dateTime" name="dateTime1" value="" id="startDate" placeholder="Start Date"> 
              </div>
       </div>
       <div col-12>
@@ -99,6 +88,8 @@
       </div>
       <button type="submit" (click)=submitMedsForm() class="btn btn-primary">Submit</button>
     </form>
+    
+    
   </div>
 
 </div><!-- /.modal !-->

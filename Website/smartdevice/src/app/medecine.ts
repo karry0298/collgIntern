@@ -6,12 +6,12 @@ export class Medecine {
     count:number;
     dateEnded:Date;
     dateStarted:Date;
-    name:String;
-    prescriptionBy:String;
+    Medname:String;
+    presCribedBy:String;
     constructor(){
         this.brandName="";
-        this.name="";
-        this.prescriptionBy="";
+        this.Medname="";
+        this.presCribedBy="";
         this.consumptionTimings=[];
         this.dateStarted=null;
     }

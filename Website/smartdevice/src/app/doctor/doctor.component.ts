@@ -56,15 +56,19 @@ export class DoctorComponent implements OnInit {
   }
   mapPatientData():void{
    var patientKeys:any=Object.keys(this.patients);
+   this.displayPatientData=[];
    for(var i=0;i<this.patients.length;i++){
     for(var j=0;j<this.finalPatientList.length;j++){
-      console.log(this.patients[i].key+"  "+this.finalPatientList[j]);
+      console.log(typeof(this.patients[i].key)+"  "+this.patients[i].key+" "+typeof(this.finalPatientList[j])+" "+this.finalPatientList[j]);
+      console.log(this.patients[i].key==this.finalPatientList[j]);
       if(this.patients[i].key==this.finalPatientList[j]){
+          console.log("hi");
           this.displayPatientData.push(this.patients[i]);
+          console.log(this.displayPatientData);
       }
     }
    }
-   console.log(this.displayPatientData);
+
   }
 
   onSelect(hero: Patient): void {
@@ -125,6 +129,7 @@ export class DoctorComponent implements OnInit {
       patientsList = product1;
       this.patients=patientsList;
       this.mapPatientData();
+
       console.log(this.patients);
 
   });

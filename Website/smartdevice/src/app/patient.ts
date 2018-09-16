@@ -6,7 +6,7 @@ export class Patient{
   gender:String;
   histories: History[];
   key:String;
-  medicines:Medecine[];
+  medicines:Medecine;
   name: String;
   notification:{
     body:String;
