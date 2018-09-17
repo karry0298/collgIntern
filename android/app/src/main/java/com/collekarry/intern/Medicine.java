@@ -6,21 +6,14 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 
-import com.google.firebase.database.Exclude;
-
 import java.io.Serializable;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +25,7 @@ public class Medicine implements Serializable{
     private String dateStopped;
     private int count;
     private long dueEventID;
+    private long dailyEventID;
 
     private List<String> consumptionTimings;
     private String prescriptionBy;
@@ -99,22 +93,33 @@ public class Medicine implements Serializable{
         }
     }
 
-    public DateTime getDueDate()  {
+    public DateTime dueDate() {
         System.out.println();
         DateTime d = null;
         try {
-            d = new DateTime(new SimpleDateFormat("dd/mm/yyyy").parse(dateStarted) ).withTime(23,59,59,999);
+            d = new DateTime(new SimpleDateFormat("dd/MM/yyyy").parse(dateStarted) ).withTime(23,59,59,999);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         int pillsPerDay = consumptionTimings.size();
         int days = Integer.valueOf(count/pillsPerDay) - 3;
 
+        try {
+            if(d.plusDays(days).isAfter(new DateTime(new SimpleDateFormat("dd/MM/yyyy").parse(dateStopped)))){
+                return null;
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return d.plusDays(days);
     }
 
     public long setReminder(Context context, Medicine newMed, String wardName){
-        DateTime due = newMed.getDueDate();
+        if(newMed.dueDate()==null){return 0;}
+
+        DateTime due = newMed.dueDate();
         long startMillis = due.getMillis();
         DateTime dueEnd = due.plusDays(3);
         long endMillis = dueEnd.getMillis();
@@ -145,8 +150,7 @@ public class Medicine implements Serializable{
         return eventID;
     }
 
-    public Medicine() {
-    }
+    public Medicine() { }
 
     public Medicine(String name, String brandName, int count, String dateStarted, String dateStopped, List<String> consumptionTimings, String prescriptionBy) {
         this.name = name;
@@ -156,7 +160,14 @@ public class Medicine implements Serializable{
         this.dateStopped = dateStopped;
         this.consumptionTimings = consumptionTimings;
         this.prescriptionBy = prescriptionBy;
+        this.dailyEventID = -1;
+    }
 
+    public long getDailyEventID() {
+        return dailyEventID;
+    }
+    public void setDailyEventID(long dailyEventID) {
+        this.dailyEventID = dailyEventID;
     }
 
     public String getName() {

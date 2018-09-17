@@ -31,10 +31,11 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         List<History> m = new ArrayList<>();
         if(items == null || items.size() == 0){
             mValues = m;
-            return;
+        }
+        else{
+            mValues = items;
         }
 
-        mValues = items;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
 
-            holder.mContentView.setText(new SimpleDateFormat("dd/MM/yyyy").format(mValues.get(position).getDate()));
+            holder.mContentView.setText(mValues.get(position).getDate());
 
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

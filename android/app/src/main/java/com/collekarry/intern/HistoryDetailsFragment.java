@@ -79,7 +79,7 @@ public class HistoryDetailsFragment extends DialogFragment {
         ImageButton closeButton = view.findViewById(R.id.history_details_close);
 
         titleView.setText(history.getTitle());
-        dateView.setText( new SimpleDateFormat("dd/MM/yyyy").format(history.getDate()) );
+        dateView.setText( history.getDate());
         contentView.setText(history.getDescription());
 
 

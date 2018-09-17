@@ -5,12 +5,15 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
@@ -48,6 +51,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +62,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.collekarry.intern.MyNotificationManager.CHANNEL_DESCRIPTION;
@@ -66,6 +74,7 @@ import static com.collekarry.intern.MyNotificationManager.CHANNEL_NAME;
 public class listOfPeople extends AppCompatActivity
 {
     DatabaseReference nameList, keyReference ,timeRef;
+    List<wardClass> wardList;
     RecyclerView list;
     List<wardClass> uploadList;
     SwipeRefreshLayout srl;
@@ -128,7 +137,7 @@ public class listOfPeople extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        final List<wardClass> wardList = new ArrayList<>();
+        wardList = new ArrayList<>();
         final List<StorageReference> dpList = new ArrayList<>();
 
         keyReference = mDatabaseReference.child("LinksCaretakersPatients");
@@ -136,6 +145,7 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 wardList.clear();
+                dpList.clear();
                 String temp_uid = FirebaseAuth.getInstance().getUid();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
 
@@ -152,6 +162,7 @@ public class listOfPeople extends AppCompatActivity
                                     dpList.add(patientImageRef);
                                     adapter.notifyDataSetChanged();
                                 }
+                                updateNotifications();
                             }
 
                             @Override
@@ -169,93 +180,8 @@ public class listOfPeople extends AppCompatActivity
         });
 
          timeStor = new ArrayList<>();
-
-//        timeRef = mDatabaseReference.child("LinksCaretakersPatients");
-//        timeRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                wardList.clear();
-//                String temp_uid = FirebaseAuth.getInstance().getUid();
-//                for(DataSnapshot ds : dataSnapshot.getChildren()){
-//
-//                    if(ds.hasChild(temp_uid))
-//                    {
-//                        String PKey = ds.child(temp_uid).getValue(String.class);
-//                        DatabaseReference patientRef = mDatabaseReference.child("Users").child("Patients").child(PKey).child("medicines");
-//
-//                        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                for (DataSnapshot ds : dataSnapshot.getChildren())
-//                                {
-//                                    DataSnapshot ms = ds.child("consumptionTimings") ;
-//                                    for (DataSnapshot prop : ms.getChildren()) {
-//                                        String stringValue = prop.getValue(String.class);
-//                                        timeStor.add(stringValue);
-//                                        System.out.println(" "+timeStor+" timeakzflgd");
-//                                        //Log.i("Firebase", stringValue);
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//                    }
-//                }
-//            }
-//
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.e("db error", databaseError.getMessage());
-//            }
-//        });
         timeStor.clear();
-        for(wardClass x: wardList){
-            for(Medicine m : x.getMedicines()){
-                timeStor.addAll(m.getConsumptionTimings());
 
-                try {
-                    Date ds = new SimpleDateFormat("dd/mm/yyyy").parse(m.getDateStopped());
-                    if(ds.before(new Date())){
-                        History h = new History(m.getName() + " stopped",
-                                "Date started : "+ m.getDateStarted()
-                                        + "\n Date Stopped : " + m.getDateStopped()
-                                        + "\n Manufacturer : " + m.getBrandName()
-                                        + "\n Consumption timings : " + Arrays.toString(m.getConsumptionTimings().toArray())
-                                        + "\n Prescribed by : " + m.getPrescriptionBy()
-                        ,new Date());
-
-                        List<Medicine> tm = x.getMedicines();
-                        tm.remove(m);
-                        x.setMedicines(tm);
-
-                        List<History> th = x.getHistories();
-                        th.add(h);
-                        x.setHistories(th);
-
-                        mDatabaseReference.child("Patients").child(x.getKey()).setValue(x).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(getApplicationContext(), "Med to History successful", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("db error", databaseError.getMessage());
-            }
-        });
 
 
 
@@ -283,11 +209,7 @@ public class listOfPeople extends AppCompatActivity
             @Override
             public void onRefresh()
             {
-//                MyAdapter myAdapter =  new MyAdapter(getApplicationContext(), wardList, dpList);
-//                list.setAdapter(myAdapter);
-//
-//                srl.setRefreshing(false);
-            startActivity(new Intent(getApplicationContext() , listOfPeople.class));
+                startActivity(new Intent(getApplicationContext() , listOfPeople.class));
             }
         });
 
@@ -478,6 +400,116 @@ public class listOfPeople extends AppCompatActivity
 
     }
 
+    public void updateNotifications(){
+        System.out.println(wardList.size());
+        if(wardList == null){return;}
+        for (ListIterator<wardClass> it = wardList.listIterator(); it.hasNext(); ) {
+            wardClass x = it.next();
+
+            long eventID = -1;
+            if(x == null){return;}
+            if(x.getMedicines() == null){return;}
+
+            for (ListIterator<Medicine> it1 = x.getMedicines().listIterator(); it1.hasNext(); ) {
+                Medicine m = it1.next();
+                if(m == null){return;}
+
+
+                try {
+                    Date ds = new SimpleDateFormat("dd/MM/yyyy").parse(m.getDateStopped());
+                    if(ds.before(new Date())){
+                        History h = new History(m.getName() + " stopped",
+                                "Date started : "+ m.getDateStarted()
+                                        + "\n Date Stopped : " + m.getDateStopped()
+                                        + "\n Manufacturer : " + m.getBrandName()
+                                        + "\n Consumption timings : " + Arrays.toString(m.getConsumptionTimings().toArray())
+                                        + "\n Prescribed by : " + m.getPrescriptionBy()
+                                ,new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+
+                        List<Medicine> tm = x.getMedicines()==null ? new ArrayList<Medicine>() : x.getMedicines();
+                        tm.remove(m);
+                        x.setMedicines(tm);
+
+                        List<History> th = x.getHistories()==null ? new ArrayList<History>() : x.getHistories();
+                        th.add(h);
+                        x.setHistories(th);
+
+                        mDatabaseReference.child("Users").child("Patients").child(x.getKey()).setValue(x).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Med to History successful", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        Uri deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, m.getDueEventID());
+                        int rows = getContentResolver().delete(deleteUri, null, null);
+
+                        if(rows>0){
+                            Toast.makeText(getApplicationContext(), "deleted rows : "+ rows,  Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } //Convert medicine to history
+
+                if(m.getDailyEventID()==-1 || m.getDailyEventID() == 0){
+                    DateTime d = DateTimeFormat.forPattern("dd/MM/yyyy").parseDateTime(m.getDateStarted());
+                    System.out.println(d.toString());
+                    DateTime dStart = d.withTime(0,0,0,0);
+                    long startMillis = dStart.getMillis();
+                    DateTime dEnd = DateTimeFormat.forPattern("dd/MM/yyyy").parseDateTime(m.getDateStopped())
+                            .withTime(0,0,0,0);
+                    long endMillis = dEnd.getMillis();
+
+                    String eventUriString = "content://com.android.calendar/events";
+                    ContentValues eventValues = new ContentValues();
+
+                    eventValues.put(CalendarContract.Events.CALENDAR_ID, 1);
+                    eventValues.put(CalendarContract.Events.TITLE, x.getName() + "'s Medicine time");
+                    eventValues.put(CalendarContract.Events.DESCRIPTION, x.getName() + " : " + m.getName() + " dosage time now");
+                    eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, dStart.getZone().toTimeZone().getDisplayName());
+                    eventValues.put(CalendarContract.Events.DTSTART, startMillis);
+                    eventValues.put(CalendarContract.Events.DTEND, endMillis);
+                    eventValues.put(CalendarContract.Events.ALL_DAY, 0);
+
+                    System.out.println(eventID);
+                    Uri eventUri = getApplicationContext().getContentResolver().insert(Uri.parse(eventUriString), eventValues);
+                    eventID = Long.parseLong(eventUri.getLastPathSegment());
+
+                    String reminderUriString = "content://com.android.calendar/reminders";
+                    for(String t: m.getConsumptionTimings()){
+                        DateTime dt = DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH).parseDateTime(t.replace(".", "").toUpperCase());
+                        long millis = dt.getMillis();
+                        long startMilli = dt.withTime(0, 0, 0, 0).getMillis();
+                        int min = (int) ((millis - startMilli)/60000);
+
+//                        min = 24*60 - min;
+                        ContentValues reminderValues = new ContentValues();
+                        reminderValues.put("event_id", eventID);
+                        reminderValues.put(CalendarContract.Reminders.MINUTES, min);
+                        reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+                        Uri reminderUri = getApplicationContext().getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
+                    }
+                    List<Medicine> meds = x.getMedicines();
+                    Medicine tm = m;
+
+                    meds.remove(tm);
+                    tm.setDailyEventID(eventID);
+                    meds.add(tm);
+                    x.setMedicines(meds);
+                    mDatabaseReference.child("Users").child("Patients").child(x.getKey()).setValue(x).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+
+            }
+
+        }
+    }
+
     public void displayNotification()
     {
         String cId = "abcabc";
@@ -514,6 +546,7 @@ public class listOfPeople extends AppCompatActivity
 
 
     }
+
     boolean doubleBackToExitPressedOnce;
     @Override
     public void onBackPressed() {
@@ -547,7 +580,6 @@ public class listOfPeople extends AppCompatActivity
             this.listElemets = listElements;
             this.imageReferences = imageReferences;
             this.context = context;
-
         }
 
         @NonNull

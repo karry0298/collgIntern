@@ -11,14 +11,14 @@ import java.util.List;
 public class History implements Serializable{
     private String title;
     private String description;
-    private Date date;
+    private String date;
     private List<String> attachments;
     private List<com.collekarry.intern.Comment> comments;
 
     public History() {
     }
 
-    public History(String title, String description, Date date) {
+    public History(String title, String description, String date) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -38,10 +38,10 @@ public class History implements Serializable{
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

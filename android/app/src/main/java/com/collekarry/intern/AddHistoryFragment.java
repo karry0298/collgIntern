@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -86,7 +87,7 @@ public class AddHistoryFragment extends DialogFragment {
                     descriptionView.setError("Description too short");
                 }
                 else{
-                    History history = new History(title,description, new Date());
+                    History history = new History(title,description, new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 
 
                     if(intention.equals("direct_entry")){
