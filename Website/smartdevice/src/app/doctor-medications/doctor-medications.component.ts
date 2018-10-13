@@ -15,7 +15,9 @@ export class DoctorMedicationsComponent implements OnInit {
   }
   @Input() patient: Patient;
   medicine:Medecine=new Medecine();
+  medsList:any[];
   brandName:String="";
+  medName:String="";
   objectKeys = Object.keys;
   auth:AngularFireAuth;
 
@@ -39,11 +41,12 @@ display:String="none";
     this.display="none";
     this.medicine.brandName=this.brandName;
     this.medicine.dateStarted=this.dateTime;
+    this.medicine.medName=this.medName;
     for(var  i=0;i<4;i++){
       if(this.meds[i]!=null){
         console.log(this.meds[i]);
-        console.log(this.medicine.consumptionTimings);
-        this.medicine.consumptionTimings.push(this.meds[i]);
+        console.log(this.medicine.consumptionTime);
+        this.medicine.consumptionTime.push(this.meds[i]);
         this.meds[i]="";
       }
     }
@@ -55,7 +58,7 @@ display:String="none";
     // firebase.database().ref().update(updates);
 
     console.log(firebase.auth().currentUser.uid+" "+this.patient.key);
-  var ref = this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push(this.medicine);
+  this.db.list('Users/Patients/'+this.patient.key+'/medicines').push(this.medicine);
 
 
 
@@ -88,7 +91,13 @@ display:String="none";
   ngOnInit() {
     console.log(this.patient);  
     console.log(this.patient.medicines);
-    this.db.list('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').valueChanges();
+    this.db.list('Users/Patients/'+this.patient.key+'/medicines').valueChanges().subscribe((meds:any[]) => {
+
+      this.medsList=meds;
+
+      console.log(this.medsList);
+
+  });
   }
 
 }

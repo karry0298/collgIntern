@@ -2,17 +2,17 @@ import { Time } from "@angular/common";
 
 export class Medecine {
     brandName:String;
-    consumptionTimings:Time[];
+    consumptionTime:String[];
     count:number;
     dateEnded:Date;
     dateStarted:Date;
-    Medname:String;
+    medName:String;
     presCribedBy:String;
     constructor(){
         this.brandName="";
-        this.Medname="";
+        this.medName="";
         this.presCribedBy="";
-        this.consumptionTimings=[];
+        this.consumptionTime=[];
         this.dateStarted=null;
     }
 }
