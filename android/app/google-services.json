@@ -8,50 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:696169170776:android:591d07a26d9a9cad",
-        "android_client_info": {
-          "package_name": "com.collekarry.docside"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "696169170776-tq9ehh1guana9lvk09c8lr4ndod6bk1m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.collekarry.docside",
-            "certificate_hash": "e6b4a0ca96f0c157e07def5055ecec2dd1a7058d"
-          }
-        },
-        {
-          "client_id": "696169170776-kdccfnvnj8udhap8q0b5crb8ls5k4e96.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBq-3bf0U2vItG5SnMfbncNdPF943n6x_0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "696169170776-kdccfnvnj8udhap8q0b5crb8ls5k4e96.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:696169170776:android:9cb78c8860c60596",
         "android_client_info": {
           "package_name": "com.collekarry.intern"
@@ -64,22 +20,6 @@
           "android_info": {
             "package_name": "com.collekarry.intern",
             "certificate_hash": "e6b4a0ca96f0c157e07def5055ecec2dd1a7058d"
-          }
-        },
-        {
-          "client_id": "696169170776-vb8qolga7q4jrgn3l77d6ifr5fua2q6u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.collekarry.intern",
-            "certificate_hash": "1af55127490e570a25fefa4c3ea2290e8c8dfeef"
-          }
-        },
-        {
-          "client_id": "696169170776-gl9ov0nsqaqvrvcpp9vfepfvkr9931lc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.collekarry.intern",
-            "certificate_hash": "5290d33ae5663ed8c7a8529db38110fd1fe10324"
           }
         },
         {
