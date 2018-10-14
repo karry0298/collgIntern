@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- <a class="navbar-brand" href="/doctor">Dr.{{ this.username }}</a> -->
+  <button (click)="_toggleSidebar()"  class="btn btn-outline-secondary btn-lg">Dr.{{ this.username }}</button>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isActive = !isActive">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{show : isActive}">
+    <ul class="navbar-nav mr-auto">
+
+        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+        <!-- <li>{{ filtername }}</li> -->
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <button (click)="logout()" class="btn btn-outline-success my-2 my-sm-0 btn-lg" type="submit">LogOut</button>
+    </form>
+  </div>
+</nav>
+
+
+<div class="container-fluid" >
+  <div class="row">
+    <!-- <div class="box col-lg-3 sidebar col-3">
+
+    </div> -->
+    <div class="box  mainpage col-12 " style="padding:0px;">
+
+        <ng-sidebar-container>
+ 
+            <!-- A sidebar -->
+            <ng-sidebar  [(opened)]="_opened" [(mode)]="slide" >
+                  <div class="box  sidebar ">
+                      <input style="width: 100%" class="form-control mr-sm-2" [(ngModel)]="filtername" placeholder="Search"  name="filtername" >
+                      <ul style="overflow-x: hidden; ">
+                          <!-- overflow-y:scroll -->
+                            <ng-container *ngFor="let manager of displayPatientData"  >
+                              <div *ngIf=filter(manager)>
+                                  <li   (click)="onSelect(manager);" >
+                                      <h3>{{ manager.name }}</h3>
+                                  </li>
+                              </div>
+                      
+                               <!-- <div *ngFor="let key of objectKeys(manager)">
+                                 
+                                
+                                 <div *ngIf=filter(manager[key])>
+                                    <li   (click)="onSelect( manager[key]);" >
+                                        <p>              {{ manager[key].name}}</p>
+                                    </li>
+                                 </div>          
+                      
+                      
+                               </div> -->
+                                <!-- <ng-container *ngFor="let patient of manager" >
+                      
+                                </ng-container> -->
+                      
+                            </ng-container>
+                        </ul>
+                  </div>
+
+            </ng-sidebar>
+
+
+            <!-- Page content -->
+            <div ng-sidebar-content>
+
+              <app-doctor-patientview  [patient]="selectedPatient" ></app-doctor-patientview>
+            </div>
+       
+          </ng-sidebar-container>
+      <!--  -->
+    </div>
+  </div>
+</div>
+

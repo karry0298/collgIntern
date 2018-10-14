@@ -2,13 +2,7 @@ package com.collekarry.docside;
 
 
 import android.animation.LayoutTransition;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,11 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import static com.collekarry.docside.MyNotificationManager.CHANNEL_DESCRIPTION;
-import static com.collekarry.docside.MyNotificationManager.CHANNEL_ID;
-import static com.collekarry.docside.MyNotificationManager.CHANNEL_NAME;
-
 
 public class MainActivity extends AppCompatActivity
 {
@@ -100,12 +89,6 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-
-
-
-
-
-
 
     }
 

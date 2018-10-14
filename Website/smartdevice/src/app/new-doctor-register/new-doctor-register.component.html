@@ -1,0 +1,14 @@
+  <div align="center" class="cont" >
+    <div class="form sign-in">
+      <h2>Welcome, {{this.currentUser.displayName}}</h2>
+      <label>
+        <span>Phone Number</span>
+        <input type="tel" [(ngModel)]="phone" />
+      </label>
+      <label>
+        <span>Age</span>
+        <input type="number" [(ngModel)]="age" />
+      </label>
+      <button (click)="registerClicked()" class="submit">Register</button>
+    </div>
+  </div>
