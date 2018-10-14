@@ -19,30 +19,33 @@
 
 <div>
     <button id="myBtn" (click)="openModal()">Add Medications</button>
-    <div class="row" >
-        <div class="col-3"><p>BRAND NAME </p></div>
-        <div class="col-3">PRESCRIPTION BY</div>
-        <div class="col-3"> Timings</div>
-        <div class="col-3"></div>
-      </div>
+    <div  >
+      <table style="width: 100%" >
+        <tr style="padding: 2rem;">
+            <th>Brand </th>
+            <th>Medication</th>
+            <th>Prescription By</th>
+            <th>Timings</th>
+        </tr>
+        <ng-container *ngFor="let i of objectKeys(medsList)" >
+          <tr style="padding: 2rem;" >
+              <td><p>{{ medsList[i].brandName }} </p></td>
+              <td><p>{{ medsList[i].medName}}</p></td>
+              <td><p>{{ medsList[i].presCribedBy }}</p></td>
+              <td>
+                  <ng-container *ngFor="let time of medsList[i].consumptionTime ">
+                      {{ time }}<br>
+          
+                    </ng-container>
+              </td>
+          </tr>
+         </ng-container>
+      </table>
+      
 
-    <ng-container  >
-      <!-- *ngFor="let user of patient.medicines"  -->
-        <!-- [class.selected]="user === selectedPatient"  -->
+     </div>
 
-        <div class="row"  *ngFor="let i of objectKeys(medsList)"  >
-          <div class="col-3"><p>{{ medsList[i].brandName }} </p></div>
-          <div class="col-3">{{ medsList[i].medName}}</div>
-          <div class="col-3">
-          <ng-container *ngFor="let time of medsList[i].consumptionTime ">
-            {{ time }}<br>
 
-          </ng-container>
-        </div>
-          <div class="col-3"></div>
-          <br>
-        </div>
-   </ng-container>
 
 </div>
 

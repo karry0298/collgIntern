@@ -10,7 +10,7 @@ import * as firebase from 'firebase/app';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-
+import { SidebarModule } from 'ng-sidebar';
 import { DoctorUIDService } from "../doctor-uid.service";
 import { AngularFireStorage } from 'angularfire2/storage';
 
@@ -23,6 +23,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 export class DoctorComponent implements OnInit {
   doctorpatients: any[];
   patients:any[];
+  slide:string="slide";
   finalPatientList:any[]=[];
   patientDisplayData:any[];
   objectKeys = Object.keys;
@@ -30,11 +31,17 @@ export class DoctorComponent implements OnInit {
   selectedPatient: Patient;
   filtername: string = "";
   show: boolean = true;
+  isActive:boolean=false;
   user: any;
+  username:string;
   displayPatientData:Patient[]=[];
   message:string;
 
-  
+   _opened: boolean = false;
+ 
+  _toggleSidebar() {
+    this._opened = !this._opened;
+  }
   showPatientData():void{
     this.finalPatientList=[];
     for(var i=0;i<this.doctorpatients.length;i++){
@@ -91,7 +98,7 @@ export class DoctorComponent implements OnInit {
     return firebase.auth().currentUser.displayName;
   }
   getName():string{
-    return  firebase.auth().currentUser.displayName;
+    return  this.data.currentUser();
   }
 
 
@@ -142,7 +149,7 @@ export class DoctorComponent implements OnInit {
 
 
     this.user = this.getUid();
-
+    this.username=this.getName();
     // console.log(db.list('/wards').valueChanges());
 
     this.filtername = "";

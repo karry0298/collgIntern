@@ -21,7 +21,7 @@ import { GraphComponent } from './graph/graph.component';
 import { ParticlesModule } from 'angular-particle';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { NewDoctorRegisterComponent } from './new-doctor-register/new-doctor-register.component';
-
+import { SidebarModule } from 'ng-sidebar';
 
 @NgModule({
   declarations: [
@@ -48,6 +48,7 @@ import { NewDoctorRegisterComponent } from './new-doctor-register/new-doctor-reg
     HttpModule,
     router,
     ParticlesModule,
+    SidebarModule.forRoot(),
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

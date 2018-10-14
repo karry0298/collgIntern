@@ -1,13 +1,14 @@
 .sidebar{
   background-color: #80D3ED;
+  width: 25vw;
 }
 .mainpage{
   background-color: white;
 }
 .box {
   height: 100vh;
-   display:flex;
-   flex-direction:column;
+  //  display:flex;
+  //  flex-direction:column;
 
 }
 #grid {
@@ -18,9 +19,7 @@
    grid-template-rows: 20% 20% 20% 20% 20%;
 }
 
-#grid > div {
-  // background-color: lime;
-}
+
 .side-panel{
   height:40%;
   align-items:center;
@@ -54,4 +53,10 @@
 .sidebar-names:hover{
   color: #186B95;
   text-decoration: underline;
+}
+@media only screen and (max-width: 700px) {
+  .sidebar{
+    background-color: #80D3ED;
+    width: 100vw;
+  }
 }
