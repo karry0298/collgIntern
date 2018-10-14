@@ -26,6 +26,7 @@
             <th>Medication</th>
             <th>Prescription By</th>
             <th>Timings</th>
+            <th></th>
         </tr>
         <ng-container *ngFor="let i of objectKeys(medsList)" >
           <tr style="padding: 2rem;" >
@@ -38,6 +39,7 @@
           
                     </ng-container>
               </td>
+              <td><p style="font-size:1.5rem; text-align: center; cursor: pointer;">&#10006;</p></td>
           </tr>
          </ng-container>
       </table>

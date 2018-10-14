@@ -1,15 +1,16 @@
-import { Component, OnInit ,Input} from '@angular/core';
+import { Component, OnInit ,Input,OnChanges} from '@angular/core';
 import { Patient } from '../patient';
 import { Medecine } from '../medecine';
 import * as firebase from 'firebase/app';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-doctor-medications',
   templateUrl: './doctor-medications.component.html',
   styleUrls: ['./doctor-medications.component.scss']
 })
-export class DoctorMedicationsComponent implements OnInit {
+export class DoctorMedicationsComponent implements OnInit,OnChanges {
   constructor(private db: AngularFireDatabase) {
     db.list('/wards').valueChanges();
   }
@@ -99,5 +100,12 @@ display:String="none";
 
   });
   }
+  ngOnChanges(changes: SimpleChanges) {
+
+    this.doSomething(changes.categoryId.currentValue);
+    // You can also use categoryId.previousValue and 
+    // categoryId.firstChange for comparing old and new values
+
+}
 
 }
