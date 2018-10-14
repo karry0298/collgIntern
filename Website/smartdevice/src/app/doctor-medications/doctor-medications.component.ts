@@ -102,7 +102,17 @@ display:String="none";
   }
   ngOnChanges(changes: SimpleChanges) {
 
-    this.doSomething(changes.categoryId.currentValue);
+    console.log(changes.patient.previousValue);
+    if(changes.patient.previousValue){
+      console.log(this.patient.medicines);
+      this.db.list('Users/Patients/'+this.patient.key+'/medicines').valueChanges().subscribe((meds:any[]) => {
+  
+        this.medsList=meds;
+  
+        console.log(this.medsList);
+  
+    });
+    }
     // You can also use categoryId.previousValue and 
     // categoryId.firstChange for comparing old and new values
 
