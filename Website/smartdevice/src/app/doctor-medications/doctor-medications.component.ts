@@ -79,9 +79,9 @@ display:String="none";
   //   }
   //   this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
 
-  onSelect(hero: Patient): void {
-    console.log(hero.medicines);
-
+  onSelect(i:any): void {
+    console.log(i);
+    this.db.object('Users/Patients/'+this.patient.key+'/medicines/'+i).remove();
   }
 
   // onSelect(hero: Patient): void {
