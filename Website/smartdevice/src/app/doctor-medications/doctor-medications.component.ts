@@ -24,6 +24,7 @@ export class DoctorMedicationsComponent implements OnInit,OnChanges {
   auth:AngularFireAuth;
 
   dateTime:Date;
+  dateTime2:Date;
   // str1:String="";str2:String="";str3:String="";str4:String="";
   meds=[];
 
@@ -43,6 +44,7 @@ display:String="none";
     this.display="none";
     this.medicine.brandName=this.brandName;
     this.medicine.dateStarted=this.dateTime;
+    this.medicine.dateEnded=this.dateTime2;
     this.medicine.name=this.name;
     for(var  i=0;i<4;i++){
       if(this.meds[i]!=null){
