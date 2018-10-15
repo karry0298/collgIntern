@@ -16,7 +16,7 @@ export class NewDoctorRegisterComponent implements OnInit {
   constructor(db: AngularFireDatabase, private router: Router) {
     this.currentUser = firebase.auth().currentUser;
     console.log(this.currentUser.displayName);
-    db.list('/Users/Doctors').valueChanges();
+    db.list('/Users/Docters').valueChanges();
   }
 
   currentUser;
@@ -31,8 +31,8 @@ export class NewDoctorRegisterComponent implements OnInit {
     this.newDoctor.age = this.age;
     this.newDoctor.email = this.currentUser.email;
     this.newDoctor.name = this.currentUser.displayName;
-    this.newDoctor.uid = this.currentUser.uid;
-    firebase.database().ref('/Users/Doctors').push(this.newDoctor);
+    this.newDoctor.key = this.currentUser.key;
+    firebase.database().ref('/Users/Docters').push(this.newDoctor);
     this.router.navigate(['/doctor']);
     //var doctors = firebase.database().ref('/Users/Doctors');
     //console.log(doctors);
