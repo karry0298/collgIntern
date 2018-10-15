@@ -23,8 +23,10 @@ export class DoctorMedicationsComponent implements OnInit,OnChanges {
   objectKeys = Object.keys;
   auth:AngularFireAuth;
 
-  dateTime:Date;
-  dateTime2:Date;
+  myDate:String
+
+  dateTime:String;
+  dateTime2:String;
   // str1:String="";str2:String="";str3:String="";str4:String="";
   meds=[];
 
@@ -42,13 +44,16 @@ display:String="none";
   submitMedsForm():any{
     console.log(this.medicine);
     this.display="none";
+    
     this.medicine.brandName=this.brandName;
     this.medicine.dateStarted=this.dateTime;
-    this.medicine.dateEnded=this.dateTime2;
+    this.medicine.dateStopped=this.dateTime2;
     this.medicine.name=this.name;
     for(var  i=0;i<4;i++){
       if(this.meds[i]!=null){
         console.log(this.meds[i]);
+
+        
         console.log(this.medicine.consumptionTimings);
         this.medicine.consumptionTimings.push(this.meds[i]);
         this.meds[i]="";
@@ -79,9 +84,9 @@ display:String="none";
   //   }
   //   this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
 
-  onSelect(i:any): void {
-    console.log(i);
-    this.db.object('Users/Patients/'+this.patient.key+'/medicines/'+i).remove();
+  onSelect(hero: Patient): void {
+    console.log(hero.medicines);
+
   }
 
   // onSelect(hero: Patient): void {

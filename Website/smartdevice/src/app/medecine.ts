@@ -4,12 +4,14 @@ export class Medecine {
     brandName:String;
     consumptionTimings:String[];
     count:number;
-    dateStopped:Date;
-    dateStarted:Date;
+    dateStopped:String;
+    dateStarted:String;
     name:String;
     prescriptionBy:String;
     dailyEventID:number;
     dueEventID:number;
+
+
 
     constructor(){
         this.brandName="";

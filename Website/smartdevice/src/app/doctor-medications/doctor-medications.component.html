@@ -79,7 +79,7 @@
           </div>
           
           <div class=" form-group col-4">
-              <input type="date" class="form-control" [(ngModel)]="dateTime" name="dateTime1" value="" id="startDate" placeholder="Start Date"> 
+              <input type="text" class="form-control" [(ngModel)]="dateTime" name="dateTime1" value="" id="startDate" placeholder="Start Date"> 
              </div>
              
           <div class="col-1">
@@ -87,7 +87,7 @@
           </div>
           
           <div class=" form-group col-4">
-              <input type="date" class="form-control" [(ngModel)]="dateTime2" name="dateTime2" value="" id="EndDate" placeholder="End Date"> 
+              <input type="text" class="form-control" [(ngModel)]="dateTime2" name="dateTime2" value="" id="EndDate" placeholder="End Date"> 
               </div>
       </div>
       <div col-12>
@@ -97,16 +97,16 @@
 
 
           <div class=" form-group col-3">
-              <input type="time" class="form-control" value="" [(ngModel)]="meds[0]" name="meds1" id="MedicineTime1" placeholder="Time1 AM/PM">
+              <input id="date" type="text" class="form-control" value="" [(ngModel)]="meds[0]" name="meds1" id="MedicineTime1" placeholder="Time1 am/pm">
           </div>
           <div class=" form-group col-3">
-              <input type="time" class="form-control" value="" [(ngModel)]="meds[1]" name="meds2" id="MedicineTime2" placeholder="Time2 AM/PM">
+              <input type="text" class="form-control" value="" [(ngModel)]="meds[1]" name="meds2" id="MedicineTime2" placeholder="Time2 AM/PM">
           </div>
           <div class=" form-group col-3">
-              <input type="time" class="form-control" value="" [(ngModel)]="meds[2]"  name="meds3"id="MedicineTime3" placeholder="Time3 AM/PM">
+              <input type="text"ext class="form-control" value="" [(ngModel)]="meds[2]"  name="meds3"id="MedicineTime3" placeholder="Time3 AM/PM">
           </div>
           <div class=" form-group col-3">
-              <input type="time" class="form-control" value="" [(ngModel)]="meds[3]" name="meds4" id="Medicine4" placeholder="Time4 AM/PM">
+              <input type="text" class="form-control" value="" [(ngModel)]="meds[3]" name="meds4" id="Medicine4" placeholder="Time4 AM/PM">
           </div>
       </div>
       <button type="submit" (click)=submitMedsForm() class="btn btn-primary">Submit</button>
