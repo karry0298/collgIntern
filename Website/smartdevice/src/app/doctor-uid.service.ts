@@ -25,9 +25,9 @@ export class DoctorUIDService {
     return firebase.auth().currentUser.displayName;
   }
   init():Observable<any[]>{
-    // console.log(this.db.list('/LinksDoctorsPatients')
+    // console.log(this.db.list('/LinksDoctorsPatients');
     // .valueChanges());
-   return  this.db.list('/LinksDoctersPatients')
+   return  this.db.list('/LinksDocterPatients')
     .valueChanges();
     // .subscribe((product:any[]) => {
     //   this.products = product;
