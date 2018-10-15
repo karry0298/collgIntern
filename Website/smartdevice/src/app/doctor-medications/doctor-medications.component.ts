@@ -17,6 +17,7 @@ export class DoctorMedicationsComponent implements OnInit,OnChanges {
   @Input() patient: Patient;
   medicine:Medecine=new Medecine();
   medsList:any[];
+  medslength:number;
   brandName:String="";
   name:String="";
   objectKeys = Object.keys;
@@ -59,7 +60,7 @@ display:String="none";
     // firebase.database().ref().update(updates);
 
     console.log(firebase.auth().currentUser.uid+" "+this.patient.key);
-  this.db.list('Users/Patients/'+this.patient.key+'/medicines').push(this.medicine);
+  this.db.object('Users/Patients/'+this.patient.key+'/medicines/'+this.medslength).update(this.medicine);
 
 
 
@@ -95,8 +96,8 @@ display:String="none";
     this.db.list('Users/Patients/'+this.patient.key+'/medicines').valueChanges().subscribe((meds:any[]) => {
 
       this.medsList=meds;
-
-      console.log(this.medsList);
+      this.medslength=this.medsList.length;
+      console.log(this.medslength);
 
   });
   }
@@ -108,8 +109,9 @@ display:String="none";
       this.db.list('Users/Patients/'+this.patient.key+'/medicines').valueChanges().subscribe((meds:any[]) => {
   
         this.medsList=meds;
+        this.medslength=this.medsList.length;
+        console.log(this.medslength);
   
-        console.log(this.medsList);
   
     });
     }

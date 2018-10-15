@@ -45,7 +45,6 @@ export class DoctorComponent implements OnInit {
   showPatientData():void{
     this.finalPatientList=[];
     for(var i=0;i<this.doctorpatients.length;i++){
-        console.log(Object.values(this.doctorpatients[i])[0]);
       if(Object.values(this.doctorpatients[i])[0]==this.data.currentUserId())
         {
         // console.log(Object.keys(this.doctorpatients[i])[0]);
@@ -67,8 +66,8 @@ export class DoctorComponent implements OnInit {
    this.displayPatientData=[];
    for(var i=0;i<this.patients.length;i++){
     for(var j=0;j<this.finalPatientList.length;j++){
-      console.log(typeof(this.patients[i].key)+"  "+this.patients[i].key+" "+typeof(this.finalPatientList[j])+" "+this.finalPatientList[j]);
-      console.log(this.patients[i].key==this.finalPatientList[j]);
+      // console.log(typeof(this.patients[i].key)+"  "+this.patients[i].key+" "+typeof(this.finalPatientList[j])+" "+this.finalPatientList[j]);
+      // console.log(this.patients[i].key==this.finalPatientList[j]);
       if(this.patients[i].key==this.finalPatientList[j]){
           console.log("hi");
           this.displayPatientData.push(this.patients[i]);
