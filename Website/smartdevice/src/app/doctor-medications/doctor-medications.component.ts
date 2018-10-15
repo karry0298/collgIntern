@@ -52,7 +52,7 @@ display:String="none";
       }
     }
 
-    this.medicine.presCribedBy="Dr."+firebase.auth().currentUser.displayName;
+    this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
     // var newPostKey = firebase.database().ref().child('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push().key;
     // var updates = {};
     // updates[ '/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key + newPostKey] = this.medicine;
