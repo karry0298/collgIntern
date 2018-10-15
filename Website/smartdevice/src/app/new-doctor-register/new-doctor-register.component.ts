@@ -31,7 +31,7 @@ export class NewDoctorRegisterComponent implements OnInit {
     this.newDoctor.age = this.age;
     this.newDoctor.email = this.currentUser.email;
     this.newDoctor.name = this.currentUser.displayName;
-    this.newDoctor.key = this.currentUser.key;
+    this.newDoctor.key = this.currentUser.uid;
     firebase.database().ref('/Users/Docters').push(this.newDoctor);
     this.router.navigate(['/doctor']);
     //var doctors = firebase.database().ref('/Users/Doctors');

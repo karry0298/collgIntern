@@ -22,7 +22,7 @@ export class DoctorMedicationsComponent implements OnInit,OnChanges {
   name:String="";
   objectKeys = Object.keys;
   auth:AngularFireAuth;
-
+  value:String;
   myDate:String
 
   dateTime:String;
@@ -30,8 +30,9 @@ export class DoctorMedicationsComponent implements OnInit,OnChanges {
   // str1:String="";str2:String="";str3:String="";str4:String="";
   meds=[];
 
-
+  num:Number;
 display:String="none";
+display1:String="none";
 
   openModal(): void{
     this.display="block";
@@ -39,6 +40,14 @@ display:String="none";
   }
   closeModal(): void{
     this.display="none";
+  }
+
+  openModal1(): void{
+    this.display1="block";
+    console.log(this.display1);
+  }
+  closeModal1(): void{
+    this.display1="none";
   }
 
   submitMedsForm():any{
@@ -74,6 +83,40 @@ display:String="none";
 
   }
 
+  submitMedsForm1():any{
+    console.log(this.medicine);
+    this.display1="none";
+    
+    this.medicine.brandName=this.brandName;
+    this.medicine.dateStarted=this.dateTime;
+    this.medicine.dateStopped=this.dateTime2;
+    this.medicine.name=this.name;
+    for(var  i=0;i<4;i++){
+      if(this.meds[i]!=null){
+        console.log(this.meds[i]);
+
+        
+        console.log(this.medicine.consumptionTimings);
+        this.medicine.consumptionTimings.push(this.meds[i]);
+        this.meds[i]="";
+      }
+    }
+
+    this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
+    // var newPostKey = firebase.database().ref().child('/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key+'/medicines').push().key;
+    // var updates = {};
+    // updates[ '/wards/'+firebase.auth().currentUser.uid+'/'+this.patient.key + newPostKey] = this.medicine;
+    // firebase.database().ref().update(updates);
+
+    this.num=+this.value;
+    console.log(firebase.auth().currentUser.uid+" "+this.patient.key);
+  this.db.object('Users/Patients/'+this.patient.key+'/medicines/'+this.num).update(this.medicine);
+
+
+
+
+  }
+
   // submitMedsForm(db: AngularFireDatabase,auth:AngularFireAuth):any{
   //   this.medicine.brandName=this.brandName;
   //   this.medicine.dateStarted=this.dateTime;
@@ -84,9 +127,8 @@ display:String="none";
   //   }
   //   this.medicine.prescriptionBy="Dr."+firebase.auth().currentUser.displayName;
 
-  onSelect(hero: Patient): void {
-    console.log(hero.medicines);
-
+  onSelect(i: any): void {
+    this.db.object('Users/Patients/'+this.patient.key+'/medicines/'+i).remove();
   }
 
   // onSelect(hero: Patient): void {
