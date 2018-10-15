@@ -21,17 +21,18 @@ export class GraphComponent implements OnInit {
   chart = []; //to hold chart info
 
   constructor(db: AngularFireDatabase, public afAuth: AngularFireAuth, private router: Router) {
-    db.list('/wards')
+    db.list('/Users/Patients')
     .valueChanges()
     .subscribe(product =>{
       this.products = product;
+      
       console.log(this.products);
       for(let manager of this.products){
-        for(let key of this.objectKeys(manager)){
-          this.age.push(manager[key].age);
-          this.name.push(manager[key].name);
-          //console.log(manager[key].age);
-        }
+       
+          this.age.push(manager.age);
+          //this.name.push(manager[key].name);
+          console.log(manager.age);
+        
       }
       this.printData();
       // this.age = product.map(product => product.age);
