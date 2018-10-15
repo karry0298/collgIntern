@@ -60,7 +60,7 @@ display:String="none";
     // firebase.database().ref().update(updates);
 
     console.log(firebase.auth().currentUser.uid+" "+this.patient.key);
-  this.db.list('Users/Patients/'+this.patient.key+'/medicines').push(this.medicine);
+  this.db.object('Users/Patients/'+this.patient.key+'/medicines/'+this.medslength).update(this.medicine);
 
 
 
