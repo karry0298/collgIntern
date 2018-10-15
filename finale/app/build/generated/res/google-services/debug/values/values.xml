@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">7588545672-9r3ippl0kfj7oioi5piq7ko07bscf256.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://dwatch-943b8.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">7588545672</string>
+    <string name="google_api_key" translatable="false">AIzaSyAMlrR095DqFicW3j4PQmfUIwdph-gX1I4</string>
+    <string name="google_app_id" translatable="false">1:7588545672:android:e8ef6008404ef1ba</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAMlrR095DqFicW3j4PQmfUIwdph-gX1I4</string>
+    <string name="google_storage_bucket" translatable="false">dwatch-943b8.appspot.com</string>
+    <string name="project_id" translatable="false">dwatch-943b8</string>
+</resources>
