@@ -45,7 +45,7 @@ export class DoctorComponent implements OnInit {
   showPatientData():void{
     this.finalPatientList=[];
     for(var i=0;i<this.doctorpatients.length;i++){
-
+        console.log(Object.values(this.doctorpatients[i])[0]);
       if(Object.values(this.doctorpatients[i])[0]==this.data.currentUserId())
         {
         // console.log(Object.keys(this.doctorpatients[i])[0]);
@@ -58,6 +58,7 @@ export class DoctorComponent implements OnInit {
     }
 
     // for(var i=0;this.finalPatientList.length;i++){
+      console.log(this.data.currentUserId());
       console.log(this.finalPatientList);
     // }
   }
@@ -117,11 +118,12 @@ export class DoctorComponent implements OnInit {
     this.data.init().subscribe((product1:any[]) => {
         patientsList = product1;
         this.doctorpatients=patientsList;
-
+        console.log("patData");
         console.log(this.doctorpatients);
         this.showPatientData();
     });
-      console.log(this.doctorpatients);
+
+
   }
 
   // ,{
