@@ -1,6 +1,7 @@
-import { Component, OnInit, Input  } from '@angular/core';
+import { Component, OnInit, Input ,OnChanges  } from '@angular/core';
 import { Patient } from '../patient';
 import { DoctorUIDService } from "../doctor-uid.service";
+import { SimpleChanges } from '@angular/core';
 
 
 @Component({
@@ -8,7 +9,7 @@ import { DoctorUIDService } from "../doctor-uid.service";
   templateUrl: './doctor-patientview.component.html',
   styleUrls: ['./doctor-patientview.component.scss']
 })
-export class DoctorPatientviewComponent implements OnInit {
+export class DoctorPatientviewComponent implements OnInit,OnChanges {
   @Input() patient: Patient;
   doctorDetails:string;
 
@@ -21,9 +22,21 @@ export class DoctorPatientviewComponent implements OnInit {
 
   constructor(private data: DoctorUIDService) {
     this.doctorDetails=this.data.currentUser();
-    console.log(this.doctorDetails);
-     }
+    //console.log(this.patient);
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
+
+    console.log(changes.patient.previousValue);
+    if(changes.patient.previousValue){
+      console.log(this.patient.imp);
+
+    }
+    // You can also use categoryId.previousValue and 
+    // categoryId.firstChange for comparing old and new values
+
+}
+     
   ngOnInit() {
 
   }
