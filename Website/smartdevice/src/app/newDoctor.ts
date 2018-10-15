@@ -7,7 +7,7 @@ export class NewDoctor {
   email:string;
   gender:string;
   name:string;
-  uid:string;
+  key:string;
     constructor(){
         this.phone="9999999999";
         this.age=0;
@@ -15,6 +15,6 @@ export class NewDoctor {
         this.email="";
         this.gender="Male";
         this.name="";
-        this.uid="";
+        this.key="";
     }
 }

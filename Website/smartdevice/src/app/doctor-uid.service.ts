@@ -27,7 +27,7 @@ export class DoctorUIDService {
   init():Observable<any[]>{
     // console.log(this.db.list('/LinksDoctorsPatients')
     // .valueChanges());
-   return  this.db.list('/LinksDoctorsPatients')
+   return  this.db.list('/LinksDoctersPatients')
     .valueChanges();
     // .subscribe((product:any[]) => {
     //   this.products = product;
