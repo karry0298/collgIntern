@@ -15,5 +15,6 @@ export class Medecine {
         this.consumptionTimings=[];
         this.dateStarted=null;
         this.dateEnded=null;
+        this.count=5;
     }
 }

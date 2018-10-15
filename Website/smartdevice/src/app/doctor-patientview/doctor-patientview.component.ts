@@ -27,7 +27,19 @@ export class DoctorPatientviewComponent implements OnInit {
   ngOnInit() {
 
   }
+  onSelect(hero: Patient): void {
 
+    this.selectedPatient = hero;
+    // console.log(this.selectedPatient);
+
+    var doctorUid = this.getUid();
+    var patientUid = this.selectedPatient.key;
+    console.log(doctorUid);
+    console.log(patientUid);
+
+    // const id = this.selectedPatient.;
+    // this.ref = this.afStorage.ref(id);
+  }
 
 
 }
