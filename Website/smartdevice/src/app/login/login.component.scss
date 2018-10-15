@@ -96,3 +96,11 @@ th,td{
   padding-bottom: 0px;
   font-size: 13px;
 }
+
+@media screen and (max-width: 450px) 
+{
+  .myTable
+  {
+    margin-left:-50px;
+  }
+}
