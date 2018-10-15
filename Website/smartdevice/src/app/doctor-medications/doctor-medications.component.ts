@@ -18,7 +18,7 @@ export class DoctorMedicationsComponent implements OnInit,OnChanges {
   medicine:Medecine=new Medecine();
   medsList:any[];
   brandName:String="";
-  medName:String="";
+  name:String="";
   objectKeys = Object.keys;
   auth:AngularFireAuth;
 
@@ -42,12 +42,12 @@ display:String="none";
     this.display="none";
     this.medicine.brandName=this.brandName;
     this.medicine.dateStarted=this.dateTime;
-    this.medicine.medName=this.medName;
+    this.medicine.name=this.name;
     for(var  i=0;i<4;i++){
       if(this.meds[i]!=null){
         console.log(this.meds[i]);
-        console.log(this.medicine.consumptionTime);
-        this.medicine.consumptionTime.push(this.meds[i]);
+        console.log(this.medicine.consumptionTimings);
+        this.medicine.consumptionTimings.push(this.meds[i]);
         this.meds[i]="";
       }
     }

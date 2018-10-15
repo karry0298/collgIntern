@@ -31,10 +31,10 @@
         <ng-container *ngFor="let i of objectKeys(medsList)" >
           <tr style="padding: 2rem;" >
               <td><p>{{ medsList[i].brandName }} </p></td>
-              <td><p>{{ medsList[i].medName}}</p></td>
-              <td><p>{{ medsList[i].presCribedBy }}</p></td>
+              <td><p>{{ medsList[i].name}}</p></td>
+              <td><p>{{ medsList[i].prescriptionBy }}</p></td>
               <td>
-                  <ng-container *ngFor="let time of medsList[i].consumptionTime ">
+                  <ng-container *ngFor="let time of medsList[i].consumptionTimings ">
                       {{ time }}<br>
           
                     </ng-container>
@@ -66,7 +66,7 @@
               <input type="text" class="form-control" [(ngModel)]="brandName" name="brandName1" value="" id="brandName" placeholder="Brand Name">
           </div>
           <div class=" form-group col-4">
-            <input type="text" class="form-control" [(ngModel)]="medName" name="medName" value="" id="brandName" placeholder="Medecine Name">
+            <input type="text" class="form-control" [(ngModel)]="name" name="medName" value="" id="brandName" placeholder="Medecine Name">
         </div>
           <div class="col-1">
             <label style="text-align:right;font-size: 1.5rem;" >Start Date</label>
