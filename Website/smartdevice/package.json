@@ -19,6 +19,7 @@
     "@angular/http": "^6.0.3",
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
+    "@angular/pwa": "^0.10.2",
     "@angular/router": "^6.0.3",
     "angular-custom-modal": "^1.2.0",
     "angular-particle": "^1.0.4",
