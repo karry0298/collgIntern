@@ -1,10 +1,7 @@
-package com.collekarry.intern;
+package com.collekarry.finale;
 
-import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -20,7 +18,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -30,17 +27,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -58,17 +50,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Objects;
-
-import static com.collekarry.intern.MyNotificationManager.CHANNEL_DESCRIPTION;
-import static com.collekarry.intern.MyNotificationManager.CHANNEL_ID;
-import static com.collekarry.intern.MyNotificationManager.CHANNEL_NAME;
 
 
 public class listOfPeople extends AppCompatActivity
@@ -392,7 +377,7 @@ public class listOfPeople extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + 102));
+                Intent i=new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + 102));
                 startActivity(i);
             }
         });
@@ -471,7 +456,6 @@ public class listOfPeople extends AppCompatActivity
                     eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, dStart.getZone().toTimeZone().getDisplayName());
                     eventValues.put(CalendarContract.Events.DTSTART, startMillis);
                     eventValues.put(CalendarContract.Events.DTEND, endMillis);
-                    eventValues.put(CalendarContract.Events.RRULE, "FREQ=DAILY");
                     eventValues.put(CalendarContract.Events.ALL_DAY, 0);
 
                     System.out.println(eventID);
@@ -480,8 +464,7 @@ public class listOfPeople extends AppCompatActivity
 
                     String reminderUriString = "content://com.android.calendar/reminders";
                     for(String t: m.getConsumptionTimings()){
-                        DateTime dt = DateTimeFormat.forPattern("hh:mm a")
-                                .withLocale(Locale.ENGLISH).parseDateTime(t.replace(".", "").toUpperCase());
+                        DateTime dt = DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH).parseDateTime(t.replace(".", "").toUpperCase());
                         long millis = dt.getMillis();
                         long startMilli = dt.withTime(0, 0, 0, 0).getMillis();
                         int min = (int) ((millis - startMilli)/60000);
@@ -490,7 +473,7 @@ public class listOfPeople extends AppCompatActivity
                         ContentValues reminderValues = new ContentValues();
                         reminderValues.put("event_id", eventID);
                         reminderValues.put(CalendarContract.Reminders.MINUTES, min);
-                        reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALARM);
+                        reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
                         Uri reminderUri = getApplicationContext().getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
                     }
                     List<Medicine> meds = x.getMedicines();
