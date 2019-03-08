@@ -119,6 +119,26 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
 
       //  docSpin.setOnItemSelectedListener(this);
         submitButton.setClickable(true);
+        final Context c = this;
+        if (ContextCompat.checkSelfPermission( c, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) c, Manifest.permission.WRITE_CALENDAR)) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(c);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("Permission necessary");
+                alertBuilder.setMessage("Calendar permission is necessary");
+                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions((Activity) c, new String[]{Manifest.permission.WRITE_CALENDAR}, 144);
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+            } else {
+                ActivityCompat.requestPermissions((Activity) c, new String[]{Manifest.permission.WRITE_CALENDAR}, 144);
+            }
+
+        }
 
 
         docRefBase = FirebaseDatabase.getInstance().getReference();
@@ -485,6 +505,7 @@ public class addPersonActivity extends AppCompatActivity implements AddMedicatio
                     Toast.makeText(this, "Need permissions", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
         }
     }
 

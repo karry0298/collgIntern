@@ -117,6 +117,9 @@ public class Medicine implements Serializable{
     }
 
     public long setReminder(Context context, Medicine newMed, String wardName){
+
+
+
         if(newMed.dueDate()==null){return 0;}
 
         DateTime due = newMed.dueDate();

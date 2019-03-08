@@ -470,6 +470,7 @@ public class listOfPeople extends AppCompatActivity
                     eventValues.put(CalendarContract.Events.EVENT_TIMEZONE, dStart.getZone().toTimeZone().getDisplayName());
                     eventValues.put(CalendarContract.Events.DTSTART, startMillis);
                     eventValues.put(CalendarContract.Events.DTEND, endMillis);
+                    eventValues.put(CalendarContract.Events.RRULE, "FREQ=DAILY");
                     eventValues.put(CalendarContract.Events.ALL_DAY, 0);
 
                     System.out.println(eventID);
@@ -478,7 +479,8 @@ public class listOfPeople extends AppCompatActivity
 
                     String reminderUriString = "content://com.android.calendar/reminders";
                     for(String t: m.getConsumptionTimings()){
-                        DateTime dt = DateTimeFormat.forPattern("hh:mm a").withLocale(Locale.ENGLISH).parseDateTime(t.replace(".", "").toUpperCase());
+                        DateTime dt = DateTimeFormat.forPattern("hh:mm a")
+                                .withLocale(Locale.ENGLISH).parseDateTime(t.replace(".", "").toUpperCase());
                         long millis = dt.getMillis();
                         long startMilli = dt.withTime(0, 0, 0, 0).getMillis();
                         int min = (int) ((millis - startMilli)/60000);
@@ -487,7 +489,7 @@ public class listOfPeople extends AppCompatActivity
                         ContentValues reminderValues = new ContentValues();
                         reminderValues.put("event_id", eventID);
                         reminderValues.put(CalendarContract.Reminders.MINUTES, min);
-                        reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+                        reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALARM);
                         Uri reminderUri = getApplicationContext().getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
                     }
                     List<Medicine> meds = x.getMedicines();
