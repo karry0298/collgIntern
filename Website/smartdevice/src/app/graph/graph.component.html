@@ -2,6 +2,17 @@
   <button (click)="printData()" class="btn btn-outline-success my-2 my-sm-0" type="submit">Console Print</button>
 </form>
 -->
-<div [hidden]="!chart">
-  <canvas id="canvas">{{ chart }}</canvas>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6" style="height:300px;" >  <canvas id="canvas1" style="height:1rem;width:2rem">{{ chartHeartRate }}</canvas></div>
+    <div class="col-lg-6" style="height:300px;">  <canvas id="canvas2" style="height:1rem;width:2rem; ">{{ chartSugar }}</canvas></div>
+    <div class="col-lg-6" style="height:300px;" >  <canvas id="canvas3" style="height:1rem;width:2rem">{{ chartBP }}</canvas></div>
+    <div class="col-lg-6" style="height:300px;">  <canvas id="canvas4" style="height:1rem;width:2rem; ">{{ chartCholestrol }}</canvas></div>
+  </div>
 </div>
+<!-- <div [hidden]="!chart">
+
+
+  <canvas id="canvas" style="height:5rem;width:5rem">{{ chart }}</canvas>
+  <canvas id="canvas" style="height:5rem;width:5rem">{{ chart }}</canvas>
+</div> -->

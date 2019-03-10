@@ -12,7 +12,8 @@ import { Medecine } from '../medecine';
 export class DoctorPatientviewComponent implements OnInit {
   @Input() patient: Patient;
   doctorDetails:string;
-
+  underline1:string='underline';
+  underline2:string='none';
   isOn=1;
   selectedMed:Medecine;
   check(): void{
